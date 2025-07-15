@@ -13,6 +13,7 @@ import heroImage from "@/assets/hero-bg.jpg"
 import elenaImage from "@/assets/testimonial-elena.jpg"
 import davidImage from "@/assets/testimonial-david.jpg"
 import { InteractiveDemo } from "@/components/InteractiveDemo"
+import { EnhancedDemo } from "@/components/EnhancedDemo"
 
 const Index = () => {
   const [email, setEmail] = useState("")
@@ -65,120 +66,191 @@ const Index = () => {
       </motion.nav>
 
       {/* Hero Section */}
-      <section className="relative overflow-hidden bg-gradient-mesh min-h-screen flex items-center pt-20">
-        <div 
-          className="absolute inset-0 opacity-5"
-          style={{
-            backgroundImage: `url(${heroImage})`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            backgroundRepeat: 'no-repeat'
-          }}
-        />
+      <section className="relative overflow-hidden min-h-screen flex items-center pt-20">
+        {/* Dynamic Gradient Background */}
+        <div className="absolute inset-0 bg-gradient-to-br from-primary via-primary-deep to-secondary opacity-95" />
+        <div className="absolute inset-0 bg-gradient-radial from-transparent via-primary/20 to-transparent" />
         
-        {/* Floating elements */}
+        {/* Animated Mesh Background */}
+        <div className="absolute inset-0">
+          <div className="absolute inset-0 bg-grid-pattern opacity-10" />
+          <motion.div 
+            className="absolute inset-0 bg-gradient-mesh-animated"
+            animate={{ 
+              background: [
+                "radial-gradient(circle at 20% 50%, hsl(var(--accent) / 0.3) 0%, transparent 50%)",
+                "radial-gradient(circle at 80% 20%, hsl(var(--secondary) / 0.4) 0%, transparent 50%)",
+                "radial-gradient(circle at 40% 80%, hsl(var(--primary) / 0.3) 0%, transparent 50%)"
+              ]
+            }}
+            transition={{ duration: 8, repeat: Infinity, repeatType: "reverse" }}
+          />
+        </div>
+        
+        {/* Floating Orbs */}
         <div className="absolute inset-0 overflow-hidden">
-          <motion.div 
-            className="absolute top-20 left-10 w-20 h-20 bg-primary/10 rounded-full blur-xl"
-            animate={{ y: [0, -20, 0] }}
-            transition={{ duration: 4, repeat: Infinity }}
-          />
-          <motion.div 
-            className="absolute top-40 right-20 w-32 h-32 bg-secondary/10 rounded-full blur-xl"
-            animate={{ y: [0, 20, 0] }}
-            transition={{ duration: 5, repeat: Infinity }}
-          />
-          <motion.div 
-            className="absolute bottom-40 left-1/4 w-16 h-16 bg-accent/10 rounded-full blur-xl"
-            animate={{ y: [0, -15, 0] }}
-            transition={{ duration: 3, repeat: Infinity }}
-          />
+          {[...Array(12)].map((_, i) => (
+            <motion.div
+              key={i}
+              className={`absolute w-${4 + (i % 3) * 4} h-${4 + (i % 3) * 4} rounded-full bg-gradient-orb opacity-20 blur-sm`}
+              style={{
+                left: `${10 + (i * 8) % 80}%`,
+                top: `${15 + (i * 12) % 70}%`,
+              }}
+              animate={{
+                y: [0, -30, 0],
+                x: [0, 15, 0],
+                scale: [1, 1.2, 1],
+                opacity: [0.2, 0.4, 0.2]
+              }}
+              transition={{
+                duration: 4 + (i % 3),
+                repeat: Infinity,
+                delay: i * 0.5
+              }}
+            />
+          ))}
         </div>
 
         <div className="relative container mx-auto px-4 py-20">
           <motion.div
-            className="max-w-5xl mx-auto text-center text-white"
+            className="max-w-7xl mx-auto text-center"
             variants={staggerContainer}
             initial="initial"
             animate="animate"
           >
+            {/* Premium Badge */}
             <motion.div
-              className="inline-flex items-center bg-white/10 backdrop-blur-sm rounded-full px-6 py-2 mb-8 border border-white/20"
+              className="inline-flex items-center bg-white/10 backdrop-blur-xl rounded-full px-8 py-3 mb-8 border border-white/20 shadow-glow"
               variants={fadeInUp}
             >
-              <Sparkles className="h-4 w-4 mr-2 text-accent" />
-              <span className="text-sm font-medium">Global Opportunity Engine</span>
+              <motion.div
+                className="w-2 h-2 bg-accent rounded-full mr-3"
+                animate={{ scale: [1, 1.2, 1], opacity: [0.5, 1, 0.5] }}
+                transition={{ duration: 2, repeat: Infinity }}
+              />
+              <Sparkles className="h-5 w-5 mr-2 text-accent" />
+              <span className="text-sm font-medium text-white/90">AI-Powered Global Opportunity Engine</span>
+              <ChevronRight className="h-4 w-4 ml-2 text-white/60" />
             </motion.div>
             
+            {/* Main Headline */}
             <motion.h1 
-              className="font-poppins font-bold text-5xl md:text-7xl lg:text-8xl mb-8 leading-tight"
+              className="font-poppins font-black text-6xl md:text-8xl lg:text-9xl mb-8 leading-[0.9] text-white"
               variants={fadeInUp}
             >
-              Stop Guessing What's Next.
-              <br />
-              <span className="bg-gradient-text bg-clip-text text-transparent animate-gradient-shift bg-[length:200%_200%]">
-                Start Building Your Future.
+              <span className="block mb-4">The Future of</span>
+              <span className="relative inline-block">
+                <span className="bg-gradient-to-r from-accent via-secondary to-primary bg-clip-text text-transparent animate-gradient-shift bg-[length:200%_200%]">
+                  Career Intelligence
+                </span>
+                <motion.div
+                  className="absolute -inset-2 bg-gradient-to-r from-accent/30 via-secondary/30 to-primary/30 rounded-lg blur-xl"
+                  animate={{ opacity: [0.3, 0.6, 0.3] }}
+                  transition={{ duration: 3, repeat: Infinity }}
+                />
               </span>
             </motion.h1>
             
+            {/* Subtitle */}
             <motion.p 
-              className="font-inter text-xl md:text-2xl lg:text-3xl mb-12 opacity-90 max-w-4xl mx-auto leading-relaxed"
+              className="font-inter text-2xl md:text-3xl lg:text-4xl mb-16 text-white/90 max-w-5xl mx-auto leading-relaxed font-light"
               variants={fadeInUp}
             >
-              Transform vague career aspirations into actionable, step-by-step learning paths with your personal 
-              <span className="font-semibold text-accent"> AI life architect</span> that analyzes every global opportunity.
+              Stop gambling with your career. Let our AI architect analyze 
+              <span className="font-semibold bg-gradient-to-r from-accent to-secondary bg-clip-text text-transparent"> every global pathway </span>
+              and build your personalized roadmap to success.
             </motion.p>
 
-            {/* Stats Row */}
+            {/* Interactive CTA */}
             <motion.div
-              className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12 max-w-3xl mx-auto"
+              className="flex flex-col md:flex-row items-center justify-center gap-6 mb-20"
               variants={fadeInUp}
             >
-              <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10">
-                <div className="text-3xl font-bold text-accent">50M+</div>
-                <div className="text-sm text-white/70">Global Target Market</div>
-              </div>
-              <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10">
-                <div className="text-3xl font-bold text-secondary">$750B</div>
-                <div className="text-sm text-white/70">Market Opportunity</div>
-              </div>
-              <div className="bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10">
-                <div className="text-3xl font-bold text-primary">92%</div>
-                <div className="text-sm text-white/70">Need Continuous Learning</div>
-              </div>
+              <motion.div
+                className="relative"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <Button 
+                  size="lg" 
+                  className="bg-gradient-to-r from-accent to-secondary hover:from-accent/90 hover:to-secondary/90 text-white font-semibold px-12 py-4 text-lg rounded-full shadow-glow border-0 relative overflow-hidden group"
+                >
+                  <motion.div
+                    className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent"
+                    initial={{ x: "-100%" }}
+                    whileHover={{ x: "100%" }}
+                    transition={{ duration: 0.6 }}
+                  />
+                  <span className="relative z-10 flex items-center">
+                    Start Your Journey
+                    <motion.div
+                      className="ml-2"
+                      animate={{ x: [0, 5, 0] }}
+                      transition={{ duration: 1.5, repeat: Infinity }}
+                    >
+                      <ArrowRight className="h-5 w-5" />
+                    </motion.div>
+                  </span>
+                </Button>
+              </motion.div>
+              
+              <motion.div
+                className="flex items-center text-white/70 hover:text-white cursor-pointer group"
+                whileHover={{ scale: 1.05 }}
+              >
+                <div className="w-12 h-12 bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center mr-3 group-hover:bg-white/20 transition-colors">
+                  <Play className="h-5 w-5 ml-1" />
+                </div>
+                <span className="font-medium">Watch 2-min Demo</span>
+              </motion.div>
             </motion.div>
-            
-            <motion.div variants={fadeInUp} className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button 
-                variant="hero" 
-                size="xl"
-                className="group bg-accent hover:bg-accent-hover shadow-dramatic"
-                asChild
-              >
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
+
+            {/* Enhanced Stats Grid */}
+            <motion.div
+              className="grid grid-cols-1 md:grid-cols-4 gap-6 max-w-6xl mx-auto"
+              variants={fadeInUp}
+            >
+              {[
+                { value: "50M+", label: "Career Changers", desc: "Global target market", icon: Users, color: "accent" },
+                { value: "$750B", label: "Market Size", desc: "Education + career services", icon: TrendingUp, color: "secondary" },
+                { value: "92%", label: "Need Upskilling", desc: "Professionals requiring learning", icon: BarChart3, color: "primary" },
+                { value: "24/7", label: "AI Mentorship", desc: "Continuous guidance", icon: Brain, color: "accent" }
+              ].map((stat, index) => (
+                <motion.div
+                  key={index}
+                  className="bg-white/5 backdrop-blur-xl rounded-3xl p-8 border border-white/10 shadow-elegant hover:shadow-glow transition-all duration-500 group hover:bg-white/10"
+                  whileHover={{ scale: 1.05, y: -5 }}
+                  transition={{ duration: 0.3 }}
                 >
-                  Generate Your Free Path
-                  <ArrowRight className="ml-2 h-5 w-5 transition-transform group-hover:translate-x-1" />
-                </motion.button>
-              </Button>
-              <Button 
-                variant="outline" 
-                size="xl"
-                className="bg-white/10 border-white/20 text-white hover:bg-white/20"
-                asChild
-              >
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  Watch Demo
-                </motion.button>
-              </Button>
+                  <div className="flex items-center justify-center mb-4">
+                    <div className={`w-12 h-12 rounded-2xl bg-gradient-to-br from-${stat.color} to-${stat.color}/60 flex items-center justify-center group-hover:scale-110 transition-transform duration-300`}>
+                      <stat.icon className="h-6 w-6 text-white" />
+                    </div>
+                  </div>
+                  <div className={`text-4xl font-bold text-${stat.color} mb-2`}>{stat.value}</div>
+                  <div className="text-white font-semibold mb-1">{stat.label}</div>
+                  <div className="text-sm text-white/60">{stat.desc}</div>
+                </motion.div>
+              ))}
             </motion.div>
           </motion.div>
         </div>
+
+        {/* Scroll Indicator */}
+        <motion.div
+          className="absolute bottom-8 left-1/2 transform -translate-x-1/2"
+          animate={{ y: [0, 10, 0] }}
+          transition={{ duration: 2, repeat: Infinity }}
+        >
+          <div className="w-6 h-10 border-2 border-white/30 rounded-full flex justify-center">
+            <motion.div
+              className="w-1 h-3 bg-white/60 rounded-full mt-2"
+              animate={{ y: [0, 12, 0] }}
+              transition={{ duration: 2, repeat: Infinity }}
+            />
+          </div>
+        </motion.div>
       </section>
 
       {/* Vision Section */}

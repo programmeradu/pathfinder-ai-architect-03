@@ -1,28 +1,11 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
-  Brain, 
-  Search, 
-  MessageSquare, 
-  Target, 
-  ArrowRight, 
-  Play,
-  CheckCircle,
-  Clock,
-  Users,
-  TrendingUp,
-  Book,
-  Video,
-  FileText,
-  Github,
-  Mic,
-  Send,
-  Sparkles,
-  BarChart3,
-  Map,
-  Zap,
-  Award,
-  ChevronRight
+  Brain, Search, MessageSquare, Target, ArrowRight, Play, CheckCircle,
+  Clock, Users, TrendingUp, Book, Video, FileText, Github, Mic, Send,
+  Sparkles, BarChart3, Map, Zap, Award, ChevronRight, Globe, GraduationCap,
+  Building, Briefcase, Plane, Radar, MapPin, DollarSign, Calendar,
+  ExternalLink, Compass, Database, Network, Satellite, Route
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -70,6 +53,54 @@ const resources = [
     rating: 4.7,
     icon: Github
   }
+];
+
+const globalOpportunities = [
+  {
+    type: 'university',
+    title: 'MIT Computer Science',
+    location: 'Boston, USA',
+    description: 'Top-ranked CS program with AI specialization',
+    cost: '$58,000/year',
+    icon: GraduationCap,
+    match: 95
+  },
+  {
+    type: 'bootcamp',
+    title: 'General Assembly Software Engineering',
+    location: 'Multiple Cities',
+    description: '12-week intensive full-stack program',
+    cost: '$15,000',
+    icon: Building,
+    match: 88
+  },
+  {
+    type: 'job',
+    title: 'Junior Developer - Google',
+    location: 'San Francisco, USA',
+    description: 'Entry-level position with mentorship',
+    salary: '$130,000 - $180,000',
+    icon: Briefcase,
+    match: 82
+  },
+  {
+    type: 'fellowship',
+    title: 'Tech Fellowship - Berlin',
+    location: 'Berlin, Germany',
+    description: '6-month paid program with visa support',
+    stipend: '€2,500/month',
+    icon: Plane,
+    match: 91
+  }
+];
+
+const searchStages = [
+  { id: 'scanning', title: 'Scanning Global Networks', icon: Radar, delay: 800 },
+  { id: 'academic', title: 'Analyzing Academic Pathways', icon: GraduationCap, delay: 1200 },
+  { id: 'vocational', title: 'Finding Training Programs', icon: Building, delay: 1000 },
+  { id: 'careers', title: 'Matching Career Opportunities', icon: Briefcase, delay: 1500 },
+  { id: 'global', title: 'Discovering Global Pathways', icon: Globe, delay: 900 },
+  { id: 'complete', title: 'Analysis Complete', icon: CheckCircle, delay: 600 }
 ];
 
 const chatMessages = [
