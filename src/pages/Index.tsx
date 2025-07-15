@@ -9,7 +9,7 @@ import {
   Globe, Zap, Target, TrendingUp, Users, Award, Sparkles, Rocket,
   BarChart3, Map, Clock, Star, Play
 } from "lucide-react"
-import heroImage from "@/assets/hero-bg.jpg"
+import heroImage from "@/assets/hero-futuristic.jpg"
 import elenaImage from "@/assets/testimonial-elena.jpg"
 import davidImage from "@/assets/testimonial-david.jpg"
 import { InteractiveDemo } from "@/components/InteractiveDemo"
@@ -67,50 +67,88 @@ const Index = () => {
 
       {/* Hero Section */}
       <section className="relative overflow-hidden min-h-screen flex items-center pt-20">
-        {/* Dynamic Gradient Background */}
-        <div className="absolute inset-0 bg-gradient-to-br from-primary via-primary-deep to-secondary opacity-95" />
-        <div className="absolute inset-0 bg-gradient-radial from-transparent via-primary/20 to-transparent" />
+        {/* Futuristic Background Image */}
+        <div 
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          style={{ backgroundImage: `url(${heroImage})` }}
+        />
+        <div className="absolute inset-0 bg-gradient-to-br from-background/40 via-primary/60 to-accent/40" />
         
-        {/* Animated Mesh Background */}
+        {/* Holographic Overlay Effects */}
         <div className="absolute inset-0">
-          <div className="absolute inset-0 bg-grid-pattern opacity-10" />
           <motion.div 
-            className="absolute inset-0 bg-gradient-mesh-animated"
+            className="absolute inset-0"
+            style={{
+              background: `
+                radial-gradient(circle at 20% 30%, hsl(var(--accent) / 0.4) 0%, transparent 40%),
+                radial-gradient(circle at 80% 70%, hsl(var(--secondary) / 0.3) 0%, transparent 40%),
+                radial-gradient(circle at 40% 60%, hsl(var(--primary) / 0.5) 0%, transparent 40%)
+              `
+            }}
             animate={{ 
-              background: [
-                "radial-gradient(circle at 20% 50%, hsl(var(--accent) / 0.3) 0%, transparent 50%)",
-                "radial-gradient(circle at 80% 20%, hsl(var(--secondary) / 0.4) 0%, transparent 50%)",
-                "radial-gradient(circle at 40% 80%, hsl(var(--primary) / 0.3) 0%, transparent 50%)"
-              ]
+              opacity: [0.7, 1, 0.7],
+              scale: [1, 1.05, 1]
             }}
             transition={{ duration: 8, repeat: Infinity, repeatType: "reverse" }}
           />
         </div>
         
-        {/* Floating Orbs */}
+        {/* Advanced Floating Elements */}
         <div className="absolute inset-0 overflow-hidden">
-          {[...Array(12)].map((_, i) => (
+          {[...Array(20)].map((_, i) => (
             <motion.div
               key={i}
-              className={`absolute w-${4 + (i % 3) * 4} h-${4 + (i % 3) * 4} rounded-full bg-gradient-orb opacity-20 blur-sm`}
+              className="absolute"
               style={{
-                left: `${10 + (i * 8) % 80}%`,
-                top: `${15 + (i * 12) % 70}%`,
+                left: `${5 + (i * 11) % 90}%`,
+                top: `${10 + (i * 7) % 80}%`,
+                width: `${8 + (i % 4) * 6}px`,
+                height: `${8 + (i % 4) * 6}px`,
               }}
               animate={{
-                y: [0, -30, 0],
-                x: [0, 15, 0],
-                scale: [1, 1.2, 1],
-                opacity: [0.2, 0.4, 0.2]
+                y: [0, -40, 0],
+                x: [0, 20, 0],
+                rotate: [0, 180, 360],
+                scale: [0.8, 1.4, 0.8],
+                opacity: [0.3, 0.8, 0.3]
               }}
               transition={{
-                duration: 4 + (i % 3),
+                duration: 6 + (i % 4),
                 repeat: Infinity,
-                delay: i * 0.5
+                delay: i * 0.3,
+                ease: "easeInOut"
               }}
-            />
+            >
+              {i % 3 === 0 ? (
+                <div className="w-full h-full bg-gradient-to-br from-accent to-secondary rounded-full blur-sm" />
+              ) : i % 3 === 1 ? (
+                <div className="w-full h-full border-2 border-primary/60 rounded-lg rotate-45 blur-[1px]" />
+              ) : (
+                <div className="w-full h-full bg-gradient-to-r from-primary to-accent rounded-sm opacity-60" />
+              )}
+            </motion.div>
           ))}
         </div>
+        
+        {/* Scanning Lines Effect */}
+        <motion.div
+          className="absolute inset-0 pointer-events-none"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+        >
+          <motion.div
+            className="absolute w-full h-0.5 bg-gradient-to-r from-transparent via-accent to-transparent"
+            style={{ top: '30%' }}
+            animate={{ x: ['-100%', '100%'] }}
+            transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+          />
+          <motion.div
+            className="absolute w-0.5 h-full bg-gradient-to-b from-transparent via-secondary to-transparent"
+            style={{ left: '60%' }}
+            animate={{ y: ['-100%', '100%'] }}
+            transition={{ duration: 4, repeat: Infinity, ease: "linear", delay: 1 }}
+          />
+        </motion.div>
 
         <div className="relative container mx-auto px-4 py-20">
           <motion.div
@@ -134,33 +172,71 @@ const Index = () => {
               <ChevronRight className="h-4 w-4 ml-2 text-white/60" />
             </motion.div>
             
-            {/* Main Headline */}
+            {/* Revolutionary Headline */}
             <motion.h1 
-              className="font-poppins font-black text-6xl md:text-8xl lg:text-9xl mb-8 leading-[0.9] text-white"
+              className="font-poppins font-black mb-8 leading-[0.85] text-white relative"
               variants={fadeInUp}
             >
-              <span className="block mb-4">The Future of</span>
-              <span className="relative inline-block">
-                <span className="bg-gradient-to-r from-accent via-secondary to-primary bg-clip-text text-transparent animate-gradient-shift bg-[length:200%_200%]">
-                  Career Intelligence
+              <motion.span 
+                className="block text-4xl md:text-6xl lg:text-7xl mb-6 text-white/90"
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 1, delay: 0.2 }}
+              >
+                Your AI-Powered
+              </motion.span>
+              <motion.span 
+                className="block text-7xl md:text-9xl lg:text-[12rem] font-black relative"
+                initial={{ opacity: 0, y: 50 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 1, delay: 0.4 }}
+              >
+                <span className="bg-gradient-to-r from-accent via-secondary to-primary bg-clip-text text-transparent animate-gradient-shift bg-[length:300%_300%]">
+                  PATHFINDER
                 </span>
                 <motion.div
-                  className="absolute -inset-2 bg-gradient-to-r from-accent/30 via-secondary/30 to-primary/30 rounded-lg blur-xl"
-                  animate={{ opacity: [0.3, 0.6, 0.3] }}
-                  transition={{ duration: 3, repeat: Infinity }}
+                  className="absolute -inset-4 bg-gradient-to-r from-accent/20 via-secondary/20 to-primary/20 rounded-2xl blur-2xl"
+                  animate={{ 
+                    opacity: [0.4, 0.8, 0.4],
+                    scale: [0.95, 1.05, 0.95]
+                  }}
+                  transition={{ duration: 4, repeat: Infinity }}
                 />
-              </span>
+              </motion.span>
+              <motion.span 
+                className="block text-3xl md:text-5xl lg:text-6xl mt-4 text-white/80 font-light"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 1, delay: 0.6 }}
+              >
+                Global Career Engine
+              </motion.span>
             </motion.h1>
             
-            {/* Subtitle */}
-            <motion.p 
-              className="font-inter text-2xl md:text-3xl lg:text-4xl mb-16 text-white/90 max-w-5xl mx-auto leading-relaxed font-light"
+            {/* Revolutionary Subtitle */}
+            <motion.div 
+              className="mb-16 max-w-6xl mx-auto"
               variants={fadeInUp}
             >
-              Stop gambling with your career. Let our AI architect analyze 
-              <span className="font-semibold bg-gradient-to-r from-accent to-secondary bg-clip-text text-transparent"> every global pathway </span>
-              and build your personalized roadmap to success.
-            </motion.p>
+              <motion.p 
+                className="font-inter text-xl md:text-2xl lg:text-3xl text-white/95 leading-relaxed mb-6"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 1, delay: 0.8 }}
+              >
+                <span className="font-light">Discover </span>
+                <span className="font-bold bg-gradient-to-r from-accent to-secondary bg-clip-text text-transparent">50M+ global opportunities</span>
+                <span className="font-light"> across universities, training programs, jobs, and relocations</span>
+              </motion.p>
+              <motion.p 
+                className="font-inter text-lg md:text-xl text-white/75 max-w-4xl mx-auto"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 1, delay: 1 }}
+              >
+                Our AI analyzes every possible career pathway worldwide and builds your personalized roadmap to success
+              </motion.p>
+            </motion.div>
 
             {/* Interactive CTA */}
             <motion.div
