@@ -50,16 +50,27 @@ All colors MUST be HSL.
     --gradient-card: linear-gradient(135deg, hsl(var(--background)), hsl(220 13% 98%));
     --gradient-accent: linear-gradient(135deg, hsl(var(--accent)), hsl(43 96% 61%));
 
-    /* Shadows */
+    /* Enhanced Shadows */
     --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
     --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
     --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
     --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
     --shadow-glow: 0 0 0 1px rgba(37, 99, 235, 0.05), 0 1px 3px 0 rgba(37, 99, 235, 0.1), 0 4px 6px 0 rgba(37, 99, 235, 0.05);
+    --shadow-dramatic: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    --shadow-inner: inset 0 2px 4px 0 rgba(0, 0, 0, 0.06);
+    --shadow-colored: 0 10px 25px -5px rgba(37, 99, 235, 0.3);
+    
+    /* Premium Gradients */
+    --gradient-mesh: conic-gradient(from 180deg at 50% 50%, hsl(var(--primary)) 0deg, hsl(var(--secondary)) 120deg, hsl(var(--accent)) 240deg, hsl(var(--primary)) 360deg);
+    --gradient-premium: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--secondary)) 50%, hsl(var(--accent)) 100%);
+    --gradient-glass: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+    --gradient-text: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--secondary)));
 
-    /* Animations */
+    /* Sophisticated Animations */
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     --transition-bounce: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    --transition-elastic: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    --transition-spring: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   }
 
   .dark {
