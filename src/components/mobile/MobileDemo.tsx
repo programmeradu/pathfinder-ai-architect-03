@@ -12,33 +12,55 @@ import { Badge } from '@/components/ui/badge';
 const mobileOpportunities = [
   {
     type: 'university',
-    title: 'MIT CS Program',
-    location: 'Boston, USA',
-    description: 'Top AI specialization',
+    title: 'MIT Computer Science',
+    location: 'Cambridge, USA',
+    description: 'AI/ML specialization with top faculty',
     cost: '$58k/year',
     icon: GraduationCap,
-    match: 95,
-    color: 'from-blue-500 to-purple-600'
+    match: 96,
+    color: 'from-blue-500 to-purple-600',
+    rating: 4.9,
+    duration: '4 years',
+    nextStep: 'Application opens Jan 2025'
   },
   {
     type: 'bootcamp',
-    title: 'Full-Stack Bootcamp',
-    location: 'Multiple Cities',
-    description: '12-week intensive',
-    cost: '$15k',
+    title: 'Google UX Design Certificate',
+    location: 'Online + Global',
+    description: 'Industry-recognized certification',
+    cost: '$39/month',
     icon: Building,
-    match: 88,
-    color: 'from-green-500 to-teal-600'
+    match: 94,
+    color: 'from-green-500 to-emerald-600',
+    rating: 4.8,
+    duration: '3-6 months',
+    nextStep: 'Start immediately'
   },
   {
     type: 'job',
-    title: 'Junior Dev - Google',
-    location: 'San Francisco',
-    description: 'Entry with mentorship',
-    salary: '$130k-180k',
+    title: 'Senior Developer - Meta',
+    location: 'Remote/London',
+    description: 'React/Node.js focus with equity',
+    salary: '£85k-120k + equity',
     icon: Briefcase,
-    match: 82,
-    color: 'from-orange-500 to-red-600'
+    match: 88,
+    color: 'from-orange-500 to-red-600',
+    rating: 4.7,
+    duration: 'Full-time',
+    nextStep: 'Apply by Dec 15'
+  },
+  {
+    type: 'certification',
+    title: 'AWS Solutions Architect',
+    location: 'Global Recognition',
+    description: 'Cloud computing expertise',
+    cost: '$150 exam fee',
+    icon: Brain,
+    match: 91,
+    color: 'from-purple-500 to-pink-600',
+    rating: 4.6,
+    duration: '2-3 months prep',
+    nextStep: 'Schedule exam'
   }
 ];
 
@@ -379,27 +401,56 @@ export function MobileDemo() {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: index * 0.1 }}
-                    className="bg-background/50 rounded-xl p-4 border border-border/50"
+                    className="bg-background/50 rounded-xl p-4 border border-border/50 hover:shadow-lg transition-all"
+                    whileHover={{ scale: 1.02 }}
                   >
                     <div className="flex items-start space-x-3">
-                      <div className={`w-10 h-10 bg-gradient-to-br ${opportunity.color} rounded-lg flex items-center justify-center flex-shrink-0`}>
-                        <opportunity.icon className="h-5 w-5 text-white" />
+                      <div className={`w-12 h-12 bg-gradient-to-br ${opportunity.color} rounded-xl flex items-center justify-center flex-shrink-0`}>
+                        <opportunity.icon className="h-6 w-6 text-white" />
                       </div>
                       <div className="flex-1 min-w-0">
-                        <div className="flex items-center justify-between mb-1">
-                          <h5 className="font-semibold text-sm truncate">{opportunity.title}</h5>
-                          <Badge variant="secondary" className="text-xs ml-2">
-                            {opportunity.match}% match
-                          </Badge>
+                        <div className="flex items-start justify-between mb-2">
+                          <div>
+                            <h5 className="font-semibold text-sm mb-1">{opportunity.title}</h5>
+                            <div className="flex items-center space-x-2">
+                              <Badge 
+                                variant={opportunity.match >= 90 ? "default" : "secondary"} 
+                                className="text-xs"
+                              >
+                                {opportunity.match}% match
+                              </Badge>
+                              <div className="flex items-center text-xs text-muted-foreground">
+                                <span className="text-yellow-500 mr-1">⭐</span>
+                                {opportunity.rating}
+                              </div>
+                            </div>
+                          </div>
                         </div>
-                        <p className="text-xs text-muted-foreground mb-1">{opportunity.location}</p>
-                        <p className="text-xs text-muted-foreground mb-2">{opportunity.description}</p>
+                        
+                        <p className="text-xs text-muted-foreground mb-1 flex items-center">
+                          📍 {opportunity.location}
+                        </p>
+                        <p className="text-xs text-muted-foreground mb-3">{opportunity.description}</p>
+                        
+                        <div className="grid grid-cols-2 gap-2 mb-3 text-xs">
+                          <div className="bg-background/50 rounded-lg p-2">
+                            <div className="font-medium text-primary">
+                              {opportunity.cost || opportunity.salary}
+                            </div>
+                            <div className="text-muted-foreground">Cost/Salary</div>
+                          </div>
+                          <div className="bg-background/50 rounded-lg p-2">
+                            <div className="font-medium">{opportunity.duration}</div>
+                            <div className="text-muted-foreground">Duration</div>
+                          </div>
+                        </div>
+                        
                         <div className="flex items-center justify-between">
-                          <span className="text-xs font-medium text-primary">
-                            {opportunity.cost || opportunity.salary}
+                          <span className="text-xs text-green-600 font-medium">
+                            ⚡ {opportunity.nextStep}
                           </span>
-                          <Button size="sm" variant="outline" className="text-xs px-2 py-1">
-                            Learn More
+                          <Button size="sm" variant="outline" className="text-xs px-3 py-1 hover:bg-primary hover:text-white">
+                            Apply Now
                           </Button>
                         </div>
                       </div>

@@ -239,6 +239,91 @@ const MobileIndex = () => {
         </div>
       </section>
 
+      {/* Mobile Vision Section */}
+      <section id="vision" className="py-16 relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-accent/5 to-secondary/5" />
+        <div className="container mx-auto px-4 relative">
+          <motion.div
+            className="text-center mb-12"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+          >
+            <motion.div
+              className="inline-flex items-center bg-gradient-to-r from-primary/10 to-accent/10 rounded-full px-4 py-2 mb-6 border border-primary/20"
+              initial={{ scale: 0.8 }}
+              whileInView={{ scale: 1 }}
+              viewport={{ once: true }}
+            >
+              <Sparkles className="w-4 h-4 text-primary mr-2" />
+              <span className="text-sm font-medium text-primary">Our Vision</span>
+            </motion.div>
+            <h2 className="font-poppins font-bold text-2xl mb-4">
+              Democratizing Career Success
+            </h2>
+            <p className="text-muted-foreground leading-relaxed">
+              We believe everyone deserves personalized guidance to unlock their potential, regardless of background or location.
+            </p>
+          </motion.div>
+
+          <div className="space-y-6">
+            {[
+              {
+                icon: Brain,
+                title: "AI-Powered Intelligence",
+                description: "Advanced algorithms analyze millions of career paths to find your perfect match",
+                stat: "50M+ opportunities analyzed"
+              },
+              {
+                icon: Globe,
+                title: "Global Reach",
+                description: "Access opportunities across 195 countries and every major industry",
+                stat: "195 countries covered"
+              },
+              {
+                icon: Target,
+                title: "Personalized Pathways",
+                description: "Dynamic learning paths that adapt to your progress and goals",
+                stat: "92% success rate"
+              },
+              {
+                icon: Rocket,
+                title: "Future-Ready Skills",
+                description: "Stay ahead with cutting-edge skills and emerging career opportunities",
+                stat: "24/7 AI guidance"
+              }
+            ].map((item, index) => (
+              <motion.div
+                key={index}
+                className="bg-gradient-card rounded-2xl p-6 border border-border/50"
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: index * 0.1 }}
+                viewport={{ once: true }}
+              >
+                <div className="flex items-start space-x-4">
+                  <motion.div 
+                    className="w-12 h-12 bg-gradient-to-br from-primary to-accent rounded-xl flex items-center justify-center flex-shrink-0"
+                    whileHover={{ scale: 1.1 }}
+                  >
+                    <item.icon className="h-6 w-6 text-white" />
+                  </motion.div>
+                  <div className="flex-1">
+                    <div className="flex items-center justify-between mb-2">
+                      <h3 className="font-semibold text-lg">{item.title}</h3>
+                      <span className="text-xs font-medium text-primary bg-primary/10 px-2 py-1 rounded-full">
+                        {item.stat}
+                      </span>
+                    </div>
+                    <p className="text-muted-foreground text-sm leading-relaxed">{item.description}</p>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Mobile Features Section */}
       <section id="features" className="py-16">
         <div className="container mx-auto px-4">
@@ -261,22 +346,26 @@ const MobileIndex = () => {
               {
                 icon: Target,
                 title: "Academic Excellence",
-                description: "Top universities & programs worldwide"
+                description: "Top universities & programs worldwide",
+                detail: "MIT, Stanford, Oxford & 500+ institutions"
               },
               {
                 icon: Award,
                 title: "Skills Training",
-                description: "Bootcamps & certifications"
+                description: "Bootcamps & certifications",
+                detail: "Google, AWS, Meta certified programs"
               },
               {
                 icon: Briefcase,
                 title: "Career Placement",
-                description: "Global job opportunities"
+                description: "Global job opportunities",
+                detail: "FAANG, startups & Fortune 500 companies"
               },
               {
                 icon: Globe,
                 title: "Global Pathways",
-                description: "International opportunities"
+                description: "International opportunities",
+                detail: "Work visas, remote jobs & relocation support"
               }
             ].map((feature, index) => (
               <motion.div
@@ -286,13 +375,15 @@ const MobileIndex = () => {
                 whileInView={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.6, delay: index * 0.1 }}
                 viewport={{ once: true }}
+                whileHover={{ scale: 1.02 }}
               >
                 <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
                   <feature.icon className="h-5 w-5 text-primary" />
                 </div>
                 <div>
                   <h3 className="font-semibold text-lg mb-1">{feature.title}</h3>
-                  <p className="text-muted-foreground text-sm">{feature.description}</p>
+                  <p className="text-muted-foreground text-sm mb-1">{feature.description}</p>
+                  <p className="text-xs text-primary font-medium">{feature.detail}</p>
                 </div>
               </motion.div>
             ))}
