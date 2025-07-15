@@ -7,11 +7,12 @@ import { Input } from "@/components/ui/input"
 import { 
   Brain, Search, MessageCircle, ArrowRight, ChevronRight, Mail, CheckCircle, 
   Globe, Zap, Target, TrendingUp, Users, Award, Sparkles, Rocket,
-  BarChart3, Map, Clock, Star
+  BarChart3, Map, Clock, Star, Play
 } from "lucide-react"
 import heroImage from "@/assets/hero-bg.jpg"
 import elenaImage from "@/assets/testimonial-elena.jpg"
 import davidImage from "@/assets/testimonial-david.jpg"
+import { InteractiveDemo } from "@/components/InteractiveDemo"
 
 const Index = () => {
   const [email, setEmail] = useState("")
@@ -348,6 +349,40 @@ const Index = () => {
                 </div>
               </div>
             </motion.div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Interactive Demo Section */}
+      <section className="py-32 bg-gradient-to-b from-background via-primary/5 to-background">
+        <div className="container mx-auto px-4">
+          <motion.div
+            className="text-center mb-16"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+          >
+            <div className="inline-flex items-center bg-primary/10 text-primary rounded-full px-6 py-2 mb-6">
+              <Play className="h-4 w-4 mr-2" />
+              <span className="text-sm font-medium">See It In Action</span>
+            </div>
+            <h2 className="font-poppins font-bold text-4xl md:text-6xl mb-6 text-foreground">
+              Experience the Future of Learning
+            </h2>
+            <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
+              Try our AI-powered career guidance system and see how it transforms vague aspirations into actionable learning paths.
+            </p>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1 }}
+            viewport={{ once: true }}
+            className="max-w-5xl mx-auto"
+          >
+            <InteractiveDemo />
           </motion.div>
         </div>
       </section>
