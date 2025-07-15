@@ -117,9 +117,11 @@ const careerPaths = [
 ];
 
 export function EnhancedDemo() {
+  const [currentStep, setCurrentStep] = useState(0); // 0: goal input, 1: searching, 2: learning paths, 3: opportunities
   const [currentStage, setCurrentStage] = useState(0);
   const [isSearching, setIsSearching] = useState(false);
   const [goalText, setGoalText] = useState('');
+  const [showLearningPaths, setShowLearningPaths] = useState(false);
   const [showOpportunities, setShowOpportunities] = useState(false);
   const [selectedPath, setSelectedPath] = useState<number | null>(null);
   const [searchProgress, setSearchProgress] = useState(0);
@@ -130,6 +132,7 @@ export function EnhancedDemo() {
     }
     
     setIsSearching(true);
+    setCurrentStep(1);
     setCurrentStage(0);
     setSearchProgress(0);
     
@@ -141,16 +144,24 @@ export function EnhancedDemo() {
         
         if (index === searchStages.length - 1) {
           setIsSearching(false);
-          setShowOpportunities(true);
+          setCurrentStep(2);
+          setShowLearningPaths(true);
         }
       }, searchStages.slice(0, index + 1).reduce((acc, s) => acc + s.delay, 0));
     });
   };
 
+  const proceedToOpportunities = () => {
+    setCurrentStep(3);
+    setShowOpportunities(true);
+  };
+
   const resetDemo = () => {
+    setCurrentStep(0);
     setCurrentStage(0);
     setIsSearching(false);
     setGoalText('');
+    setShowLearningPaths(false);
     setShowOpportunities(false);
     setSelectedPath(null);
     setSearchProgress(0);
@@ -181,7 +192,7 @@ export function EnhancedDemo() {
           </div>
 
           {/* Search Progress */}
-          {(isSearching || showOpportunities) && (
+          {(isSearching || showLearningPaths || showOpportunities) && (
             <motion.div
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
@@ -235,7 +246,8 @@ export function EnhancedDemo() {
       {/* Demo Content */}
       <div className="p-8">
         <AnimatePresence mode="wait">
-          {!showOpportunities ? (
+          {/* Step 0: Goal Input */}
+          {currentStep === 0 && (
             <motion.div
               key="goal-input"
               initial={{ opacity: 0, y: 20 }}
@@ -367,7 +379,127 @@ export function EnhancedDemo() {
                 </motion.div>
               </div>
             </motion.div>
-          ) : (
+          )}
+
+          {/* Step 1: Searching */}
+          {currentStep === 1 && (
+            <motion.div
+              key="searching"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              className="space-y-8"
+            >
+              <div className="text-center space-y-6">
+                <motion.div
+                  className="w-20 h-20 bg-gradient-to-br from-primary to-accent rounded-3xl flex items-center justify-center mx-auto"
+                  animate={{ 
+                    rotate: [0, 360],
+                    scale: [1, 1.1, 1]
+                  }}
+                  transition={{ duration: 3, repeat: Infinity }}
+                >
+                  <Radar className="h-10 w-10 text-white" />
+                </motion.div>
+                
+                <div>
+                  <h4 className="font-poppins font-bold text-2xl mb-3">
+                    Scanning Global Networks
+                  </h4>
+                  <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+                    Our AI is analyzing millions of opportunities worldwide to find the perfect path for "{goalText || "Full-Stack Developer"}"
+                  </p>
+                </div>
+              </div>
+            </motion.div>
+          )}
+
+          {/* Step 2: Learning Paths */}
+          {currentStep === 2 && (
+            <motion.div
+              key="learning-paths"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              className="space-y-8"
+            >
+              <div className="text-center space-y-4">
+                <motion.div
+                  className="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center mx-auto"
+                  animate={{ scale: [1, 1.1, 1] }}
+                  transition={{ duration: 2, repeat: Infinity }}
+                >
+                  <GraduationCap className="h-8 w-8 text-white" />
+                </motion.div>
+                <h4 className="font-poppins font-bold text-2xl">
+                  Learning Pathways Found
+                </h4>
+                <p className="text-muted-foreground">
+                  Choose your preferred learning approach for "{goalText || "Full-Stack Developer"}"
+                </p>
+              </div>
+
+              {/* Learning Paths Grid */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {careerPaths.map((path, index) => (
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, y: 20, scale: 0.9 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    transition={{ delay: index * 0.1 }}
+                    className="bg-background/50 rounded-2xl p-6 border border-border/50 hover:shadow-glow transition-all duration-500 cursor-pointer group relative overflow-hidden"
+                    whileHover={{ scale: 1.02, y: -5 }}
+                    onClick={() => setSelectedPath(index)}
+                  >
+                    <div className={`absolute inset-0 bg-gradient-to-br ${path.color} opacity-5 group-hover:opacity-10 transition-opacity`} />
+                    
+                    <div className="relative z-10">
+                      <div className="flex items-start justify-between mb-4">
+                        <div className={`w-12 h-12 bg-gradient-to-br ${path.color} rounded-xl flex items-center justify-center`}>
+                          <path.icon className="h-6 w-6 text-white" />
+                        </div>
+                        <Badge variant="secondary" className="text-xs">
+                          {path.opportunities} paths
+                        </Badge>
+                      </div>
+                      
+                      <h5 className="font-semibold text-lg mb-2 group-hover:text-primary transition-colors">
+                        {path.title}
+                      </h5>
+                      
+                      <p className="text-sm text-muted-foreground mb-4">
+                        {path.description}
+                      </p>
+                      
+                      <Button
+                        variant={selectedPath === index ? "default" : "outline"}
+                        size="sm"
+                        className="w-full"
+                      >
+                        {selectedPath === index ? "Selected" : "Choose This Path"}
+                      </Button>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+
+              <div className="text-center">
+                <Button 
+                  onClick={proceedToOpportunities}
+                  size="lg"
+                  className="bg-gradient-to-r from-primary via-accent to-secondary text-white font-semibold px-12 py-4 rounded-2xl shadow-glow border-0"
+                >
+                  <span className="flex items-center">
+                    Explore Career Opportunities
+                    <ArrowRight className="h-5 w-5 ml-3" />
+                  </span>
+                </Button>
+              </div>
+            </motion.div>
+          )}
+
+          {/* Step 3: Global Opportunities */}
+          {currentStep === 3 && (
             /* Global Opportunities Results */
             <motion.div
               key="opportunities"

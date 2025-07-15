@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input"
 import { 
   Brain, Search, MessageCircle, ArrowRight, ChevronRight, Mail, CheckCircle, 
   Globe, Zap, Target, TrendingUp, Users, Award, Sparkles, Rocket,
-  BarChart3, Map, Clock, Star, Play
+  BarChart3, Map, Clock, Star, Play, Compass
 } from "lucide-react"
 import heroImage from "@/assets/hero-bg.jpg"
 import elenaImage from "@/assets/testimonial-elena.jpg"
@@ -40,27 +40,94 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background font-inter">
-      {/* Navigation Bar */}
+      {/* Premium Navigation Bar */}
       <motion.nav 
-        className="fixed top-0 w-full z-50 bg-background/80 backdrop-blur-lg border-b border-border/50"
+        className="fixed top-0 w-full z-50 bg-background/95 backdrop-blur-xl border-b border-border/30 shadow-elegant"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
       >
-        <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-          <div className="flex items-center space-x-2">
-            <div className="w-8 h-8 bg-gradient-premium rounded-lg flex items-center justify-center">
-              <Rocket className="h-5 w-5 text-white" />
+        <div className="container mx-auto px-6 py-5 flex items-center justify-between">
+          {/* Enhanced Logo */}
+          <motion.div 
+            className="flex items-center space-x-3"
+            whileHover={{ scale: 1.02 }}
+            transition={{ duration: 0.2 }}
+          >
+            <div className="relative">
+              <motion.div
+                className="w-10 h-10 bg-gradient-to-br from-primary via-accent to-secondary rounded-xl flex items-center justify-center shadow-glow"
+                animate={{ 
+                  rotate: [0, 5, -5, 0],
+                  scale: [1, 1.05, 1]
+                }}
+                transition={{ duration: 6, repeat: Infinity }}
+              >
+                <Compass className="h-6 w-6 text-white" />
+              </motion.div>
+              <motion.div
+                className="absolute -top-1 -right-1 w-3 h-3 bg-accent rounded-full"
+                animate={{ scale: [1, 1.3, 1], opacity: [0.7, 1, 0.7] }}
+                transition={{ duration: 2, repeat: Infinity }}
+              />
             </div>
-            <span className="font-poppins font-bold text-xl bg-gradient-text bg-clip-text text-transparent">
-              Pathfinder
-            </span>
-          </div>
+            <div>
+              <span className="font-poppins font-bold text-2xl bg-gradient-to-r from-primary via-accent to-secondary bg-clip-text text-transparent">
+                Pathfinder
+              </span>
+              <div className="text-xs text-muted-foreground font-medium tracking-wider">
+                AI CAREER ENGINE
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Enhanced Navigation */}
           <div className="hidden md:flex items-center space-x-8">
-            <a href="#features" className="text-muted-foreground hover:text-foreground transition-colors">Features</a>
-            <a href="#vision" className="text-muted-foreground hover:text-foreground transition-colors">Vision</a>
-            <a href="#testimonials" className="text-muted-foreground hover:text-foreground transition-colors">Success Stories</a>
-            <Button variant="premium" size="sm">Get Started</Button>
+            <div className="flex items-center space-x-6">
+              <motion.a 
+                href="#features" 
+                className="text-muted-foreground hover:text-primary transition-all duration-300 font-medium relative group"
+                whileHover={{ y: -1 }}
+              >
+                Features
+                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
+              </motion.a>
+              <motion.a 
+                href="#vision" 
+                className="text-muted-foreground hover:text-primary transition-all duration-300 font-medium relative group"
+                whileHover={{ y: -1 }}
+              >
+                Vision
+                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
+              </motion.a>
+              <motion.a 
+                href="#testimonials" 
+                className="text-muted-foreground hover:text-primary transition-all duration-300 font-medium relative group"
+                whileHover={{ y: -1 }}
+              >
+                Success Stories
+                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
+              </motion.a>
+            </div>
+            <motion.div
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <Button 
+                className="bg-gradient-to-r from-primary to-accent text-white font-semibold px-6 py-2 rounded-xl shadow-glow border-0 relative overflow-hidden group"
+              >
+                <motion.div
+                  className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent"
+                  initial={{ x: "-100%" }}
+                  whileHover={{ x: "100%" }}
+                  transition={{ duration: 0.6 }}
+                />
+                <span className="relative z-10 flex items-center">
+                  Get Started
+                  <Sparkles className="h-4 w-4 ml-2" />
+                </span>
+              </Button>
+            </motion.div>
           </div>
         </div>
       </motion.nav>
