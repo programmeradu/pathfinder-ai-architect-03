@@ -2,13 +2,16 @@
 
 import { motion } from "framer-motion"
 import { useState } from "react"
+import { useDevice } from "@/hooks/use-device"
+import MobileIndex from "@/components/mobile/MobileIndex"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { 
   Brain, Search, MessageCircle, ArrowRight, ChevronRight, Mail, CheckCircle, 
   Globe, Zap, Target, TrendingUp, Users, Award, Sparkles, Rocket,
-  BarChart3, Map, Clock, Star, Play, Compass
+  BarChart3, Map, Clock, Star, Play, Compass, Moon, Sun
 } from "lucide-react"
+import { ThemeToggle } from "@/components/ui/theme-toggle"
 import heroImage from "@/assets/hero-bg.jpg"
 import elenaImage from "@/assets/testimonial-elena.jpg"
 import davidImage from "@/assets/testimonial-david.jpg"
@@ -17,6 +20,12 @@ import { EnhancedDemo } from "@/components/EnhancedDemo"
 
 const Index = () => {
   const [email, setEmail] = useState("")
+  const { isMobile } = useDevice()
+
+  // Return mobile version for mobile devices
+  if (isMobile) {
+    return <MobileIndex />
+  }
 
   const fadeInUp = {
     initial: { opacity: 0, y: 30 },
@@ -109,25 +118,28 @@ const Index = () => {
                 <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
               </motion.a>
             </div>
-            <motion.div
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              <Button 
-                className="bg-gradient-to-r from-primary to-accent text-white font-semibold px-6 py-2 rounded-xl shadow-glow border-0 relative overflow-hidden group"
+            <div className="flex items-center space-x-3">
+              <ThemeToggle />
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
               >
-                <motion.div
-                  className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent"
-                  initial={{ x: "-100%" }}
-                  whileHover={{ x: "100%" }}
-                  transition={{ duration: 0.6 }}
-                />
-                <span className="relative z-10 flex items-center">
-                  Get Started
-                  <Sparkles className="h-4 w-4 ml-2" />
-                </span>
-              </Button>
-            </motion.div>
+                <Button 
+                  className="bg-gradient-to-r from-primary to-accent text-white font-semibold px-6 py-2 rounded-xl shadow-glow border-0 relative overflow-hidden group"
+                >
+                  <motion.div
+                    className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent"
+                    initial={{ x: "-100%" }}
+                    whileHover={{ x: "100%" }}
+                    transition={{ duration: 0.6 }}
+                  />
+                  <span className="relative z-10 flex items-center">
+                    Get Started
+                    <Sparkles className="h-4 w-4 ml-2" />
+                  </span>
+                </Button>
+              </motion.div>
+            </div>
           </div>
         </div>
       </motion.nav>
