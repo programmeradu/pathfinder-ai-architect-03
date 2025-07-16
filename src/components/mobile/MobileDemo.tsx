@@ -93,17 +93,26 @@ export function MobileDemo() {
   const [goalText, setGoalText] = useState('');
   const [isSearching, setIsSearching] = useState(false);
   const [searchProgress, setSearchProgress] = useState(0);
+  const [showSignupPrompt, setShowSignupPrompt] = useState(false);
+  const [demoUsageCount, setDemoUsageCount] = useState(0);
 
   const startSearch = () => {
     if (!goalText) {
       setGoalText("Full-Stack Developer");
     }
     
+    // Check usage limit for demo
+    if (demoUsageCount >= 2) {
+      setShowSignupPrompt(true);
+      return;
+    }
+    
     setIsSearching(true);
     setCurrentStep(1);
     setSearchProgress(0);
+    setDemoUsageCount(prev => prev + 1);
     
-    // Simulate search progress
+    // Real AI search simulation with progress
     const interval = setInterval(() => {
       setSearchProgress(prev => {
         if (prev >= 100) {
@@ -118,7 +127,13 @@ export function MobileDemo() {
   };
 
   const proceedToOpportunities = () => {
+    // Check usage limit before proceeding
+    if (demoUsageCount >= 2) {
+      setShowSignupPrompt(true);
+      return;
+    }
     setCurrentStep(3);
+    setDemoUsageCount(prev => prev + 1);
   };
 
   const resetDemo = () => {
@@ -216,8 +231,8 @@ export function MobileDemo() {
                   >
                     <Button
                       size="sm"
-                      onClick={startSearch}
-                      disabled={isSearching}
+                    onClick={startSearch}
+                      disabled={isSearching || demoUsageCount >= 2}
                       className="bg-gradient-to-r from-primary to-accent text-white border-0 px-2 py-1"
                     >
                       <Search className="h-3 w-3" />
@@ -253,7 +268,7 @@ export function MobileDemo() {
 
                 <Button 
                   onClick={startSearch}
-                  disabled={isSearching}
+                  disabled={isSearching || demoUsageCount >= 2}
                   className="w-full bg-gradient-to-r from-primary to-accent text-white font-semibold py-3 rounded-xl"
                 >
                   {isSearching ? (
@@ -265,13 +280,29 @@ export function MobileDemo() {
                       />
                       Searching...
                     </>
+                ) : demoUsageCount >= 2 ? (
+                    <>
+                      Sign Up for Full Access
+                    </>
                   ) : (
                     <>
                       <Search className="h-4 w-4 mr-2" />
-                      Start Global Search
+                      Start AI Global Search
                     </>
                   )}
                 </Button>
+                
+                {demoUsageCount > 0 && demoUsageCount < 2 && (
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    className="text-center"
+                  >
+                    <div className="text-xs text-muted-foreground">
+                      Demo uses remaining: {2 - demoUsageCount}
+                    </div>
+                  </motion.div>
+                )}
               </div>
             </motion.div>
           )}
@@ -456,6 +487,63 @@ export function MobileDemo() {
                   <ArrowRight className="h-4 w-4 ml-2" />
                 </Button>
               </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+        
+        {/* Mobile Signup Prompt Modal */}
+        <AnimatePresence>
+          {showSignupPrompt && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4"
+              onClick={() => setShowSignupPrompt(false)}
+            >
+              <motion.div
+                initial={{ scale: 0.9, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.9, opacity: 0 }}
+                className="bg-background rounded-2xl p-6 max-w-sm w-full border border-border/50"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <div className="text-center space-y-6">
+                  <motion.div
+                    className="w-14 h-14 bg-gradient-to-br from-primary to-accent rounded-xl flex items-center justify-center mx-auto"
+                    animate={{ scale: [1, 1.1, 1] }}
+                    transition={{ duration: 2, repeat: Infinity }}
+                  >
+                    <Star className="h-7 w-7 text-white" />
+                  </motion.div>
+                  
+                  <div>
+                    <h3 className="font-poppins font-bold text-lg mb-2">
+                      Unlock Full AI Experience
+                    </h3>
+                    <p className="text-muted-foreground text-sm">
+                      You've used {demoUsageCount} demo searches. Get unlimited AI-powered career guidance and global opportunity discovery.
+                    </p>
+                  </div>
+                  
+                  <div className="space-y-3">
+                    <Button className="w-full bg-gradient-to-r from-primary to-accent text-white py-3 rounded-xl">
+                      Start Free Trial
+                    </Button>
+                    <Button 
+                      variant="outline" 
+                      className="w-full rounded-xl"
+                      onClick={() => setShowSignupPrompt(false)}
+                    >
+                      Demo Later
+                    </Button>
+                  </div>
+                  
+                  <div className="text-xs text-muted-foreground">
+                    No credit card • 7-day trial
+                  </div>
+                </div>
+              </motion.div>
             </motion.div>
           )}
         </AnimatePresence>

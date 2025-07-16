@@ -125,6 +125,10 @@ export function InteractiveDemo() {
   const [typedGoal, setTypedGoal] = useState('');
   const [chatInput, setChatInput] = useState('');
   const [showMentorResponse, setShowMentorResponse] = useState(false);
+  const [aiResponse, setAiResponse] = useState('');
+  const [isGeneratingResponse, setIsGeneratingResponse] = useState(false);
+  const [showSignupPrompt, setShowSignupPrompt] = useState(false);
+  const [demoUsageCount, setDemoUsageCount] = useState(0);
 
   const typewriterRef = useRef<NodeJS.Timeout>();
 
@@ -159,16 +163,37 @@ export function InteractiveDemo() {
     };
   }, [goalText, currentStep]);
 
-  const handleGoalSubmit = () => {
+  const handleGoalSubmit = async () => {
     if (!goalText) {
       setGoalText("Become a Full-Stack Developer");
     }
+    
+    // Check usage limit for demo
+    if (demoUsageCount >= 3) {
+      setShowSignupPrompt(true);
+      return;
+    }
+    
     setIsAnalyzing(true);
-    setTimeout(() => {
+    setDemoUsageCount(prev => prev + 1);
+    
+    try {
+      // Real AI analysis of the career goal
+      const analysisPrompt = `Analyze the career goal "${goalText || "Become a Full-Stack Developer"}" and provide a brief 2-sentence analysis of what skills are needed and the career outlook.`;
+      
+      // For demo purposes, we'll simulate the AI response
+      // In production, you'd call your AI API here
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      
       setIsAnalyzing(false);
       setCurrentStep(1);
       setTimeout(() => setShowSkillGraph(true), 500);
-    }, 2000);
+    } catch (error) {
+      console.error('Error analyzing goal:', error);
+      setIsAnalyzing(false);
+      setCurrentStep(1);
+      setTimeout(() => setShowSkillGraph(true), 500);
+    }
   };
 
   const progressToNextStep = () => {
@@ -182,10 +207,39 @@ export function InteractiveDemo() {
     }
   };
 
-  const handleChatSubmit = () => {
-    if (chatInput.trim()) {
+  const handleChatSubmit = async () => {
+    if (!chatInput.trim()) return;
+    
+    // Check usage limit
+    if (demoUsageCount >= 3) {
+      setShowSignupPrompt(true);
+      return;
+    }
+    
+    setIsGeneratingResponse(true);
+    setDemoUsageCount(prev => prev + 1);
+    
+    try {
+      // Real AI chat response
+      const aiPrompt = `You are an AI career mentor helping someone become a ${goalText || "Full-Stack Developer"}. Respond helpfully to: "${chatInput}"`;
+      
+      // For demo purposes, generate a contextual response
+      // In production, you'd call your AI API here
+      const responses = [
+        `Great question! For ${goalText || "Full-Stack Developer"}, I recommend focusing on ${chatInput.includes('hook') ? 'React hooks practice with real projects' : 'building practical projects'}. Would you like me to suggest some specific exercises?`,
+        `Based on your learning path, here's my advice: ${chatInput.includes('struggle') ? 'This is normal - every developer faces these challenges' : 'You\'re on the right track'}. Let me break this down into manageable steps.`,
+        `Perfect timing for this question! Since you're aiming to be a ${goalText || "Full-Stack Developer"}, understanding ${chatInput.includes('React') ? 'React concepts' : 'core programming concepts'} is crucial. Here's how to approach it...`
+      ];
+      
+      await new Promise(resolve => setTimeout(resolve, 1500));
+      setAiResponse(responses[Math.floor(Math.random() * responses.length)]);
+      setIsGeneratingResponse(false);
       setChatInput('');
-      setTimeout(() => setShowMentorResponse(true), 500);
+      setShowMentorResponse(true);
+    } catch (error) {
+      console.error('Error generating AI response:', error);
+      setIsGeneratingResponse(false);
+      setShowMentorResponse(true);
     }
   };
 
@@ -605,47 +659,89 @@ export function InteractiveDemo() {
                       </div>
                     </div>
 
-                    {/* Chat Messages */}
-                    <div className="p-4 space-y-4 max-h-64 overflow-y-auto">
-                      {chatMessages.map((message, index) => (
-                        <motion.div
-                          key={index}
-                          initial={{ opacity: 0, y: 10 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          transition={{ delay: index * 0.3 }}
-                          className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
-                        >
-                          <div
-                            className={`max-w-[80%] p-3 rounded-xl ${
-                              message.role === 'user'
-                                ? 'bg-primary text-primary-foreground'
-                                : 'bg-secondary text-secondary-foreground'
-                            }`}
-                          >
-                            <p className="text-sm">{message.content}</p>
-                            {message.suggestions && showMentorResponse && (
-                              <motion.div
-                                initial={{ opacity: 0, y: 10 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ delay: 1 }}
-                                className="mt-3 space-y-2"
-                              >
-                                {message.suggestions.map((suggestion, i) => (
-                                  <Button
-                                    key={i}
-                                    variant="outline"
-                                    size="sm"
-                                    className="w-full text-xs"
-                                  >
-                                    {suggestion}
-                                  </Button>
-                                ))}
-                              </motion.div>
-                            )}
-                          </div>
-                        </motion.div>
-                      ))}
-                    </div>
+                     {/* Chat Messages */}
+                     <div className="p-4 space-y-4 max-h-64 overflow-y-auto">
+                       {chatMessages.map((message, index) => (
+                         <motion.div
+                           key={index}
+                           initial={{ opacity: 0, y: 10 }}
+                           animate={{ opacity: 1, y: 0 }}
+                           transition={{ delay: index * 0.3 }}
+                           className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
+                         >
+                           <div
+                             className={`max-w-[80%] p-3 rounded-xl ${
+                               message.role === 'user'
+                                 ? 'bg-primary text-primary-foreground'
+                                 : 'bg-secondary text-secondary-foreground'
+                             }`}
+                           >
+                             <p className="text-sm">{message.content}</p>
+                             {message.suggestions && showMentorResponse && (
+                               <motion.div
+                                 initial={{ opacity: 0, y: 10 }}
+                                 animate={{ opacity: 1, y: 0 }}
+                                 transition={{ delay: 1 }}
+                                 className="mt-3 space-y-2"
+                               >
+                                 {message.suggestions.map((suggestion, i) => (
+                                   <Button
+                                     key={i}
+                                     variant="outline"
+                                     size="sm"
+                                     className="w-full text-xs"
+                                   >
+                                     {suggestion}
+                                   </Button>
+                                 ))}
+                               </motion.div>
+                             )}
+                           </div>
+                         </motion.div>
+                       ))}
+                       
+                       {/* Live AI Response */}
+                       {aiResponse && showMentorResponse && (
+                         <motion.div
+                           initial={{ opacity: 0, y: 10 }}
+                           animate={{ opacity: 1, y: 0 }}
+                           className="flex justify-start"
+                         >
+                           <div className="max-w-[80%] p-3 rounded-xl bg-accent text-accent-foreground">
+                             <p className="text-sm">{aiResponse}</p>
+                           </div>
+                         </motion.div>
+                       )}
+                       
+                       {/* Typing Indicator */}
+                       {isGeneratingResponse && (
+                         <motion.div
+                           initial={{ opacity: 0, y: 10 }}
+                           animate={{ opacity: 1, y: 0 }}
+                           className="flex justify-start"
+                         >
+                           <div className="bg-secondary text-secondary-foreground p-3 rounded-xl">
+                             <div className="flex items-center space-x-1">
+                               <motion.div
+                                 className="w-2 h-2 bg-muted-foreground rounded-full"
+                                 animate={{ opacity: [1, 0.3, 1] }}
+                                 transition={{ duration: 1, repeat: Infinity, delay: 0 }}
+                               />
+                               <motion.div
+                                 className="w-2 h-2 bg-muted-foreground rounded-full"
+                                 animate={{ opacity: [1, 0.3, 1] }}
+                                 transition={{ duration: 1, repeat: Infinity, delay: 0.2 }}
+                               />
+                               <motion.div
+                                 className="w-2 h-2 bg-muted-foreground rounded-full"
+                                 animate={{ opacity: [1, 0.3, 1] }}
+                                 transition={{ duration: 1, repeat: Infinity, delay: 0.4 }}
+                               />
+                             </div>
+                           </div>
+                         </motion.div>
+                       )}
+                     </div>
 
                     {/* Chat Input */}
                     <div className="p-4 border-t border-border/50 bg-background/50">
@@ -660,9 +756,9 @@ export function InteractiveDemo() {
                         <Button size="sm" variant="outline" className="px-3">
                           <Mic className="h-4 w-4" />
                         </Button>
-                        <Button size="sm" onClick={handleChatSubmit} className="px-3">
-                          <Send className="h-4 w-4" />
-                        </Button>
+                         <Button size="sm" onClick={handleChatSubmit} disabled={isGeneratingResponse} className="px-3">
+                           <Send className="h-4 w-4" />
+                         </Button>
                       </div>
                     </div>
                   </motion.div>
@@ -690,10 +786,67 @@ export function InteractiveDemo() {
                   </div>
                 </div>
                 
-                <Button className="bg-gradient-hero text-white px-8">
+                <Button onClick={() => setShowSignupPrompt(true)} className="bg-gradient-hero text-white px-8">
                   Start Your Journey
                   <ArrowRight className="h-4 w-4 ml-2" />
                 </Button>
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+        
+        {/* Signup Prompt Modal */}
+        <AnimatePresence>
+          {showSignupPrompt && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4"
+              onClick={() => setShowSignupPrompt(false)}
+            >
+              <motion.div
+                initial={{ scale: 0.9, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.9, opacity: 0 }}
+                className="bg-background rounded-2xl p-8 max-w-md w-full border border-border/50"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <div className="text-center space-y-6">
+                  <motion.div
+                    className="w-16 h-16 bg-gradient-hero rounded-2xl flex items-center justify-center mx-auto"
+                    animate={{ scale: [1, 1.1, 1] }}
+                    transition={{ duration: 2, repeat: Infinity }}
+                  >
+                    <Sparkles className="h-8 w-8 text-white" />
+                  </motion.div>
+                  
+                  <div>
+                    <h3 className="font-poppins font-bold text-xl mb-2">
+                      Ready for Your Full AI Experience?
+                    </h3>
+                    <p className="text-muted-foreground">
+                      You've tried {demoUsageCount} demo interactions. Sign up for unlimited AI mentorship, personalized curriculum, and global opportunity discovery.
+                    </p>
+                  </div>
+                  
+                  <div className="space-y-3">
+                    <Button className="w-full bg-gradient-hero text-white py-3">
+                      Sign Up - Start Free Trial
+                    </Button>
+                    <Button 
+                      variant="outline" 
+                      className="w-full"
+                      onClick={() => setShowSignupPrompt(false)}
+                    >
+                      Continue Demo Later
+                    </Button>
+                  </div>
+                  
+                  <div className="text-xs text-muted-foreground">
+                    No credit card required • 7-day free trial
+                  </div>
+                </div>
               </motion.div>
             </motion.div>
           )}
