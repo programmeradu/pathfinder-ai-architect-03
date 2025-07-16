@@ -97,12 +97,12 @@ const MobileIndex = () => {
 
       {/* Mobile Hero Section */}
       <section className="relative overflow-hidden min-h-screen flex items-center pt-16">
-        {/* Background */}
+        {/* Enhanced Background with futuristic image */}
         <div 
           className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-          style={{ backgroundImage: `url(${heroImage})` }}
+          style={{ backgroundImage: `url(/src/assets/hero-futuristic.jpg)` }}
         />
-        <div className="absolute inset-0 bg-gradient-to-br from-background/90 via-background/70 to-background/80" />
+        <div className="absolute inset-0 bg-gradient-to-br from-background/85 via-background/65 to-background/75" />
         
         {/* Mobile Floating Elements */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
@@ -239,6 +239,75 @@ const MobileIndex = () => {
         </div>
       </section>
 
+      {/* Mobile Vision Section */}
+      <section id="vision" className="py-16 bg-gradient-to-b from-muted/5 to-background">
+        <div className="container mx-auto px-4">
+          <motion.div
+            className="text-center mb-12"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+          >
+            <div className="inline-flex items-center bg-secondary/10 text-secondary rounded-full px-4 py-2 mb-4">
+              <Globe className="h-4 w-4 mr-2" />
+              <span className="text-xs font-medium">Beyond Learning</span>
+            </div>
+            <h2 className="font-poppins font-bold text-2xl mb-4">
+              Your Personal AI Life Architect
+            </h2>
+            <p className="text-muted-foreground text-sm">
+              Pathfinder analyzes every possible path to find the absolute best route for any professional goal
+            </p>
+          </motion.div>
+
+          <div className="space-y-6">
+            {[
+              {
+                icon: Target,
+                title: "Academic Institutions",
+                description: "Best universities, programs, and scholarships worldwide",
+                color: "primary"
+              },
+              {
+                icon: Award,
+                title: "Vocational Training",
+                description: "Bootcamps, certifications, and trade schools",
+                color: "secondary"
+              },
+              {
+                icon: TrendingUp,
+                title: "Career Placements",
+                description: "Real-time job market data across global markets",
+                color: "accent"
+              },
+              {
+                icon: Globe,
+                title: "International Mobility",
+                description: "Relocation support and global opportunities",
+                color: "primary"
+              }
+            ].map((feature, index) => (
+              <motion.div
+                key={index}
+                className="flex items-start space-x-4 p-4 rounded-xl bg-gradient-card border border-border/50"
+                initial={{ opacity: 0, x: -30 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.6, delay: index * 0.1 }}
+                viewport={{ once: true }}
+              >
+                <div className={`w-10 h-10 bg-${feature.color}/10 rounded-lg flex items-center justify-center flex-shrink-0`}>
+                  <feature.icon className={`h-5 w-5 text-${feature.color}`} />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-lg mb-1">{feature.title}</h3>
+                  <p className="text-muted-foreground text-sm">{feature.description}</p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Mobile Features Section */}
       <section id="features" className="py-16">
         <div className="container mx-auto px-4">
@@ -256,44 +325,43 @@ const MobileIndex = () => {
             </p>
           </motion.div>
 
-          <div className="space-y-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {[
               {
-                icon: Target,
-                title: "Academic Excellence",
-                description: "Top universities & programs worldwide"
+                icon: Brain,
+                title: "AI Analysis",
+                description: "Intelligent skill & goal matching"
               },
               {
-                icon: Award,
-                title: "Skills Training",
-                description: "Bootcamps & certifications"
+                icon: Search,
+                title: "Global Search",
+                description: "50M+ opportunities worldwide"
               },
               {
-                icon: Briefcase,
-                title: "Career Placement",
-                description: "Global job opportunities"
+                icon: Map,
+                title: "Personalized Roadmap",
+                description: "Custom path to your goals"
               },
               {
-                icon: Globe,
-                title: "Global Pathways",
-                description: "International opportunities"
+                icon: Rocket,
+                title: "Success Tracking",
+                description: "Progress monitoring & support"
               }
             ].map((feature, index) => (
               <motion.div
                 key={index}
-                className="flex items-start space-x-4 p-4 rounded-xl bg-gradient-card border border-border/50"
-                initial={{ opacity: 0, x: -30 }}
-                whileInView={{ opacity: 1, x: 0 }}
+                className="text-center p-4 rounded-xl bg-gradient-card border border-border/50"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: index * 0.1 }}
                 viewport={{ once: true }}
+                whileHover={{ scale: 1.02 }}
               >
-                <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
-                  <feature.icon className="h-5 w-5 text-primary" />
+                <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mx-auto mb-3">
+                  <feature.icon className="h-6 w-6 text-primary" />
                 </div>
-                <div>
-                  <h3 className="font-semibold text-lg mb-1">{feature.title}</h3>
-                  <p className="text-muted-foreground text-sm">{feature.description}</p>
-                </div>
+                <h3 className="font-semibold text-base mb-2">{feature.title}</h3>
+                <p className="text-muted-foreground text-sm">{feature.description}</p>
               </motion.div>
             ))}
           </div>

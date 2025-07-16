@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Brain, Search, Target, ArrowRight, CheckCircle,
-  Globe, GraduationCap, Building, Briefcase, Play, ChevronRight, RotateCcw
+  Globe, GraduationCap, Building, Briefcase, Play, ChevronRight, RotateCcw, Star
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -14,31 +14,53 @@ const mobileOpportunities = [
     type: 'university',
     title: 'MIT CS Program',
     location: 'Boston, USA',
-    description: 'Top AI specialization',
+    description: 'Top AI specialization with research opportunities',
     cost: '$58k/year',
     icon: GraduationCap,
     match: 95,
-    color: 'from-blue-500 to-purple-600'
+    color: 'from-blue-500 to-purple-600',
+    rating: 4.9,
+    duration: '4 years',
+    nextStep: 'Apply by Dec 15'
   },
   {
     type: 'bootcamp',
     title: 'Full-Stack Bootcamp',
     location: 'Multiple Cities',
-    description: '12-week intensive',
+    description: '12-week intensive with job guarantee',
     cost: '$15k',
     icon: Building,
     match: 88,
-    color: 'from-green-500 to-teal-600'
+    color: 'from-green-500 to-teal-600',
+    rating: 4.7,
+    duration: '12 weeks',
+    nextStep: 'Start Jan 8th'
   },
   {
     type: 'job',
     title: 'Junior Dev - Google',
     location: 'San Francisco',
-    description: 'Entry with mentorship',
+    description: 'Entry level with mentorship program',
     salary: '$130k-180k',
     icon: Briefcase,
     match: 82,
-    color: 'from-orange-500 to-red-600'
+    color: 'from-orange-500 to-red-600',
+    rating: 4.8,
+    duration: 'Full-time',
+    nextStep: 'Apply now'
+  },
+  {
+    type: 'remote',
+    title: 'Remote Frontend Role',
+    location: 'Global Remote',
+    description: 'Work from anywhere with top startups',
+    salary: '$95k-140k',
+    icon: Globe,
+    match: 91,
+    color: 'from-purple-500 to-pink-600',
+    rating: 4.6,
+    duration: 'Full-time',
+    nextStep: 'Skills test'
   }
 ];
 
@@ -394,11 +416,21 @@ export function MobileDemo() {
                         </div>
                         <p className="text-xs text-muted-foreground mb-1">{opportunity.location}</p>
                         <p className="text-xs text-muted-foreground mb-2">{opportunity.description}</p>
-                        <div className="flex items-center justify-between">
-                          <span className="text-xs font-medium text-primary">
-                            {opportunity.cost || opportunity.salary}
-                          </span>
-                          <Button size="sm" variant="outline" className="text-xs px-2 py-1">
+                        <div className="space-y-2">
+                          <div className="flex items-center justify-between">
+                            <span className="text-xs font-medium text-primary">
+                              {opportunity.cost || opportunity.salary}
+                            </span>
+                            <div className="flex items-center space-x-1">
+                              <Star className="h-3 w-3 text-yellow-500 fill-current" />
+                              <span className="text-xs font-medium">{opportunity.rating}</span>
+                            </div>
+                          </div>
+                          <div className="flex items-center justify-between text-xs">
+                            <span className="text-muted-foreground">Duration: {opportunity.duration}</span>
+                            <span className="text-accent font-medium">{opportunity.nextStep}</span>
+                          </div>
+                          <Button size="sm" variant="outline" className="text-xs px-2 py-1 w-full mt-2">
                             Learn More
                           </Button>
                         </div>

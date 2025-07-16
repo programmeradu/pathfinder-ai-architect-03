@@ -146,12 +146,12 @@ const Index = () => {
 
       {/* Hero Section */}
       <section className="relative overflow-hidden min-h-screen flex items-center pt-20">
-        {/* Modern Tech Background */}
+        {/* Enhanced Background with futuristic image */}
         <div 
           className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-          style={{ backgroundImage: `url(${heroImage})` }}
+          style={{ backgroundImage: `url(/src/assets/hero-futuristic.jpg)` }}
         />
-        <div className="absolute inset-0 bg-gradient-to-br from-background/90 via-background/70 to-background/80" />
+        <div className="absolute inset-0 bg-gradient-to-br from-background/85 via-background/65 to-background/75" />
         
         {/* Floating UI Components */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
