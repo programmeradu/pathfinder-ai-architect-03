@@ -1,92 +1,73 @@
-# 🧭 Pathfinder - Your Personal AI Life Architect
+# Welcome to your Lovable project
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![React](https://img.shields.io/badge/React-18.3.1-blue.svg)](https://reactjs.org/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue.svg)](https://www.typescriptlang.org/)
-[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3.0-38B2AC.svg)](https://tailwindcss.com/)
+## Project info
 
-## 🚀 Transform Vague Aspirations Into Actionable Learning Paths
+**URL**: https://lovable.dev/projects/437c147a-6e55-4d3e-8a37-7ca8ea82d135
 
-Pathfinder is an AI-powered personal mentor that eliminates the guesswork from career development. Instead of wandering through endless online resources, get a dynamic, step-by-step learning path tailored to your specific professional goals.
+## How can I edit this code?
 
-### ✨ Key Features
+There are several ways of editing your application.
 
-- **🎯 Goal-Oriented Planning**: Transform any career aspiration into a structured learning journey
-- **🌐 Global Opportunity Discovery**: Access worldwide career opportunities and learning resources
-- **📈 Dynamic Path Adaptation**: Your learning path evolves as you progress and industry demands change
-- **🎨 Responsive Design**: Seamlessly optimized for both desktop and mobile experiences
-- **🌙 Dark/Light Theme**: Beautiful interface that adapts to your preference
-- **⚡ Real-time Progress Tracking**: Monitor your advancement with interactive progress indicators
+**Use Lovable**
 
-### 🛠 Technology Stack
+Simply visit the [Lovable Project](https://lovable.dev/projects/437c147a-6e55-4d3e-8a37-7ca8ea82d135) and start prompting.
 
-- **Frontend**: React 18.3.1 with TypeScript
-- **Styling**: Tailwind CSS with custom design system
-- **UI Components**: shadcn/ui component library
-- **Animations**: Framer Motion for smooth interactions
-- **Icons**: Lucide React icon library
-- **Build Tool**: Vite for lightning-fast development
-- **Theme Management**: next-themes for dark/light mode
+Changes made via Lovable will be committed automatically to this repo.
 
-### 🏃‍♂️ Quick Start
+**Use your preferred IDE**
 
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/your-username/pathfinder-ai.git
-   cd pathfinder-ai
-   ```
+If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
 
-2. **Install dependencies**
-   ```bash
-   npm install
-   ```
+The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
 
-3. **Start development server**
-   ```bash
-   npm run dev
-   ```
+Follow these steps:
 
-4. **Open your browser**
-   Navigate to `http://localhost:5173` to see Pathfinder in action
+```sh
+# Step 1: Clone the repository using the project's Git URL.
+git clone <YOUR_GIT_URL>
 
-### 📱 Mobile Experience
+# Step 2: Navigate to the project directory.
+cd <YOUR_PROJECT_NAME>
 
-Pathfinder features a dedicated mobile interface that's not just responsive, but specifically designed for mobile interactions:
+# Step 3: Install the necessary dependencies.
+npm i
 
-- Touch-optimized navigation and controls
-- Mobile-specific demo experience
-- Streamlined information architecture
-- Gesture-friendly interactions
+# Step 4: Start the development server with auto-reloading and an instant preview.
+npm run dev
+```
 
-### 🎨 Design System
+**Edit a file directly in GitHub**
 
-The project uses a sophisticated design system with:
-- Semantic color tokens for consistent theming
-- Custom animations and transitions
-- Responsive typography scale
-- Accessible component variants
+- Navigate to the desired file(s).
+- Click the "Edit" button (pencil icon) at the top right of the file view.
+- Make your changes and commit the changes.
 
-### 🚀 Deployment
+**Use GitHub Codespaces**
 
-Deploy Pathfinder easily using:
-- **Vercel**: Connect your GitHub repo for automatic deployments
-- **Netlify**: Drag and drop build folder or connect via Git
-- **Traditional Hosting**: Build with `npm run build` and serve the `dist` folder
+- Navigate to the main page of your repository.
+- Click on the "Code" button (green button) near the top right.
+- Select the "Codespaces" tab.
+- Click on "New codespace" to launch a new Codespace environment.
+- Edit files directly within the Codespace and commit and push your changes once you're done.
 
-### 🤝 Contributing
+## What technologies are used for this project?
 
-We welcome contributions! Please read our contributing guidelines and submit pull requests for any improvements.
+This project is built with:
 
-### 📄 License
+- Vite
+- TypeScript
+- React
+- shadcn-ui
+- Tailwind CSS
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+## How can I deploy this project?
 
-### 🙏 Acknowledgments
+Simply open [Lovable](https://lovable.dev/projects/437c147a-6e55-4d3e-8a37-7ca8ea82d135) and click on Share -> Publish.
 
-- Built with love using modern web technologies
-- Inspired by the need to democratize career guidance
-- Designed to empower individuals in their professional journey
+## Can I connect a custom domain to my Lovable project?
 
----
+Yes, you can!
 
-**Ready to stop guessing and start building your future?** 🌟
+To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+
+Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
