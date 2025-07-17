@@ -9,7 +9,7 @@ import {
   Globe, Zap, Target, TrendingUp, Users, Award, Sparkles, Rocket,
   BarChart3, Map, Clock, Star, Play, Compass, Menu, X, Briefcase
 } from "lucide-react"
-import heroImage from "@/assets/hero-bg.jpg"
+import heroVideo from "@/assets/The_Gardener_and_the_Seed__Ov.mp4"
 import elenaImage from "@/assets/testimonial-elena.jpg"
 import davidImage from "@/assets/testimonial-david.jpg"
 import { MobileDemo } from "./MobileDemo"
@@ -97,27 +97,25 @@ const MobileIndex = () => {
 
       {/* Mobile Hero Section */}
       <section className="relative overflow-hidden min-h-screen flex items-center pt-16">
-        {/* Video Background Container */}
+        {/* Local Video Background */}
         <div className="absolute inset-0 w-full h-full z-0">
-          {/* Vimeo Video Background */}
-          <iframe 
-            src="https://player.vimeo.com/video/1102147183?autoplay=1&loop=1&muted=1&background=1&title=0&byline=0&portrait=0&badge=0&autopause=0&controls=0"
-            className="absolute inset-0 w-full h-full"
+          <video
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="absolute inset-0 w-full h-full object-cover"
             style={{
-              width: '100%',
-              height: '100%',
-              objectFit: 'cover',
-              border: 'none',
               pointerEvents: 'none'
             }}
-            frameBorder="0"
-            allow="autoplay; fullscreen; picture-in-picture"
-            title="Background Video"
             onError={(e) => {
-              console.log('Mobile Vimeo video failed to load:', e);
+              console.log('Mobile local video failed to load:', e);
               e.currentTarget.style.display = 'none';
             }}
-          />
+          >
+            <source src={heroVideo} type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
           
           {/* Fallback: Animated gradient background */}
           <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-blue-900 to-purple-900 animate-gradient-shift" 
