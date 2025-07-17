@@ -1,0 +1,72 @@
+This is the detailed plan for the "Pathfinder" application itself—the feature-rich, authenticated experience where users will manage their entire career journey.
+
+The Vision: The "Pathfinder Career Cockpit"
+Once a user logs in, they enter their personal Career Cockpit. This is not just a list of resources; it's an interactive dashboard designed for control, clarity, and motivation. The entire experience is built around a persistent sidebar for navigation and a main content area that displays the different sections of the application.
+
+The Main Application Layout
+Persistent Sidebar (Navigation): A clean, icon-based navigation bar on the left side of the screen. It will be collapsible and provide one-click access to the core features.
+
+Icons for: Dashboard, Roadmap, AI Mentor, Portfolio, and Settings.
+
+Main Content Area: A large, dynamic area where the selected feature is displayed.
+
+Core Features & Component Breakdown
+This is a detailed look at each section of the authenticated app.
+
+1. The Dashboard (/dashboard) - Your Mission Control
+Purpose: To provide a high-level overview of the user's progress and tell them exactly what they should focus on right now.
+
+Key Features:
+
+"Up Next" Card: A prominent card at the top that displays the single next learning resource from their roadmap, with a "Start Learning" button.
+
+Weekly Goal Tracker: A visual progress ring or bar showing how close they are to completing their goals for the week (e.g., "3 of 5 resources completed").
+
+"My Active Path" Summary: A small card showing their main goal (e.g., "Path: AI Engineer") and their overall completion percentage.
+
+Recent Activity Feed: A chronological list of recent achievements (e.g., "You completed 'Understanding Transformers' yesterday!", "You earned a new milestone badge!").
+
+Core Components: StatsCard.tsx, UpNextWidget.tsx, ActivityFeedItem.tsx, ProgressRing.tsx.
+
+2. The Roadmap (/roadmap) - The Interactive Journey
+Purpose: This is the heart of the application. It's the full, interactive visualization of the user's personalized learning curriculum.
+
+Key Features:
+
+Interactive Timeline/Skill Tree: A beautifully designed and animated visualization of their entire learning path. Users can pan, zoom, and explore.
+
+Resource Nodes: Each step on the path is a clickable node. Clicking a node opens a modal or a side panel with the curated resource—embedding the YouTube video directly, showing a clean, reader-view of an article, or linking to a GitHub repo.
+
+Progress Tracking: Each node has a checkbox. When a user marks a resource as complete, the UI provides satisfying feedback (e.g., the node lights up, a line connects to the next step) and the progress is saved to the Supabase database.
+
+Milestone Banners: Major achievements (e.g., "You've Mastered the Foundations!") are marked with special banners or unlocks on the timeline.
+
+Core Components: InteractiveTimeline.tsx, SkillNode.tsx, ResourceCard.tsx, MilestoneBanner.tsx.
+
+3. The AI Mentor (/mentor) - Your Personal Guide
+Purpose: A dedicated, persistent chat interface for the user to have an ongoing conversation with their Pathfinder AI mentor.
+
+Key Features:
+
+Full Conversation History: The chat interface loads the user's entire conversation history from our conversations table in Supabase.
+
+Context-Aware Responses: The user can ask questions about their path ("Why is 'Linear Algebra' important for my goal?") and the AI will provide answers based on the context of their specific curriculum.
+
+Voice-Enabled Interaction: A "mic" button will allow users to speak their questions, with the AI's response being played back using the ElevenLabs voice.
+
+Smart Suggestions: The AI will proactively offer suggestions and encouragement, and provide clickable "quick reply" buttons to guide the conversation.
+
+Core Components: ChatInterface.tsx, MessageBubble.tsx, SuggestionChip.tsx.
+
+4. The Portfolio (/portfolio) - Showcase Your Skills
+Purpose: To give users a tangible output for their learning. This is where they collect and showcase the projects they've built.
+
+Key Features:
+
+A grid of project cards that the user has added.
+
+An "Add Project" feature that opens a modal where they can add a project title, a short description, a link to the GitHub repository, and a link to the live demo.
+
+A shareable public URL (pathfinder.app/u/username) for their portfolio, which they can use on their resume or LinkedIn profile.
+
+Core Components: ProjectCard.tsx, AddProjectModal.tsx.

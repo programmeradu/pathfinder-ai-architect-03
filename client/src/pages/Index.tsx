@@ -124,6 +124,14 @@ const Index = () => {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
+                <Button variant="outline" asChild>
+                  <a href="/auth">Login</a>
+                </Button>
+              </motion.div>
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
                 <Button 
                   className="bg-gradient-to-r from-primary to-accent text-white font-semibold px-6 py-2 rounded-xl shadow-glow border-0 relative overflow-hidden group"
                 >
