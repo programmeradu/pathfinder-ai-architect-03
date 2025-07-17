@@ -36,6 +36,11 @@ export class MarketDataEngine {
   // Get trending skills from GitHub
   async getTrendingSkills(): Promise<string[]> {
     try {
+      // Skip GitHub API if no valid token
+      if (!this.githubToken || this.githubToken === 'ghp_demo_token_placeholder') {
+        return ['React', 'TypeScript', 'Node.js', 'Python', 'AI/ML', 'Cloud Computing'];
+      }
+
       const response = await fetch('https://api.github.com/search/repositories?q=language:javascript+created:>2024-01-01&sort=stars&order=desc&per_page=50', {
         headers: {
           'Authorization': `token ${this.githubToken}`,
@@ -44,14 +49,15 @@ export class MarketDataEngine {
       });
 
       if (!response.ok) {
-        throw new Error('GitHub API request failed');
+        console.warn('GitHub API request failed, using fallback skills');
+        return ['React', 'TypeScript', 'Node.js', 'Python', 'AI/ML', 'Cloud Computing'];
       }
 
       const data = await response.json();
       return this.extractSkillsFromRepos(data.items);
 
     } catch (error) {
-      console.error('GitHub trends error:', error);
+      console.warn('GitHub trends error, using fallback:', error);
       return ['React', 'TypeScript', 'Node.js', 'Python', 'AI/ML', 'Cloud Computing'];
     }
   }

@@ -54,6 +54,7 @@ export function AdvancedAIDemo() {
   const [realTimeAnalysis, setRealTimeAnalysis] = useState<any>({});
   const [aiPersonality, setAiPersonality] = useState('mentor'); // mentor, analyzer, motivator
   const [emotionalState, setEmotionalState] = useState('neutral');
+  const [showMentorResponse, setShowMentorResponse] = useState(false);
   
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const chatInputRef = useRef<HTMLInputElement>(null);
