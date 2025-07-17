@@ -97,34 +97,27 @@ const MobileIndex = () => {
 
       {/* Mobile Hero Section */}
       <section className="relative overflow-hidden min-h-screen flex items-center pt-16">
-        {/* Local Video Background */}
-        <div className="absolute inset-0 w-full h-full z-0">
-          <video
-            autoPlay
-            loop
-            muted
-            playsInline
-            className="absolute inset-0 w-full h-full object-cover"
-            style={{
-              pointerEvents: 'none'
-            }}
-            onError={(e) => {
-              console.log('Mobile local video failed to load:', e);
-              e.currentTarget.style.display = 'none';
-            }}
-          >
-            <source src={heroVideo} type="video/mp4" />
-            Your browser does not support the video tag.
-          </video>
-          
-          {/* Fallback: Animated gradient background */}
-          <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-blue-900 to-purple-900 animate-gradient-shift" 
-               style={{ backgroundSize: '400% 400%' }} />
-        </div>
-        <div className="absolute inset-0 bg-gradient-to-br from-background/85 via-background/65 to-background/75" />
+        {/* Video Background - SIMPLIFIED */}
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="absolute inset-0 w-full h-full object-cover z-0"
+          style={{
+            minWidth: '100%',
+            minHeight: '100%',
+            pointerEvents: 'none'
+          }}
+        >
+          <source src={heroVideo} type="video/mp4" />
+        </video>
+        
+        {/* Overlay for text readability */}
+        <div className="absolute inset-0 bg-gradient-to-br from-background/80 via-background/60 to-background/70 z-10" />
         
         {/* Mobile Floating Elements */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute inset-0 overflow-hidden pointer-events-none z-20">
           <motion.div
             className="absolute top-20 left-4 w-12 h-12 bg-primary/20 backdrop-blur-sm rounded-xl border border-primary/30 flex items-center justify-center"
             animate={{ y: [0, -15, 0], rotate: [0, 180, 0] }}
@@ -150,7 +143,7 @@ const MobileIndex = () => {
           </motion.div>
         </div>
 
-        <div className="relative container mx-auto px-4 py-12">
+        <div className="relative container mx-auto px-4 py-12 z-30">
           <motion.div
             className="text-center"
             initial="initial"

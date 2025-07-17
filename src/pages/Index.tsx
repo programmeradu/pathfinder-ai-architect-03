@@ -146,39 +146,27 @@ const Index = () => {
 
       {/* Hero Section */}
       <section className="relative overflow-hidden min-h-screen flex items-center pt-20">
-        {/* Local Video Background */}
-        <div className="absolute inset-0 w-full h-full z-0">
-          <video
-            autoPlay
-            loop
-            muted
-            playsInline
-            className="absolute inset-0 w-full h-full object-cover"
-            style={{
-              pointerEvents: 'none'
-            }}
-            onError={(e) => {
-              console.log('Local video failed to load:', e);
-              e.currentTarget.style.display = 'none';
-            }}
-          >
-            <source src={heroVideo} type="video/mp4" />
-            Your browser does not support the video tag.
-          </video>
-          
-          {/* Fallback: Animated gradient background */}
-          <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-blue-900 to-purple-900 animate-gradient-shift" 
-               style={{ backgroundSize: '400% 400%' }} />
-          
-          {/* Additional pattern overlay for visual interest */}
-          <div className="absolute inset-0 opacity-20">
-            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent animate-pulse" />
-          </div>
-        </div>
-        <div className="absolute inset-0 bg-gradient-to-br from-background/85 via-background/65 to-background/75" />
+        {/* Video Background - SIMPLIFIED */}
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="absolute inset-0 w-full h-full object-cover z-0"
+          style={{
+            minWidth: '100%',
+            minHeight: '100%',
+            pointerEvents: 'none'
+          }}
+        >
+          <source src={heroVideo} type="video/mp4" />
+        </video>
+        
+        {/* Overlay for text readability */}
+        <div className="absolute inset-0 bg-gradient-to-br from-background/80 via-background/60 to-background/70 z-10" />
         
         {/* Floating UI Components */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute inset-0 overflow-hidden pointer-events-none z-20">
           {/* AI Brain Node */}
           <motion.div
             className="absolute top-20 left-10 w-16 h-16 bg-primary/20 backdrop-blur-sm rounded-2xl border border-primary/30 flex items-center justify-center"
@@ -269,7 +257,7 @@ const Index = () => {
           </svg>
         </div>
 
-        <div className="relative container mx-auto px-4 py-20">
+        <div className="relative container mx-auto px-4 py-20 z-30">
           <motion.div
             className="max-w-4xl mx-auto text-center"
             variants={staggerContainer}
