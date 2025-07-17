@@ -254,24 +254,25 @@ const Index = () => {
         </div>
 
         <div className="relative container mx-auto px-4 py-20">
-          <motion.div
-            className="max-w-4xl mx-auto text-center"
-            variants={staggerContainer}
-            initial="initial"
-            animate="animate"
-          >
-            {/* Compact Badge */}
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
             <motion.div
-              className="inline-flex items-center bg-primary/10 backdrop-blur-sm rounded-full px-6 py-2 mb-8 border border-primary/20"
-              variants={fadeInUp}
+              className="text-center lg:text-left"
+              variants={staggerContainer}
+              initial="initial"
+              animate="animate"
             >
+              {/* Compact Badge */}
               <motion.div
-                className="w-2 h-2 bg-primary rounded-full mr-3"
-                animate={{ scale: [1, 1.3, 1], opacity: [0.5, 1, 0.5] }}
-                transition={{ duration: 2, repeat: Infinity }}
-              />
-              <span className="text-sm font-medium text-primary">AI-Powered Global Career Engine</span>
-            </motion.div>
+                className="inline-flex items-center bg-primary/10 backdrop-blur-sm rounded-full px-6 py-2 mb-8 border border-primary/20"
+                variants={fadeInUp}
+              >
+                <motion.div
+                  className="w-2 h-2 bg-primary rounded-full mr-3"
+                  animate={{ scale: [1, 1.3, 1], opacity: [0.5, 1, 0.5] }}
+                  transition={{ duration: 2, repeat: Infinity }}
+                />
+                <span className="text-sm font-medium text-primary">AI-Powered Global Career Engine</span>
+              </motion.div>
             
             {/* Clean Headline */}
             <motion.h1 
@@ -342,7 +343,38 @@ const Index = () => {
                 </motion.div>
               ))}
             </motion.div>
-          </motion.div>
+            </motion.div>
+            
+            {/* Video Section */}
+            <motion.div
+              className="relative rounded-2xl overflow-hidden shadow-2xl"
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 1, delay: 0.6 }}
+            >
+              <div className="aspect-video bg-gradient-to-br from-purple-900 to-pink-900 relative">
+                <div style={{position: 'relative', width: '100%', height: '0px', paddingBottom: '56.250%'}}>
+                  <iframe 
+                    allow="fullscreen;autoplay" 
+                    allowFullScreen 
+                    height="100%" 
+                    src="https://streamable.com/e/peqv3j?autoplay=1&nocontrols=1" 
+                    width="100%" 
+                    style={{
+                      border: 'none', 
+                      width: '100%', 
+                      height: '100%', 
+                      position: 'absolute', 
+                      left: '0px', 
+                      top: '0px', 
+                      overflow: 'hidden',
+                      borderRadius: '1rem'
+                    }}
+                  />
+                </div>
+              </div>
+            </motion.div>
+          </div>
         </div>
       </section>
 

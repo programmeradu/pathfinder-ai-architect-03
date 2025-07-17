@@ -12,7 +12,8 @@ import {
   BarChart3,
   Brain,
   ChevronLeft,
-  ChevronRight
+  ChevronRight,
+  Zap
 } from "lucide-react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
@@ -31,6 +32,7 @@ export function Sidebar({ className }: SidebarProps) {
     { name: "Roadmap", href: "/roadmap", icon: Map },
     { name: "AI Mentor", href: "/mentor", icon: Brain },
     { name: "Portfolio", href: "/portfolio", icon: FolderOpen },
+    { name: "Advanced Demo", href: "/advanced-demo", icon: Zap },
     { name: "Analytics", href: "/analytics", icon: BarChart3 },
     { name: "Settings", href: "/settings", icon: Settings },
   ];

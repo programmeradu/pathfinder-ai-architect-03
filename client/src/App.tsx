@@ -13,6 +13,7 @@ import Dashboard from "./pages/Dashboard";
 import Roadmap from "./pages/Roadmap";
 import AIMentor from "./pages/AIMentor";
 import Portfolio from "./pages/Portfolio";
+import AdvancedDemo from "./pages/AdvancedDemo";
 import NotFound from "./pages/NotFound";
 
 function AppRouter() {
@@ -47,6 +48,7 @@ function AppRouter() {
           <Route path="/roadmap" component={Roadmap} />
           <Route path="/mentor" component={AIMentor} />
           <Route path="/portfolio" component={Portfolio} />
+          <Route path="/advanced-demo" component={AdvancedDemo} />
           <Route component={NotFound} />
         </Switch>
       </Router>

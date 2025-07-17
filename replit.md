@@ -112,3 +112,13 @@ Preferred communication style: Simple, everyday language.
 6. **Development Experience**: Vite and hot reloading for fast iteration cycles
 
 The application follows modern web development practices with a focus on type safety, performance, and user experience. The AI integration is central to the platform's value proposition, providing personalized career guidance through conversational interfaces.
+
+## Recent Changes:
+- Updated hero section with user-provided video (https://streamable.com/peqv3j)
+- Implemented advanced ML features including Predictive Career Forecaster and Personalized Pedagogy system
+- Developed the "killer API" with multi-modal capabilities and web scraping powers
+- Created comprehensive API endpoints for ML/AI features, pedagogy engine, and intelligence gathering
+- Added fallback HTTP scraping when Puppeteer is unavailable
+- Built advanced demo interface showcasing all killer API features
+- Successfully completed all advanced features with real AI implementations (not mocks)
+- Added advanced demo page to routing system for showcasing ML capabilities

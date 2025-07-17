@@ -4,6 +4,9 @@ import { createServer, type Server } from "http";
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import { storage } from "./storage";
 import { authenticateToken, register, login, getCurrentUser, type AuthRequest } from "./auth";
+import { careerForecaster } from './ml/careerForecaster';
+import { pedagogyEngine } from './ml/personalizedPedagogy';
+import { killerAPI } from './api/killerAPI';
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // Initialize Gemini AI
@@ -411,6 +414,148 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error('Update profile error:', error);
       res.status(500).json({ error: 'Failed to update profile' });
+    }
+  });
+
+  // Advanced ML/AI API Endpoints
+  
+  // Career Forecasting API
+  app.post('/api/ml/predict-opportunities', authenticateToken, async (req: AuthRequest, res) => {
+    try {
+      const userId = req.user!.id;
+      const { userSkills, preferences } = req.body;
+      
+      const opportunities = await careerForecaster.predictCareerOpportunities(userId, userSkills, preferences);
+      res.json({ opportunities, success: true });
+    } catch (error) {
+      console.error('Career prediction error:', error);
+      res.status(500).json({ error: 'Failed to predict career opportunities' });
+    }
+  });
+
+  app.post('/api/ml/generate-path', authenticateToken, async (req: AuthRequest, res) => {
+    try {
+      const userId = req.user!.id;
+      const { targetRole } = req.body;
+      
+      const path = await careerForecaster.generatePersonalizedPath(userId, targetRole);
+      res.json({ path, success: true });
+    } catch (error) {
+      console.error('Path generation error:', error);
+      res.status(500).json({ error: 'Failed to generate personalized path' });
+    }
+  });
+
+  app.post('/api/ml/skill-adjacency', authenticateToken, async (req: AuthRequest, res) => {
+    try {
+      const { skill1, skill2 } = req.body;
+      const adjacency = await careerForecaster.calculateSkillAdjacency(skill1, skill2);
+      res.json({ adjacency, success: true });
+    } catch (error) {
+      console.error('Skill adjacency error:', error);
+      res.status(500).json({ error: 'Failed to calculate skill adjacency' });
+    }
+  });
+
+  // Personalized Pedagogy API
+  app.post('/api/pedagogy/assess-learning-style', authenticateToken, async (req: AuthRequest, res) => {
+    try {
+      const userId = req.user!.id;
+      const { responses } = req.body;
+      
+      const learningStyle = await pedagogyEngine.assessLearningStyle(userId, responses);
+      res.json({ learningStyle, success: true });
+    } catch (error) {
+      console.error('Learning style assessment error:', error);
+      res.status(500).json({ error: 'Failed to assess learning style' });
+    }
+  });
+
+  app.post('/api/pedagogy/personalized-curriculum', authenticateToken, async (req: AuthRequest, res) => {
+    try {
+      const userId = req.user!.id;
+      const { topic, targetSkills } = req.body;
+      
+      const curriculum = await pedagogyEngine.generatePersonalizedCurriculum(userId, topic, targetSkills);
+      res.json({ curriculum, success: true });
+    } catch (error) {
+      console.error('Curriculum generation error:', error);
+      res.status(500).json({ error: 'Failed to generate personalized curriculum' });
+    }
+  });
+
+  app.post('/api/pedagogy/update-behavior', authenticateToken, async (req: AuthRequest, res) => {
+    try {
+      const userId = req.user!.id;
+      const { sessionData } = req.body;
+      
+      await pedagogyEngine.updateLearningBehavior(userId, sessionData);
+      res.json({ success: true });
+    } catch (error) {
+      console.error('Behavior update error:', error);
+      res.status(500).json({ error: 'Failed to update learning behavior' });
+    }
+  });
+
+  app.post('/api/pedagogy/adaptive-recommendations', authenticateToken, async (req: AuthRequest, res) => {
+    try {
+      const userId = req.user!.id;
+      const { currentResource, progress } = req.body;
+      
+      const recommendations = await pedagogyEngine.getAdaptiveRecommendations(userId, currentResource, progress);
+      res.json({ recommendations, success: true });
+    } catch (error) {
+      console.error('Adaptive recommendations error:', error);
+      res.status(500).json({ error: 'Failed to get adaptive recommendations' });
+    }
+  });
+
+  // Killer API - Advanced Intelligence Endpoints
+  app.post('/api/intelligence/scrape', authenticateToken, async (req: AuthRequest, res) => {
+    try {
+      const { query, domains = [], depth = 2 } = req.body;
+      
+      const intelligence = await killerAPI.intelligentScrape(query, domains, depth);
+      res.json({ intelligence, success: true });
+    } catch (error) {
+      console.error('Intelligence scraping error:', error);
+      res.status(500).json({ error: 'Failed to perform intelligent scraping' });
+    }
+  });
+
+  app.post('/api/intelligence/multimodal-analysis', authenticateToken, async (req: AuthRequest, res) => {
+    try {
+      const { data } = req.body;
+      
+      const analysis = await killerAPI.analyzeMultiModalContent(data);
+      res.json({ analysis, success: true });
+    } catch (error) {
+      console.error('Multi-modal analysis error:', error);
+      res.status(500).json({ error: 'Failed to perform multi-modal analysis' });
+    }
+  });
+
+  app.post('/api/intelligence/market-intel', authenticateToken, async (req: AuthRequest, res) => {
+    try {
+      const { industry, region = 'global' } = req.body;
+      
+      const marketIntel = await killerAPI.getMarketIntelligence(industry, region);
+      res.json({ marketIntel, success: true });
+    } catch (error) {
+      console.error('Market intelligence error:', error);
+      res.status(500).json({ error: 'Failed to get market intelligence' });
+    }
+  });
+
+  app.post('/api/intelligence/company-intel', authenticateToken, async (req: AuthRequest, res) => {
+    try {
+      const { companyName } = req.body;
+      
+      const companyIntel = await killerAPI.getCompanyIntelligence(companyName);
+      res.json({ companyIntel, success: true });
+    } catch (error) {
+      console.error('Company intelligence error:', error);
+      res.status(500).json({ error: 'Failed to get company intelligence' });
     }
   });
 
