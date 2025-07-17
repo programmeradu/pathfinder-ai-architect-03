@@ -8,8 +8,8 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { 
   Brain, Search, MessageCircle, ArrowRight, ChevronRight, Mail, CheckCircle, 
-  Globe, Zap, Target, TrendingUp, Users, Award, Sparkles, Rocket,
-  BarChart3, Map, Clock, Star, Play, Compass, Moon, Sun
+  Globe, Target, TrendingUp, Users, Award, Sparkles, Rocket,
+  BarChart3, Map, Clock, Star, Play, Compass, Moon, Sun, Zap
 } from "lucide-react"
 import { ThemeToggle } from "@/components/ui/theme-toggle"
 import heroImage from "@/assets/hero-bg.jpg"
@@ -705,6 +705,7 @@ const Index = () => {
           <motion.div
             className="text-center mb-20"
             initial={{ opacity: 0, y: 30 }}
+```text
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
             viewport={{ once: true }}
@@ -941,7 +942,7 @@ const Index = () => {
           </motion.div>
         </div>
       </section>
-    </div>
+    </motion.div>
   )
 }
 
