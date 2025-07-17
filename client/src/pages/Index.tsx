@@ -705,7 +705,6 @@ const Index = () => {
           <motion.div
             className="text-center mb-20"
             initial={{ opacity: 0, y: 30 }}
-```text
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
             viewport={{ once: true }}
