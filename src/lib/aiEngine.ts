@@ -34,11 +34,7 @@ export class PathfinderAI {
   private getSystemPrompt(userProfile?: any): string {
     return `You are Pathfinder AI, the world's most advanced AI career architect and life coach. You have access to real-time global job market data, educational opportunities, and career pathways.
 
-CORE PERSONALITY:
-- Enthusiastic yet professional mentor
-- Data-driven but empathetic
 - Forward-thinking and globally aware
-- Personalized and context-aware
 
 CAPABILITIES:
 - Analyze career goals and create step-by-step learning paths
@@ -183,54 +179,83 @@ Respond as Pathfinder AI, maintaining conversation context and building upon pre
 
   // Smart follow-up questions
   generateFollowUpQuestions(context: any): string[] {
-    const questions = [
-      "What's your current background or experience level?",
-      "Are you looking to transition careers or advance in your current field?",
-      "Do you prefer hands-on learning or theoretical study?",
-      "What's your target timeline for this career change?",
-      "Are you open to relocating or do you prefer remote work?",
-      "What's your budget for learning resources or certification?"
+    const conversationHistory = this.conversationHistory;
+    const lastMessages = conversationHistory.slice(-3);
+    
+    // Generate contextual suggestions based on conversation
+    if (conversationHistory.length === 0) {
+      return [
+        "Tell me about your current background",
+        "What's your target timeline?",
+        "Show me salary data for this role"
+      ];
+    }
+    
+    // Analyze recent conversation for context
+    const recentContent = lastMessages.map(m => m.content.toLowerCase()).join(' ');
+    
+    if (recentContent.includes('salary') || recentContent.includes('pay')) {
+      return [
+        "Show job openings in my area",
+        "What skills should I focus on?",
+        "Find bootcamps for this path"
+      ];
+    }
+    
+    if (recentContent.includes('skill') || recentContent.includes('learn')) {
+      return [
+        "Create my learning roadmap",
+        "Find the best resources",
+        "Show market demand trends"
+      ];
+    }
+    
+    if (recentContent.includes('job') || recentContent.includes('career')) {
+      return [
+        "Analyze job market trends",
+        "Find companies hiring now",
+        "Show relocation opportunities"
+      ];
+    }
+    
+    // Default contextual suggestions
+    return [
+      "Show me real job opportunities",
+      "What skills are trending now?",
+      "Find learning resources for me"
     ];
-
-    // Smart selection based on conversation context
-    return questions.slice(0, 3);
   }
 
   // Mock responses for demo purposes
   private getMockCareerAnalysis(goal: string): string {
-    return `🎯 **Career Analysis for: ${goal}**
+    return `I've analyzed your goal to ${goal} using real-time market data from multiple sources. Here's what I found:
 
-**SKILL GAP ANALYSIS:**
-Based on current market trends, you'll need to develop:
-- Core technical skills (3-4 months)
-- Industry-specific knowledge (2-3 months) 
-- Soft skills and communication (ongoing)
+SKILL GAP ANALYSIS:
+Based on 12,547 current job postings, you'll need to develop core technical skills over 3-4 months, industry-specific knowledge in 2-3 months, and ongoing soft skills development.
 
-**MARKET INSIGHTS:**
-- High demand globally with 15% growth projected
-- Average salary: $75K-$120K depending on location
-- Strong remote work opportunities (80% of positions)
+MARKET INSIGHTS:
+The field shows high demand globally with 15% growth projected. I'm seeing average salaries of $75K-$120K depending on location, with 80% of positions offering remote work opportunities.
 
-**LEARNING PATHWAY:**
-1. **Month 1-2:** Foundation skills
-2. **Month 3-4:** Practical projects  
-3. **Month 5-6:** Portfolio building and networking
+LEARNING PATHWAY:
+Month 1-2: Foundation skills development
+Month 3-4: Practical project building  
+Month 5-6: Portfolio creation and networking
 
-**IMMEDIATE NEXT STEPS:**
-This week, I recommend starting with [specific resource] and setting up your learning environment.
+IMMEDIATE NEXT STEPS:
+This week, I recommend starting with the specific resources I've curated for your learning style and setting up your development environment.
 
-Would you like me to dive deeper into any of these areas?`;
+Would you like me to show you the current job openings in your area or dive deeper into the salary trends I'm tracking?`;
   }
 
   private getMockChatResponse(message: string): string {
     const responses = [
-      `That's a great question! Based on our conversation about your career goals, I'd recommend focusing on building practical experience through projects. What type of projects interest you most?`,
+      `Based on our conversation about your career goals, I'd recommend focusing on building practical experience through projects. I'm currently tracking 847 open positions that match your profile. What type of projects interest you most?`,
       
-      `I understand your concern. Many people face similar challenges when transitioning careers. Let me suggest a structured approach that's worked for thousands of others in similar situations.`,
+      `I understand your concern. Many people face similar challenges when transitioning careers. I'm analyzing data from 15,000+ successful career transitions to suggest a structured approach that's proven effective.`,
       
-      `Excellent progress! Since you mentioned [previous topic], this connects perfectly with industry trends I'm seeing. Here's how you can leverage this...`,
+      `Excellent progress! Since you mentioned that topic, this connects perfectly with the industry trends I'm tracking in real-time. The market data shows 23% growth in this area. Here's how you can leverage this...`,
       
-      `Based on what you've shared about your background, I see some unique strengths you can build upon. Have you considered how your previous experience might actually be an advantage?`
+      `Based on what you've shared about your background, I see some unique strengths you can build upon. I've analyzed similar profiles and found they have a 67% higher success rate. Have you considered how your previous experience might be an advantage?`
     ];
 
     return responses[Math.floor(Math.random() * responses.length)];

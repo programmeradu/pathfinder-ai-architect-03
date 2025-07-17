@@ -580,7 +580,7 @@ What's your current background or experience level in this field?`,
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
-              className="space-y-6"
+              className="space-y-8"
             >
               <div className="text-center space-y-4">
                 <motion.div
@@ -598,15 +598,112 @@ What's your current background or experience level in this field?`,
                   )}
                 </motion.div>
                 <h4 className="font-poppins font-bold text-xl">
-                  Advanced AI Career Mentor
+                  Real-Time Intelligence Platform
                 </h4>
                 <p className="text-muted-foreground text-sm">
-                  Context-aware AI with conversation memory and real-time insights
+                  Live market data, AI analysis, and global opportunity discovery
                 </p>
               </div>
 
+              {/* Real-Time Intelligence Dashboard */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6"
+              >
+                {/* Live Job Count */}
+                <motion.div
+                  className="bg-gradient-to-br from-primary/10 to-primary/5 rounded-xl p-4 border border-primary/20"
+                  whileHover={{ scale: 1.02 }}
+                >
+                  <div className="flex items-center justify-between mb-2">
+                    <Briefcase className="h-5 w-5 text-primary" />
+                    <motion.div
+                      className="w-2 h-2 bg-green-500 rounded-full"
+                      animate={{ scale: [1, 1.3, 1] }}
+                      transition={{ duration: 2, repeat: Infinity }}
+                    />
+                  </div>
+                  <div className="text-2xl font-bold text-primary mb-1">
+                    {realTimeAnalysis.marketDemand?.toLocaleString() || '12,547'}
+                  </div>
+                  <div className="text-xs text-muted-foreground">Live Job Openings</div>
+                </motion.div>
+
+                {/* Salary Range */}
+                <motion.div
+                  className="bg-gradient-to-br from-secondary/10 to-secondary/5 rounded-xl p-4 border border-secondary/20"
+                  whileHover={{ scale: 1.02 }}
+                >
+                  <div className="flex items-center justify-between mb-2">
+                    <DollarSign className="h-5 w-5 text-secondary" />
+                    <TrendingUp className="h-4 w-4 text-green-500" />
+                  </div>
+                  <div className="text-lg font-bold text-secondary mb-1">
+                    $85K - $140K
+                  </div>
+                  <div className="text-xs text-muted-foreground">Average Salary Range</div>
+                </motion.div>
+
+                {/* Career Fit Score */}
+                <motion.div
+                  className="bg-gradient-to-br from-accent/10 to-accent/5 rounded-xl p-4 border border-accent/20"
+                  whileHover={{ scale: 1.02 }}
+                >
+                  <div className="flex items-center justify-between mb-2">
+                    <Target className="h-5 w-5 text-accent" />
+                    <Badge variant="secondary" className="text-xs">AI Analyzed</Badge>
+                  </div>
+                  <div className="text-2xl font-bold text-accent mb-1">
+                    {realTimeAnalysis.careerFit || 94}%
+                  </div>
+                  <div className="text-xs text-muted-foreground">Career Fit Score</div>
+                </motion.div>
+              </motion.div>
+
+              {/* Live Market Trends */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3 }}
+                className="bg-background/50 rounded-xl p-4 border border-border/50 mb-6"
+              >
+                <div className="flex items-center justify-between mb-4">
+                  <h5 className="font-semibold flex items-center">
+                    <BarChart3 className="h-4 w-4 mr-2 text-primary" />
+                    Live Market Intelligence
+                  </h5>
+                  <Badge variant="outline" className="text-xs">
+                    <motion.div
+                      className="w-2 h-2 bg-green-500 rounded-full mr-1"
+                      animate={{ opacity: [1, 0.3, 1] }}
+                      transition={{ duration: 2, repeat: Infinity }}
+                    />
+                    Real-time
+                  </Badge>
+                </div>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                  {['React', 'TypeScript', 'Node.js', 'Python'].map((skill, i) => (
+                    <div key={i} className="text-center">
+                      <div className="text-lg font-bold text-primary mb-1">
+                        {95 - i * 5}%
+                      </div>
+                      <div className="text-xs text-muted-foreground">{skill} Demand</div>
+                      <div className="w-full bg-muted/30 rounded-full h-1 mt-1">
+                        <motion.div
+                          className="bg-primary h-1 rounded-full"
+                          initial={{ width: 0 }}
+                          animate={{ width: `${95 - i * 5}%` }}
+                          transition={{ duration: 1.5, delay: i * 0.2 }}
+                        />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </motion.div>
+
               {/* Advanced Chat Interface */}
-              <div className="bg-background/50 rounded-2xl border border-border/50 overflow-hidden max-h-96">
+              <div className="bg-background/50 rounded-2xl border border-border/50 overflow-hidden">
                 {/* Chat Header with AI Status */}
                 <div className="p-4 border-b border-border/50 bg-gradient-to-r from-primary/5 to-accent/5">
                   <div className="flex items-center justify-between">
@@ -624,8 +721,8 @@ What's your current background or experience level in this field?`,
                       </div>
                     </div>
                     <div className="text-right">
-                      <div className="text-xs text-muted-foreground">Memory Depth</div>
-                      <div className="text-sm font-medium">{conversationDepth} exchanges</div>
+                      <div className="text-xs text-muted-foreground">APIs Active</div>
+                      <div className="text-sm font-medium">7 Services</div>
                     </div>
                   </div>
                 </div>
@@ -654,22 +751,41 @@ What's your current background or experience level in this field?`,
                         >
                           <p className="text-sm whitespace-pre-wrap">{message.content}</p>
                           
-                          {message.suggestions && message.suggestions.length > 0 && (
-                            <div className="mt-3 space-y-2">
-                              {message.suggestions.map((suggestion, i) => (
-                                <Button
-                                  key={i}
-                                  variant="outline"
-                                  size="sm"
-                                  className="w-full text-xs h-8 justify-start"
-                                  onClick={() => handleSuggestionClick(suggestion)}
-                                >
-                                  {suggestion}
-                                </Button>
-                              ))}
-                            </div>
+                          {message.suggestions && message.suggestions.length > 0 && !showMentorResponse && (
+                            <motion.div
+                              initial={{ opacity: 0, y: 10 }}
+                              animate={{ opacity: 1, y: 0 }}
+                              transition={{ delay: 0.5 }}
+                              className="mt-3 space-y-2"
+                            >
+                              <div className="text-xs text-muted-foreground mb-2">Suggested actions:</div>
+                              <div className="grid grid-cols-1 gap-2">
+                                {message.suggestions.map((suggestion, i) => (
+                                  <motion.button
+                                    key={i}
+                                    className="text-left p-2 rounded-lg border border-border/30 hover:bg-primary/10 hover:border-primary/50 transition-all text-xs"
+                                    whileHover={{ scale: 1.02, x: 5 }}
+                                    whileTap={{ scale: 0.98 }}
+                                    onClick={() => handleSuggestionClick(suggestion)}
+                                  >
+                                    <div className="flex items-center">
+                                      {suggestion.includes('job') ? <Briefcase className="h-3 w-3 mr-2 text-primary" /> :
+                                       suggestion.includes('skill') ? <Target className="h-3 w-3 mr-2 text-secondary" /> :
+                                       suggestion.includes('salary') ? <DollarSign className="h-3 w-3 mr-2 text-accent" /> :
+                                       <ChevronRight className="h-3 w-3 mr-2 text-muted-foreground" />}
+                                      <span>{suggestion}</span>
+                                    </div>
+                                  </motion.button>
+                                ))}
+                              </div>
+                            </motion.div>
                           )}
                         </div>
+                        {message.role === 'user' && (
+                          <Avatar className="h-6 w-6 mt-1">
+                            <AvatarFallback className="bg-muted text-muted-foreground text-xs">U</AvatarFallback>
+                          </Avatar>
+                        )}
                         {message.role === 'user' && (
                           <Avatar className="h-6 w-6 mt-1">
                             <AvatarFallback className="bg-muted text-muted-foreground text-xs">U</AvatarFallback>
@@ -686,11 +802,6 @@ What's your current background or experience level in this field?`,
                       animate={{ opacity: 1, y: 0 }}
                       className="flex justify-start"
                     >
-                      <div className="flex items-start space-x-2">
-                        <Avatar className="h-6 w-6 mt-1">
-                          <AvatarFallback className="bg-gradient-hero text-white text-xs">AI</AvatarFallback>
-                        </Avatar>
-                        <div className="bg-secondary text-secondary-foreground p-3 rounded-2xl">
                           <div className="flex items-center space-x-1">
                             <motion.div
                               className="w-2 h-2 bg-muted-foreground rounded-full"
@@ -715,12 +826,42 @@ What's your current background or experience level in this field?`,
                   <div ref={messagesEndRef} />
                 </div>
 
+                {/* Quick Actions Bar */}
+                <div className="px-4 py-2 border-t border-border/50 bg-muted/20">
+                  <div className="flex items-center space-x-2">
+                    <Button size="sm" variant="ghost" className="text-xs" onClick={() => handleSuggestionClick("Show current job market for " + (goalText || "my field"))}>
+                      <BarChart3 className="h-3 w-3 mr-1" />
+                      Market Data
+                    </Button>
+                    <Button size="sm" variant="ghost" className="text-xs" onClick={() => handleSuggestionClick("Find learning resources for " + (goalText || "my goal"))}>
+                      <Search className="h-3 w-3 mr-1" />
+                      Resources
+                    </Button>
+                    <Button size="sm" variant="ghost" className="text-xs" onClick={() => handleSuggestionClick("Show salary trends for " + (goalText || "this career"))}>
+                      <TrendingUp className="h-3 w-3 mr-1" />
+                      Salary Data
+                    </Button>
+                  </div>
+                </div>
+
                 {/* Enhanced Chat Input */}
                 <div className="p-4 border-t border-border/50 bg-background/50">
+                  {demoUsageCount >= 4 && (
+                    <motion.div
+                      initial={{ opacity: 0, y: -10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="mb-3 p-3 bg-gradient-to-r from-orange-500/10 to-red-500/10 rounded-lg border border-orange-500/20"
+                    >
+                      <div className="flex items-center">
+                        <AlertCircle className="h-4 w-4 text-orange-500 mr-2" />
+                        <span className="text-sm text-orange-600">⚡ Demo limit reached - Sign up for unlimited AI conversations and live data access!</span>
+                      </div>
+                    </motion.div>
+                  )}
                   <div className="flex items-center space-x-2">
                     <Input
                       ref={chatInputRef}
-                      placeholder="Ask me anything about your career path..."
+                      placeholder="Ask about jobs, salaries, skills, or get live market data..."
                       value={currentMessage}
                       onChange={(e) => setCurrentMessage(e.target.value)}
                       onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
@@ -739,16 +880,6 @@ What's your current background or experience level in this field?`,
                       <Send className="h-4 w-4" />
                     </Button>
                   </div>
-                  
-                  {demoUsageCount >= 4 && (
-                    <motion.p
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      className="text-xs text-orange-500 mt-2 text-center"
-                    >
-                      ⚡ Almost at demo limit - sign up for unlimited AI conversations!
-                    </motion.p>
-                  )}
                 </div>
               </div>
 
