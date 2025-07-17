@@ -533,7 +533,7 @@ const Index = () => {
                 </div>
               </div>
             </motion.div>
-          </div>
+          </motion.div>
         </div>
       </section>
 
@@ -704,8 +704,7 @@ const Index = () => {
         <div className="container mx-auto px-4">
           <motion.div
             className="text-center mb-20"
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, y: 30            whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
             viewport={{ once: true }}
           >
