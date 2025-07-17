@@ -938,7 +938,7 @@ const Index = () => {
               <CheckCircle className="h-5 w-5 mr-3" />
               <span>Free forever • No credit card required • Join 10,000+ learners</span>
             </div>
-          </div>
+          </motion.div>
         </div>
       </section>
     </div>
