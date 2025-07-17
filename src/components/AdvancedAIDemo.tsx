@@ -819,8 +819,6 @@ What's your current background or experience level in this field?`,
                               transition={{ duration: 1, repeat: Infinity, delay: 0.4 }}
                             />
                           </div>
-                        </div>
-                      </div>
                     </motion.div>
                   )}
                   <div ref={messagesEndRef} />
