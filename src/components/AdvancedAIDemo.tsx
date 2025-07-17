@@ -8,7 +8,7 @@ import {
   Sparkles, BarChart3, Clock, Users, Play, ChevronRight, RotateCcw,
   Mic, Send, Star, Zap, Eye, BookOpen, Code, Trophy, Activity,
   Lightbulb, Heart, Shield, Rocket, Bot, User, AlertCircle,
-  LineChart, PieChart, Settings, Smile, Frown, Meh
+  LineChart, PieChart, Settings, Smile, Frown, Meh, Video, FileText, Palette
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
