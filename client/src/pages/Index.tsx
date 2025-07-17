@@ -8,8 +8,8 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { 
   Brain, Search, MessageCircle, ArrowRight, ChevronRight, Mail, CheckCircle, 
-  Globe, Target, TrendingUp, Users, Award, Sparkles, Rocket,
-  BarChart3, Map, Clock, Star, Play, Compass, Moon, Sun, Zap
+  Globe, Zap, Target, TrendingUp, Users, Award, Sparkles, Rocket,
+  BarChart3, Map, Clock, Star, Play, Compass, Moon, Sun
 } from "lucide-react"
 import { ThemeToggle } from "@/components/ui/theme-toggle"
 import heroImage from "@/assets/hero-bg.jpg"
@@ -533,7 +533,10 @@ const Index = () => {
                 </div>
               </div>
             </motion.div>
-          </motion.div>
+</motion.div>
+            </motion.div>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -938,7 +941,10 @@ const Index = () => {
               <CheckCircle className="h-5 w-5 mr-3" />
               <span>Free forever • No credit card required • Join 10,000+ learners</span>
             </div>
-          </motion.div>
+</motion.div>
+            </motion.div>
+            </div>
+          </div>
         </div>
       </section>
     </div>

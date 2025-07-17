@@ -91,7 +91,7 @@ export function Sidebar({ className }: SidebarProps) {
         {navigation.map((item) => {
           const isActive = location === item.href;
           const Icon = item.icon;
-
+          
           return (
             <Link key={item.name} href={item.href}>
               <Button
