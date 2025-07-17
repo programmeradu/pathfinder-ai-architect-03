@@ -146,25 +146,49 @@ const Index = () => {
 
       {/* Hero Section */}
       <section className="relative overflow-hidden min-h-screen flex items-center pt-20">
-        {/* Video Background */}
-        <div className="absolute inset-0 w-full h-full">
-          <iframe 
-            allow="fullscreen;autoplay" 
-            allowFullScreen 
-            src="https://streamable.com/e/peqv3j?autoplay=1&nocontrols=1&muted=1" 
+        {/* Video Background Container */}
+        <div className="absolute inset-0 w-full h-full z-0 bg-gray-900">
+          {/* Primary Video */}
+          <div className="absolute inset-0 w-full h-full">
+            <iframe 
+              allow="autoplay; fullscreen" 
+              allowFullScreen 
+              src="https://streamable.com/e/peqv3j?autoplay=1&nocontrols=1&muted=1" 
+              className="absolute inset-0 w-full h-full"
+              style={{
+                border: 'none',
+                width: '100%',
+                height: '100%',
+                position: 'absolute',
+                left: '0px',
+                top: '0px',
+                overflow: 'hidden',
+                minWidth: '100%',
+                minHeight: '100%',
+                transform: 'scale(1.02)',
+                transformOrigin: 'center center'
+              }}
+              title="Hero Background Video"
+              loading="eager"
+            />
+          </div>
+          
+          {/* Fallback Video (Alternative source) */}
+          <video 
+            autoPlay 
+            muted 
+            loop 
+            playsInline
             className="absolute inset-0 w-full h-full object-cover"
             style={{
-              border: 'none',
-              width: '100%',
-              height: '100%',
-              position: 'absolute',
-              left: '0px',
-              top: '0px',
-              overflow: 'hidden',
-              objectFit: 'cover'
+              zIndex: -1,
+              minWidth: '100%',
+              minHeight: '100%'
             }}
-            title="Hero Background Video"
-          />
+          >
+            <source src="https://v2.streamable.com/peqv3j.mp4" type="video/mp4" />
+            {/* Static background as final fallback */}
+          </video>
         </div>
         <div className="absolute inset-0 bg-gradient-to-br from-background/85 via-background/65 to-background/75" />
         
