@@ -533,9 +533,6 @@ const Index = () => {
                 </div>
               </div>
             </motion.div>
-</motion.div>
-            </motion.div>
-            </div>
           </div>
         </div>
       </section>
@@ -940,9 +937,6 @@ const Index = () => {
             <div className="flex items-center justify-center mt-8 text-white/80">
               <CheckCircle className="h-5 w-5 mr-3" />
               <span>Free forever • No credit card required • Join 10,000+ learners</span>
-            </div>
-</motion.div>
-            </motion.div>
             </div>
           </div>
         </div>
