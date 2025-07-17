@@ -1,196 +1,226 @@
-import { pgTable, text, serial, integer, boolean, timestamp, jsonb, uuid, varchar } from "drizzle-orm/pg-core";
-import { createInsertSchema } from "drizzle-zod";
-import { z } from "zod";
-import { relations } from "drizzle-orm";
+import mongoose, { Schema, Document, Model } from 'mongoose';
 
-// Users table - enhanced for authentication
-export const users = pgTable("users", {
-  id: serial("id").primaryKey(),
-  username: text("username").notNull().unique(),
-  email: text("email").notNull().unique(),
-  password: text("password").notNull(),
-  firstName: text("first_name"),
-  lastName: text("last_name"),
-  profileImage: text("profile_image"),
-  currentGoal: text("current_goal"),
-  learningStyle: text("learning_style"), // visual, auditory, kinesthetic, reading
-  skillLevel: text("skill_level"), // beginner, intermediate, advanced
-  createdAt: timestamp("created_at").defaultNow(),
-  updatedAt: timestamp("updated_at").defaultNow(),
+// User schema
+export interface IUser extends Document {
+  username: string;
+  email: string;
+  password: string;
+  firstName?: string;
+  lastName?: string;
+  profileImage?: string;
+  currentGoal?: string;
+  learningStyle?: string;
+  skillLevel?: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+const userSchema = new Schema<IUser>({
+  username: { type: String, required: true, unique: true },
+  email: { type: String, required: true, unique: true },
+  password: { type: String, required: true },
+  firstName: String,
+  lastName: String,
+  profileImage: String,
+  currentGoal: String,
+  learningStyle: String,
+  skillLevel: String,
+  createdAt: { type: Date, default: Date.now },
+  updatedAt: { type: Date, default: Date.now }
 });
 
-// Career paths and roadmaps
-export const careerPaths = pgTable("career_paths", {
-  id: serial("id").primaryKey(),
-  userId: integer("user_id").references(() => users.id),
-  title: text("title").notNull(),
-  description: text("description"),
-  targetRole: text("target_role"),
-  estimatedDuration: integer("estimated_duration"), // in weeks
-  difficulty: text("difficulty"), // beginner, intermediate, advanced
-  skills: jsonb("skills"), // array of skills needed
-  roadmapData: jsonb("roadmap_data"), // interactive roadmap structure
-  progress: integer("progress").default(0), // percentage complete
-  isActive: boolean("is_active").default(true),
-  createdAt: timestamp("created_at").defaultNow(),
-  updatedAt: timestamp("updated_at").defaultNow(),
+// Career paths schema
+export interface ICareerPath extends Document {
+  userId: mongoose.Types.ObjectId;
+  title: string;
+  description?: string;
+  targetRole?: string;
+  estimatedDuration?: number;
+  difficulty?: string;
+  skills?: any;
+  roadmapData?: any;
+  progress: number;
+  isActive: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+const careerPathSchema = new Schema<ICareerPath>({
+  userId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+  title: { type: String, required: true },
+  description: String,
+  targetRole: String,
+  estimatedDuration: Number,
+  difficulty: String,
+  skills: Schema.Types.Mixed,
+  roadmapData: Schema.Types.Mixed,
+  progress: { type: Number, default: 0 },
+  isActive: { type: Boolean, default: true },
+  createdAt: { type: Date, default: Date.now },
+  updatedAt: { type: Date, default: Date.now }
 });
 
-// Learning resources
-export const resources = pgTable("resources", {
-  id: serial("id").primaryKey(),
-  title: text("title").notNull(),
-  description: text("description"),
-  url: text("url").notNull(),
-  type: text("type").notNull(), // video, article, course, project, book
-  difficulty: text("difficulty"), // beginner, intermediate, advanced
-  estimatedTime: integer("estimated_time"), // in minutes
-  tags: jsonb("tags"), // array of tags
-  rating: integer("rating"), // 1-5 stars
-  metadata: jsonb("metadata"), // additional data like video length, author, etc.
-  createdAt: timestamp("created_at").defaultNow(),
+// Learning resources schema
+export interface IResource extends Document {
+  title: string;
+  description?: string;
+  url: string;
+  type: string;
+  difficulty?: string;
+  estimatedTime?: number;
+  tags?: any;
+  rating?: number;
+  metadata?: any;
+  createdAt: Date;
+}
+
+const resourceSchema = new Schema<IResource>({
+  title: { type: String, required: true },
+  description: String,
+  url: { type: String, required: true },
+  type: { type: String, required: true },
+  difficulty: String,
+  estimatedTime: Number,
+  tags: Schema.Types.Mixed,
+  rating: Number,
+  metadata: Schema.Types.Mixed,
+  createdAt: { type: Date, default: Date.now }
 });
 
-// Path steps - links resources to career paths
-export const pathSteps = pgTable("path_steps", {
-  id: serial("id").primaryKey(),
-  pathId: integer("path_id").references(() => careerPaths.id),
-  resourceId: integer("resource_id").references(() => resources.id),
-  stepOrder: integer("step_order").notNull(),
-  isCompleted: boolean("is_completed").default(false),
-  completedAt: timestamp("completed_at"),
-  notes: text("notes"),
-  createdAt: timestamp("created_at").defaultNow(),
+// Path steps schema
+export interface IPathStep extends Document {
+  pathId: mongoose.Types.ObjectId;
+  resourceId: mongoose.Types.ObjectId;
+  stepOrder: number;
+  isCompleted: boolean;
+  completedAt?: Date;
+  notes?: string;
+  createdAt: Date;
+}
+
+const pathStepSchema = new Schema<IPathStep>({
+  pathId: { type: Schema.Types.ObjectId, ref: 'CareerPath', required: true },
+  resourceId: { type: Schema.Types.ObjectId, ref: 'Resource', required: true },
+  stepOrder: { type: Number, required: true },
+  isCompleted: { type: Boolean, default: false },
+  completedAt: Date,
+  notes: String,
+  createdAt: { type: Date, default: Date.now }
 });
 
-// AI conversations
-export const conversations = pgTable("conversations", {
-  id: serial("id").primaryKey(),
-  userId: integer("user_id").references(() => users.id),
-  title: text("title"),
-  messages: jsonb("messages"), // array of conversation messages
-  context: jsonb("context"), // conversation context and metadata
-  isActive: boolean("is_active").default(true),
-  createdAt: timestamp("created_at").defaultNow(),
-  updatedAt: timestamp("updated_at").defaultNow(),
+// Conversation schema
+export interface IConversation extends Document {
+  userId: mongoose.Types.ObjectId;
+  title?: string;
+  messages: any;
+  context?: any;
+  isActive: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+const conversationSchema = new Schema<IConversation>({
+  userId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+  title: String,
+  messages: Schema.Types.Mixed,
+  context: Schema.Types.Mixed,
+  isActive: { type: Boolean, default: true },
+  createdAt: { type: Date, default: Date.now },
+  updatedAt: { type: Date, default: Date.now }
 });
 
-// User portfolio projects
-export const portfolioProjects = pgTable("portfolio_projects", {
-  id: serial("id").primaryKey(),
-  userId: integer("user_id").references(() => users.id),
-  title: text("title").notNull(),
-  description: text("description"),
-  githubUrl: text("github_url"),
-  liveUrl: text("live_url"),
-  technologies: jsonb("technologies"), // array of technologies used
-  images: jsonb("images"), // array of project images
-  featured: boolean("featured").default(false),
-  skillsProven: jsonb("skills_proven"), // skills demonstrated in this project
-  aiEvaluation: jsonb("ai_evaluation"), // AI code review and scoring
-  verificationStatus: text("verification_status"), // pending, verified, rejected
-  createdAt: timestamp("created_at").defaultNow(),
-  updatedAt: timestamp("updated_at").defaultNow(),
+// Portfolio projects schema
+export interface IPortfolioProject extends Document {
+  userId: mongoose.Types.ObjectId;
+  title: string;
+  description?: string;
+  githubUrl?: string;
+  liveUrl?: string;
+  technologies?: any;
+  images?: any;
+  featured: boolean;
+  skillsProven?: any;
+  aiEvaluation?: any;
+  verificationStatus?: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+const portfolioProjectSchema = new Schema<IPortfolioProject>({
+  userId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+  title: { type: String, required: true },
+  description: String,
+  githubUrl: String,
+  liveUrl: String,
+  technologies: Schema.Types.Mixed,
+  images: Schema.Types.Mixed,
+  featured: { type: Boolean, default: false },
+  skillsProven: Schema.Types.Mixed,
+  aiEvaluation: Schema.Types.Mixed,
+  verificationStatus: String,
+  createdAt: { type: Date, default: Date.now },
+  updatedAt: { type: Date, default: Date.now }
 });
 
-// User achievements and milestones
-export const achievements = pgTable("achievements", {
-  id: serial("id").primaryKey(),
-  userId: integer("user_id").references(() => users.id),
-  title: text("title").notNull(),
-  description: text("description"),
-  type: text("type"), // milestone, badge, certificate
-  data: jsonb("data"), // achievement metadata
-  unlockedAt: timestamp("unlocked_at").defaultNow(),
+// Achievements schema
+export interface IAchievement extends Document {
+  userId: mongoose.Types.ObjectId;
+  title: string;
+  description?: string;
+  type?: string;
+  data?: any;
+  unlockedAt: Date;
+}
+
+const achievementSchema = new Schema<IAchievement>({
+  userId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+  title: { type: String, required: true },
+  description: String,
+  type: String,
+  data: Schema.Types.Mixed,
+  unlockedAt: { type: Date, default: Date.now }
 });
 
-// Learning analytics
-export const learningAnalytics = pgTable("learning_analytics", {
-  id: serial("id").primaryKey(),
-  userId: integer("user_id").references(() => users.id),
-  date: timestamp("date").defaultNow(),
-  resourcesCompleted: integer("resources_completed").default(0),
-  timeSpent: integer("time_spent").default(0), // in minutes
-  skillsImproved: jsonb("skills_improved"), // skills worked on
-  efficiency: integer("efficiency"), // learning efficiency score
-  streakDays: integer("streak_days").default(0),
-  weeklyGoalProgress: integer("weekly_goal_progress").default(0),
+// Learning analytics schema
+export interface ILearningAnalytics extends Document {
+  userId: mongoose.Types.ObjectId;
+  date: Date;
+  resourcesCompleted: number;
+  timeSpent: number;
+  skillsImproved?: any;
+  efficiency?: number;
+  streakDays: number;
+  weeklyGoalProgress: number;
+}
+
+const learningAnalyticsSchema = new Schema<ILearningAnalytics>({
+  userId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+  date: { type: Date, default: Date.now },
+  resourcesCompleted: { type: Number, default: 0 },
+  timeSpent: { type: Number, default: 0 },
+  skillsImproved: Schema.Types.Mixed,
+  efficiency: Number,
+  streakDays: { type: Number, default: 0 },
+  weeklyGoalProgress: { type: Number, default: 0 }
 });
 
-// Relations
-export const usersRelations = relations(users, ({ many }) => ({
-  careerPaths: many(careerPaths),
-  conversations: many(conversations),
-  portfolioProjects: many(portfolioProjects),
-  achievements: many(achievements),
-  learningAnalytics: many(learningAnalytics),
-}));
+// Create models
+export const User = mongoose.model<IUser>('User', userSchema);
+export const CareerPath = mongoose.model<ICareerPath>('CareerPath', careerPathSchema);
+export const Resource = mongoose.model<IResource>('Resource', resourceSchema);
+export const PathStep = mongoose.model<IPathStep>('PathStep', pathStepSchema);
+export const Conversation = mongoose.model<IConversation>('Conversation', conversationSchema);
+export const PortfolioProject = mongoose.model<IPortfolioProject>('PortfolioProject', portfolioProjectSchema);
+export const Achievement = mongoose.model<IAchievement>('Achievement', achievementSchema);
+export const LearningAnalytics = mongoose.model<ILearningAnalytics>('LearningAnalytics', learningAnalyticsSchema);
 
-export const careerPathsRelations = relations(careerPaths, ({ one, many }) => ({
-  user: one(users, { fields: [careerPaths.userId], references: [users.id] }),
-  pathSteps: many(pathSteps),
-}));
-
-export const pathStepsRelations = relations(pathSteps, ({ one }) => ({
-  careerPath: one(careerPaths, { fields: [pathSteps.pathId], references: [careerPaths.id] }),
-  resource: one(resources, { fields: [pathSteps.resourceId], references: [resources.id] }),
-}));
-
-export const conversationsRelations = relations(conversations, ({ one }) => ({
-  user: one(users, { fields: [conversations.userId], references: [users.id] }),
-}));
-
-export const portfolioProjectsRelations = relations(portfolioProjects, ({ one }) => ({
-  user: one(users, { fields: [portfolioProjects.userId], references: [users.id] }),
-}));
-
-export const achievementsRelations = relations(achievements, ({ one }) => ({
-  user: one(users, { fields: [achievements.userId], references: [users.id] }),
-}));
-
-export const learningAnalyticsRelations = relations(learningAnalytics, ({ one }) => ({
-  user: one(users, { fields: [learningAnalytics.userId], references: [users.id] }),
-}));
-
-// Schemas
-export const insertUserSchema = createInsertSchema(users).pick({
-  username: true,
-  email: true,
-  password: true,
-  firstName: true,
-  lastName: true,
-});
-
-export const insertCareerPathSchema = createInsertSchema(careerPaths).omit({
-  id: true,
-  createdAt: true,
-  updatedAt: true,
-});
-
-export const insertResourceSchema = createInsertSchema(resources).omit({
-  id: true,
-  createdAt: true,
-});
-
-export const insertConversationSchema = createInsertSchema(conversations).omit({
-  id: true,
-  createdAt: true,
-  updatedAt: true,
-});
-
-export const insertPortfolioProjectSchema = createInsertSchema(portfolioProjects).omit({
-  id: true,
-  createdAt: true,
-  updatedAt: true,
-});
-
-// Types
-export type InsertUser = z.infer<typeof insertUserSchema>;
-export type User = typeof users.$inferSelect;
-export type CareerPath = typeof careerPaths.$inferSelect;
-export type Resource = typeof resources.$inferSelect;
-export type PathStep = typeof pathSteps.$inferSelect;
-export type Conversation = typeof conversations.$inferSelect;
-export type PortfolioProject = typeof portfolioProjects.$inferSelect;
-export type Achievement = typeof achievements.$inferSelect;
-export type LearningAnalytics = typeof learningAnalytics.$inferSelect;
+// Type definitions for insertion
+export type InsertUser = Omit<IUser, '_id' | 'createdAt' | 'updatedAt'>;
+export type User = IUser;
+export type CareerPath = ICareerPath;
+export type Resource = IResource;
+export type PathStep = IPathStep;
+export type Conversation = IConversation;
+export type PortfolioProject = IPortfolioProject;
+export type Achievement = IAchievement;
+export type LearningAnalytics = ILearningAnalytics;

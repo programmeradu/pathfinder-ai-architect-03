@@ -1,264 +1,351 @@
-import { 
-  users, 
-  careerPaths, 
-  resources, 
-  pathSteps, 
-  conversations, 
-  portfolioProjects, 
-  achievements, 
-  learningAnalytics,
-  type User, 
-  type InsertUser,
-  type CareerPath,
-  type Resource,
-  type PathStep,
-  type Conversation,
-  type PortfolioProject,
-  type Achievement,
-  type LearningAnalytics
-} from "@shared/schema";
-import { db } from "./db";
-import { eq, and, desc, asc } from "drizzle-orm";
+import * as schema from "@shared/schema";
+import mongoose from 'mongoose';
 
 export interface IStorage {
   // User operations
-  getUser(id: number): Promise<User | undefined>;
-  getUserByUsername(username: string): Promise<User | undefined>;
-  getUserByEmail(email: string): Promise<User | undefined>;
-  createUser(user: InsertUser): Promise<User>;
-  updateUser(id: number, updates: Partial<User>): Promise<User | undefined>;
+  getUser(id: number | string): Promise<schema.User | undefined>;
+  getUserByUsername(username: string): Promise<schema.User | undefined>;
+  getUserByEmail(email: string): Promise<schema.User | undefined>;
+  createUser(user: schema.InsertUser): Promise<schema.User>;
+  updateUser(id: number | string, updates: Partial<schema.User>): Promise<schema.User | undefined>;
   
   // Career path operations
-  createCareerPath(userId: number, pathData: Omit<CareerPath, 'id' | 'userId' | 'createdAt' | 'updatedAt'>): Promise<CareerPath>;
-  getUserCareerPaths(userId: number): Promise<CareerPath[]>;
-  updateCareerPath(id: number, updates: Partial<CareerPath>): Promise<CareerPath | undefined>;
+  createCareerPath(userId: number | string, pathData: Omit<schema.CareerPath, 'id' | 'userId' | 'createdAt' | 'updatedAt'>): Promise<schema.CareerPath>;
+  getUserCareerPaths(userId: number | string): Promise<schema.CareerPath[]>;
+  updateCareerPath(id: number | string, updates: Partial<schema.CareerPath>): Promise<schema.CareerPath | undefined>;
   
   // Resource operations
-  createResource(resourceData: Omit<Resource, 'id' | 'createdAt'>): Promise<Resource>;
-  getResourcesByTags(tags: string[]): Promise<Resource[]>;
-  searchResources(query: string): Promise<Resource[]>;
+  createResource(resourceData: Omit<schema.Resource, 'id' | 'createdAt'>): Promise<schema.Resource>;
+  getResourcesByTags(tags: string[]): Promise<schema.Resource[]>;
+  searchResources(query: string): Promise<schema.Resource[]>;
   
   // Path step operations
-  createPathStep(stepData: Omit<PathStep, 'id' | 'createdAt'>): Promise<PathStep>;
-  getPathSteps(pathId: number): Promise<PathStep[]>;
-  updatePathStep(id: number, updates: Partial<PathStep>): Promise<PathStep | undefined>;
+  createPathStep(stepData: Omit<schema.PathStep, 'id' | 'createdAt'>): Promise<schema.PathStep>;
+  getPathSteps(pathId: number | string): Promise<schema.PathStep[]>;
+  updatePathStep(id: number | string, updates: Partial<schema.PathStep>): Promise<schema.PathStep | undefined>;
   
   // Conversation operations
-  createConversation(userId: number, conversationData: Omit<Conversation, 'id' | 'userId' | 'createdAt' | 'updatedAt'>): Promise<Conversation>;
-  getUserConversations(userId: number): Promise<Conversation[]>;
-  updateConversation(id: number, updates: Partial<Conversation>): Promise<Conversation | undefined>;
+  createConversation(userId: number | string, conversationData: Omit<schema.Conversation, 'id' | 'userId' | 'createdAt' | 'updatedAt'>): Promise<schema.Conversation>;
+  getUserConversations(userId: number | string): Promise<schema.Conversation[]>;
+  updateConversation(id: number | string, updates: Partial<schema.Conversation>): Promise<schema.Conversation | undefined>;
   
   // Portfolio operations
-  createPortfolioProject(userId: number, projectData: Omit<PortfolioProject, 'id' | 'userId' | 'createdAt' | 'updatedAt'>): Promise<PortfolioProject>;
-  getUserPortfolioProjects(userId: number): Promise<PortfolioProject[]>;
-  updatePortfolioProject(id: number, updates: Partial<PortfolioProject>): Promise<PortfolioProject | undefined>;
+  createPortfolioProject(userId: number | string, projectData: Omit<schema.PortfolioProject, 'id' | 'userId' | 'createdAt' | 'updatedAt'>): Promise<schema.PortfolioProject>;
+  getUserPortfolioProjects(userId: number | string): Promise<schema.PortfolioProject[]>;
+  updatePortfolioProject(id: number | string, updates: Partial<schema.PortfolioProject>): Promise<schema.PortfolioProject | undefined>;
   
   // Achievement operations
-  createAchievement(userId: number, achievementData: Omit<Achievement, 'id' | 'userId' | 'unlockedAt'>): Promise<Achievement>;
-  getUserAchievements(userId: number): Promise<Achievement[]>;
+  createAchievement(userId: number | string, achievementData: Omit<schema.Achievement, 'id' | 'userId' | 'unlockedAt'>): Promise<schema.Achievement>;
+  getUserAchievements(userId: number | string): Promise<schema.Achievement[]>;
   
   // Analytics operations
-  createLearningAnalytics(userId: number, analyticsData: Omit<LearningAnalytics, 'id' | 'userId' | 'date'>): Promise<LearningAnalytics>;
-  getUserLearningAnalytics(userId: number, days?: number): Promise<LearningAnalytics[]>;
+  createLearningAnalytics(userId: number | string, analyticsData: Omit<schema.LearningAnalytics, 'id' | 'userId' | 'date'>): Promise<schema.LearningAnalytics>;
+  getUserLearningAnalytics(userId: number | string, days?: number): Promise<schema.LearningAnalytics[]>;
 }
 
-export class DatabaseStorage implements IStorage {
+export class MongoDBStorage implements IStorage {
   // User operations
-  async getUser(id: number): Promise<User | undefined> {
-    const [user] = await db.select().from(users).where(eq(users.id, id));
-    return user || undefined;
+  async getUser(id: number | string): Promise<schema.User | undefined> {
+    try {
+      const user = await schema.User.findById(id);
+      return user || undefined;
+    } catch (error) {
+      console.error('Error getting user:', error);
+      return undefined;
+    }
   }
 
-  async getUserByUsername(username: string): Promise<User | undefined> {
-    const [user] = await db.select().from(users).where(eq(users.username, username));
-    return user || undefined;
+  async getUserByUsername(username: string): Promise<schema.User | undefined> {
+    try {
+      const user = await schema.User.findOne({ username });
+      return user || undefined;
+    } catch (error) {
+      console.error('Error getting user by username:', error);
+      return undefined;
+    }
   }
 
-  async getUserByEmail(email: string): Promise<User | undefined> {
-    const [user] = await db.select().from(users).where(eq(users.email, email));
-    return user || undefined;
+  async getUserByEmail(email: string): Promise<schema.User | undefined> {
+    try {
+      const user = await schema.User.findOne({ email });
+      return user || undefined;
+    } catch (error) {
+      console.error('Error getting user by email:', error);
+      return undefined;
+    }
   }
 
-  async createUser(insertUser: InsertUser): Promise<User> {
-    const [user] = await db
-      .insert(users)
-      .values(insertUser)
-      .returning();
-    return user;
+  async createUser(insertUser: schema.InsertUser): Promise<schema.User> {
+    try {
+      const user = new schema.User(insertUser);
+      return await user.save();
+    } catch (error) {
+      console.error('Error creating user:', error);
+      throw error;
+    }
   }
 
-  async updateUser(id: number, updates: Partial<User>): Promise<User | undefined> {
-    const [user] = await db
-      .update(users)
-      .set({ ...updates, updatedAt: new Date() })
-      .where(eq(users.id, id))
-      .returning();
-    return user || undefined;
+  async updateUser(id: number | string, updates: Partial<schema.User>): Promise<schema.User | undefined> {
+    try {
+      const user = await schema.User.findByIdAndUpdate(
+        id,
+        { ...updates, updatedAt: new Date() },
+        { new: true }
+      );
+      return user || undefined;
+    } catch (error) {
+      console.error('Error updating user:', error);
+      return undefined;
+    }
   }
 
   // Career path operations
-  async createCareerPath(userId: number, pathData: Omit<CareerPath, 'id' | 'userId' | 'createdAt' | 'updatedAt'>): Promise<CareerPath> {
-    const [careerPath] = await db
-      .insert(careerPaths)
-      .values({ ...pathData, userId })
-      .returning();
-    return careerPath;
+  async createCareerPath(userId: number | string, pathData: any): Promise<schema.CareerPath> {
+    try {
+      const careerPath = new schema.CareerPath({
+        ...pathData,
+        userId: new mongoose.Types.ObjectId(userId.toString())
+      });
+      return await careerPath.save();
+    } catch (error) {
+      console.error('Error creating career path:', error);
+      throw error;
+    }
   }
 
-  async getUserCareerPaths(userId: number): Promise<CareerPath[]> {
-    return await db
-      .select()
-      .from(careerPaths)
-      .where(eq(careerPaths.userId, userId))
-      .orderBy(desc(careerPaths.createdAt));
+  async getUserCareerPaths(userId: number | string): Promise<schema.CareerPath[]> {
+    try {
+      return await schema.CareerPath.find({ 
+        userId: new mongoose.Types.ObjectId(userId.toString()) 
+      }).sort({ createdAt: -1 });
+    } catch (error) {
+      console.error('Error getting user career paths:', error);
+      return [];
+    }
   }
 
-  async updateCareerPath(id: number, updates: Partial<CareerPath>): Promise<CareerPath | undefined> {
-    const [careerPath] = await db
-      .update(careerPaths)
-      .set({ ...updates, updatedAt: new Date() })
-      .where(eq(careerPaths.id, id))
-      .returning();
-    return careerPath || undefined;
+  async updateCareerPath(id: number | string, updates: Partial<schema.CareerPath>): Promise<schema.CareerPath | undefined> {
+    try {
+      const careerPath = await schema.CareerPath.findByIdAndUpdate(
+        id,
+        { ...updates, updatedAt: new Date() },
+        { new: true }
+      );
+      return careerPath || undefined;
+    } catch (error) {
+      console.error('Error updating career path:', error);
+      return undefined;
+    }
   }
 
   // Resource operations
-  async createResource(resourceData: Omit<Resource, 'id' | 'createdAt'>): Promise<Resource> {
-    const [resource] = await db
-      .insert(resources)
-      .values(resourceData)
-      .returning();
-    return resource;
+  async createResource(resourceData: any): Promise<schema.Resource> {
+    try {
+      const resource = new schema.Resource(resourceData);
+      return await resource.save();
+    } catch (error) {
+      console.error('Error creating resource:', error);
+      throw error;
+    }
   }
 
-  async getResourcesByTags(tags: string[]): Promise<Resource[]> {
-    // This is a simplified implementation - in production, you'd want more sophisticated tag matching
-    return await db
-      .select()
-      .from(resources)
-      .orderBy(desc(resources.rating));
+  async getResourcesByTags(tags: string[]): Promise<schema.Resource[]> {
+    try {
+      // Simplified implementation - in production, you'd want more sophisticated tag matching
+      return await schema.Resource.find({ tags: { $in: tags } }).sort({ rating: -1 });
+    } catch (error) {
+      console.error('Error getting resources by tags:', error);
+      return [];
+    }
   }
 
-  async searchResources(query: string): Promise<Resource[]> {
-    // This is a simplified implementation - in production, you'd want full-text search
-    return await db
-      .select()
-      .from(resources)
-      .orderBy(desc(resources.rating));
+  async searchResources(query: string): Promise<schema.Resource[]> {
+    try {
+      // Basic text search - in production, you'd want to use MongoDB text indexes
+      const regex = new RegExp(query, 'i');
+      return await schema.Resource.find({
+        $or: [
+          { title: regex },
+          { description: regex }
+        ]
+      }).sort({ rating: -1 });
+    } catch (error) {
+      console.error('Error searching resources:', error);
+      return [];
+    }
   }
 
   // Path step operations
-  async createPathStep(stepData: Omit<PathStep, 'id' | 'createdAt'>): Promise<PathStep> {
-    const [pathStep] = await db
-      .insert(pathSteps)
-      .values(stepData)
-      .returning();
-    return pathStep;
+  async createPathStep(stepData: any): Promise<schema.PathStep> {
+    try {
+      const pathStep = new schema.PathStep({
+        ...stepData,
+        pathId: new mongoose.Types.ObjectId(stepData.pathId.toString()),
+        resourceId: new mongoose.Types.ObjectId(stepData.resourceId.toString())
+      });
+      return await pathStep.save();
+    } catch (error) {
+      console.error('Error creating path step:', error);
+      throw error;
+    }
   }
 
-  async getPathSteps(pathId: number): Promise<PathStep[]> {
-    return await db
-      .select()
-      .from(pathSteps)
-      .where(eq(pathSteps.pathId, pathId))
-      .orderBy(asc(pathSteps.stepOrder));
+  async getPathSteps(pathId: number | string): Promise<schema.PathStep[]> {
+    try {
+      return await schema.PathStep.find({
+        pathId: new mongoose.Types.ObjectId(pathId.toString())
+      }).sort({ stepOrder: 1 });
+    } catch (error) {
+      console.error('Error getting path steps:', error);
+      return [];
+    }
   }
 
-  async updatePathStep(id: number, updates: Partial<PathStep>): Promise<PathStep | undefined> {
-    const [pathStep] = await db
-      .update(pathSteps)
-      .set(updates)
-      .where(eq(pathSteps.id, id))
-      .returning();
-    return pathStep || undefined;
+  async updatePathStep(id: number | string, updates: Partial<schema.PathStep>): Promise<schema.PathStep | undefined> {
+    try {
+      const pathStep = await schema.PathStep.findByIdAndUpdate(
+        id,
+        updates,
+        { new: true }
+      );
+      return pathStep || undefined;
+    } catch (error) {
+      console.error('Error updating path step:', error);
+      return undefined;
+    }
   }
 
   // Conversation operations
-  async createConversation(userId: number, conversationData: Omit<Conversation, 'id' | 'userId' | 'createdAt' | 'updatedAt'>): Promise<Conversation> {
-    const [conversation] = await db
-      .insert(conversations)
-      .values({ ...conversationData, userId })
-      .returning();
-    return conversation;
+  async createConversation(userId: number | string, conversationData: any): Promise<schema.Conversation> {
+    try {
+      const conversation = new schema.Conversation({
+        ...conversationData,
+        userId: new mongoose.Types.ObjectId(userId.toString())
+      });
+      return await conversation.save();
+    } catch (error) {
+      console.error('Error creating conversation:', error);
+      throw error;
+    }
   }
 
-  async getUserConversations(userId: number): Promise<Conversation[]> {
-    return await db
-      .select()
-      .from(conversations)
-      .where(eq(conversations.userId, userId))
-      .orderBy(desc(conversations.updatedAt));
+  async getUserConversations(userId: number | string): Promise<schema.Conversation[]> {
+    try {
+      return await schema.Conversation.find({
+        userId: new mongoose.Types.ObjectId(userId.toString())
+      }).sort({ updatedAt: -1 });
+    } catch (error) {
+      console.error('Error getting user conversations:', error);
+      return [];
+    }
   }
 
-  async updateConversation(id: number, updates: Partial<Conversation>): Promise<Conversation | undefined> {
-    const [conversation] = await db
-      .update(conversations)
-      .set({ ...updates, updatedAt: new Date() })
-      .where(eq(conversations.id, id))
-      .returning();
-    return conversation || undefined;
+  async updateConversation(id: number | string, updates: Partial<schema.Conversation>): Promise<schema.Conversation | undefined> {
+    try {
+      const conversation = await schema.Conversation.findByIdAndUpdate(
+        id,
+        { ...updates, updatedAt: new Date() },
+        { new: true }
+      );
+      return conversation || undefined;
+    } catch (error) {
+      console.error('Error updating conversation:', error);
+      return undefined;
+    }
   }
 
   // Portfolio operations
-  async createPortfolioProject(userId: number, projectData: Omit<PortfolioProject, 'id' | 'userId' | 'createdAt' | 'updatedAt'>): Promise<PortfolioProject> {
-    const [project] = await db
-      .insert(portfolioProjects)
-      .values({ ...projectData, userId })
-      .returning();
-    return project;
+  async createPortfolioProject(userId: number | string, projectData: any): Promise<schema.PortfolioProject> {
+    try {
+      const project = new schema.PortfolioProject({
+        ...projectData,
+        userId: new mongoose.Types.ObjectId(userId.toString())
+      });
+      return await project.save();
+    } catch (error) {
+      console.error('Error creating portfolio project:', error);
+      throw error;
+    }
   }
 
-  async getUserPortfolioProjects(userId: number): Promise<PortfolioProject[]> {
-    return await db
-      .select()
-      .from(portfolioProjects)
-      .where(eq(portfolioProjects.userId, userId))
-      .orderBy(desc(portfolioProjects.createdAt));
+  async getUserPortfolioProjects(userId: number | string): Promise<schema.PortfolioProject[]> {
+    try {
+      return await schema.PortfolioProject.find({
+        userId: new mongoose.Types.ObjectId(userId.toString())
+      }).sort({ createdAt: -1 });
+    } catch (error) {
+      console.error('Error getting user portfolio projects:', error);
+      return [];
+    }
   }
 
-  async updatePortfolioProject(id: number, updates: Partial<PortfolioProject>): Promise<PortfolioProject | undefined> {
-    const [project] = await db
-      .update(portfolioProjects)
-      .set({ ...updates, updatedAt: new Date() })
-      .where(eq(portfolioProjects.id, id))
-      .returning();
-    return project || undefined;
+  async updatePortfolioProject(id: number | string, updates: Partial<schema.PortfolioProject>): Promise<schema.PortfolioProject | undefined> {
+    try {
+      const project = await schema.PortfolioProject.findByIdAndUpdate(
+        id,
+        { ...updates, updatedAt: new Date() },
+        { new: true }
+      );
+      return project || undefined;
+    } catch (error) {
+      console.error('Error updating portfolio project:', error);
+      return undefined;
+    }
   }
 
   // Achievement operations
-  async createAchievement(userId: number, achievementData: Omit<Achievement, 'id' | 'userId' | 'unlockedAt'>): Promise<Achievement> {
-    const [achievement] = await db
-      .insert(achievements)
-      .values({ ...achievementData, userId })
-      .returning();
-    return achievement;
+  async createAchievement(userId: number | string, achievementData: any): Promise<schema.Achievement> {
+    try {
+      const achievement = new schema.Achievement({
+        ...achievementData,
+        userId: new mongoose.Types.ObjectId(userId.toString())
+      });
+      return await achievement.save();
+    } catch (error) {
+      console.error('Error creating achievement:', error);
+      throw error;
+    }
   }
 
-  async getUserAchievements(userId: number): Promise<Achievement[]> {
-    return await db
-      .select()
-      .from(achievements)
-      .where(eq(achievements.userId, userId))
-      .orderBy(desc(achievements.unlockedAt));
+  async getUserAchievements(userId: number | string): Promise<schema.Achievement[]> {
+    try {
+      return await schema.Achievement.find({
+        userId: new mongoose.Types.ObjectId(userId.toString())
+      }).sort({ unlockedAt: -1 });
+    } catch (error) {
+      console.error('Error getting user achievements:', error);
+      return [];
+    }
   }
 
   // Analytics operations
-  async createLearningAnalytics(userId: number, analyticsData: Omit<LearningAnalytics, 'id' | 'userId' | 'date'>): Promise<LearningAnalytics> {
-    const [analytics] = await db
-      .insert(learningAnalytics)
-      .values({ ...analyticsData, userId })
-      .returning();
-    return analytics;
+  async createLearningAnalytics(userId: number | string, analyticsData: any): Promise<schema.LearningAnalytics> {
+    try {
+      const analytics = new schema.LearningAnalytics({
+        ...analyticsData,
+        userId: new mongoose.Types.ObjectId(userId.toString())
+      });
+      return await analytics.save();
+    } catch (error) {
+      console.error('Error creating learning analytics:', error);
+      throw error;
+    }
   }
 
-  async getUserLearningAnalytics(userId: number, days: number = 30): Promise<LearningAnalytics[]> {
-    return await db
-      .select()
-      .from(learningAnalytics)
-      .where(eq(learningAnalytics.userId, userId))
-      .orderBy(desc(learningAnalytics.date))
-      .limit(days);
+  async getUserLearningAnalytics(userId: number | string, days: number = 30): Promise<schema.LearningAnalytics[]> {
+    try {
+      const cutoffDate = new Date();
+      cutoffDate.setDate(cutoffDate.getDate() - days);
+      
+      return await schema.LearningAnalytics.find({
+        userId: new mongoose.Types.ObjectId(userId.toString()),
+        date: { $gte: cutoffDate }
+      }).sort({ date: -1 }).limit(days);
+    } catch (error) {
+      console.error('Error getting user learning analytics:', error);
+      return [];
+    }
   }
 }
 
-export const storage = new DatabaseStorage();
+export const storage = new MongoDBStorage();

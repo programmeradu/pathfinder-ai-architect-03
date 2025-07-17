@@ -1,8 +1,9 @@
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { Request, Response, NextFunction } from 'express';
+import mongoose from 'mongoose';
 import { storage } from './storage';
-import { insertUserSchema, type User } from '@shared/schema';
+import { User as UserModel, type User } from '@shared/schema';
 
 const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-change-in-production';
 
@@ -51,9 +52,8 @@ export const register = async (req: Request, res: Response) => {
     const { username, email, password, firstName, lastName } = req.body;
 
     // Validate input
-    const validationResult = insertUserSchema.safeParse({ username, email, password, firstName, lastName });
-    if (!validationResult.success) {
-      return res.status(400).json({ message: 'Invalid input', errors: validationResult.error.errors });
+    if (!username || !email || !password) {
+      return res.status(400).json({ message: 'Username, email, and password are required' });
     }
 
     // Check if user already exists
