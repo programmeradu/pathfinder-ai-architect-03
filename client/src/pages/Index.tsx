@@ -154,11 +154,28 @@ const Index = () => {
 
       {/* Hero Section */}
       <section className="relative overflow-hidden min-h-screen flex items-center pt-20">
-        {/* Enhanced Background with futuristic image */}
-        <div 
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-          style={{ backgroundImage: `url(/src/assets/hero-futuristic.jpg)` }}
-        />
+        {/* Video Background */}
+        <div className="absolute inset-0">
+          <div style={{position: 'absolute', width: '100%', height: '100%', top: 0, left: 0}}>
+            <iframe 
+              allow="fullscreen;autoplay" 
+              allowFullScreen 
+              height="100%" 
+              src="https://streamable.com/e/peqv3j?autoplay=1&nocontrols=1&muted=1&loop=1" 
+              width="100%" 
+              style={{
+                border: 'none', 
+                width: '100%', 
+                height: '100%', 
+                position: 'absolute', 
+                left: '0px', 
+                top: '0px', 
+                overflow: 'hidden',
+                objectFit: 'cover'
+              }}
+            />
+          </div>
+        </div>
         <div className="absolute inset-0 bg-gradient-to-br from-background/85 via-background/65 to-background/75" />
         
         {/* Floating UI Components */}
@@ -345,32 +362,75 @@ const Index = () => {
             </motion.div>
             </motion.div>
             
-            {/* Video Section */}
+            {/* Feature Highlights */}
             <motion.div
-              className="relative rounded-2xl overflow-hidden shadow-2xl"
+              className="relative"
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 1, delay: 0.6 }}
             >
-              <div className="aspect-video bg-gradient-to-br from-purple-900 to-pink-900 relative">
-                <div style={{position: 'relative', width: '100%', height: '0px', paddingBottom: '56.250%'}}>
-                  <iframe 
-                    allow="fullscreen;autoplay" 
-                    allowFullScreen 
-                    height="100%" 
-                    src="https://streamable.com/e/peqv3j?autoplay=1&nocontrols=1" 
-                    width="100%" 
-                    style={{
-                      border: 'none', 
-                      width: '100%', 
-                      height: '100%', 
-                      position: 'absolute', 
-                      left: '0px', 
-                      top: '0px', 
-                      overflow: 'hidden',
-                      borderRadius: '1rem'
-                    }}
-                  />
+              <div className="bg-gradient-card rounded-3xl p-8 shadow-dramatic border border-border/50 backdrop-blur-sm">
+                <div className="space-y-6">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center space-x-3">
+                      <div className="w-10 h-10 bg-gradient-premium rounded-lg flex items-center justify-center">
+                        <BarChart3 className="h-5 w-5 text-white" />
+                      </div>
+                      <div>
+                        <div className="font-semibold text-white">AI-Powered Career Analysis</div>
+                        <div className="text-sm text-white/70">Real-time opportunity matching</div>
+                      </div>
+                    </div>
+                    <div className="text-right">
+                      <div className="text-2xl font-bold text-accent">Live</div>
+                      <div className="text-xs text-white/70">Active Now</div>
+                    </div>
+                  </div>
+                  
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm text-white">Global Opportunities</span>
+                      <div className="flex items-center space-x-2">
+                        <div className="w-20 h-2 bg-white/20 rounded-full">
+                          <motion.div 
+                            className="h-full bg-accent rounded-full"
+                            initial={{ width: 0 }}
+                            animate={{ width: "95%" }}
+                            transition={{ duration: 2, delay: 0.5 }}
+                          />
+                        </div>
+                        <span className="text-sm font-medium text-white">50M+</span>
+                      </div>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm text-white">AI Accuracy</span>
+                      <div className="flex items-center space-x-2">
+                        <div className="w-20 h-2 bg-white/20 rounded-full">
+                          <motion.div 
+                            className="h-full bg-primary rounded-full"
+                            initial={{ width: 0 }}
+                            animate={{ width: "92%" }}
+                            transition={{ duration: 2, delay: 0.7 }}
+                          />
+                        </div>
+                        <span className="text-sm font-medium text-white">92%</span>
+                      </div>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm text-white">Success Rate</span>
+                      <div className="flex items-center space-x-2">
+                        <div className="w-20 h-2 bg-white/20 rounded-full">
+                          <motion.div 
+                            className="h-full bg-secondary rounded-full"
+                            initial={{ width: 0 }}
+                            animate={{ width: "88%" }}
+                            transition={{ duration: 2, delay: 0.9 }}
+                          />
+                        </div>
+                        <span className="text-sm font-medium text-white">88%</span>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </motion.div>
