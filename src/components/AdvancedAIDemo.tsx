@@ -16,7 +16,7 @@ import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { pathfinderAI } from '@/lib/aiEngine';
-import { marketData } from '@/lib/marketData';
+import { marketDataEngine } from '@/lib/marketData';
 import { personalityEngine } from '@/lib/personalityEngine';
 
 const careerPaths = [
@@ -204,8 +204,8 @@ What's your current background or experience level in this field?`,
     try {
       // Real AI analysis with enhanced prompting
       const careerAnalysis = await pathfinderAI.analyzeCareerGoal(goalText, userProfile);
-      const marketAnalysis = await marketData.getJobMarketData(goalText);
-      const trendingSkills = await marketData.getTrendingSkills();
+      const marketAnalysis = await marketDataEngine.getJobMarketData(goalText);
+      const trendingSkills = await marketDataEngine.getTrendingSkills();
       
       setUserProfile(prev => ({
         ...prev,
