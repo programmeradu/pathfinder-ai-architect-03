@@ -1,15 +1,16 @@
 
-import { Router } from 'express';
+import type { Express } from "express";
+import { createServer, type Server } from "http";
 import { GoogleGenerativeAI } from '@google/generative-ai';
+import { storage } from "./storage";
 
-const router = Router();
+export async function registerRoutes(app: Express): Promise<Server> {
+  // Initialize Gemini AI
+  const genAI = new GoogleGenerativeAI('AIzaSyCrpYzIeAj5jmekAsn5qgpcOWrBDY77vHw');
+  const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
 
-// Initialize Gemini AI
-const genAI = new GoogleGenerativeAI('AIzaSyCrpYzIeAj5jmekAsn5qgpcOWrBDY77vHw');
-const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
-
-// AI Chat endpoint for career mentorship
-router.post('/api/chat', async (req, res) => {
+  // AI Chat endpoint for career mentorship
+  app.post('/api/chat', async (req, res) => {
   try {
     const { message, conversationHistory = [] } = req.body;
     
@@ -42,11 +43,11 @@ router.post('/api/chat', async (req, res) => {
       success: false 
     });
   }
-});
+  });
 
-// Career Path Generation endpoint
-router.post('/api/generate-path', async (req, res) => {
-  try {
+  // Career Path Generation endpoint
+  app.post('/api/generate-path', async (req, res) => {
+    try {
     const { goal, currentLevel = 'beginner', timeframe = '6 months' } = req.body;
     
     const prompt = `As PathfinderAI, create a comprehensive career development path for this goal: "${goal}"
@@ -91,11 +92,11 @@ router.post('/api/generate-path', async (req, res) => {
       success: false 
     });
   }
-});
+  });
 
-// Global Opportunities Search endpoint
-router.post('/api/search-opportunities', async (req, res) => {
-  try {
+  // Global Opportunities Search endpoint
+  app.post('/api/search-opportunities', async (req, res) => {
+    try {
     const { career, location = 'global', type = 'all' } = req.body;
     
     const prompt = `As PathfinderAI, search for comprehensive global opportunities for someone pursuing: "${career}"
@@ -137,6 +138,9 @@ router.post('/api/search-opportunities', async (req, res) => {
       success: false 
     });
   }
-});
+  });
 
-export default router;
+  const httpServer = createServer(app);
+  
+  return httpServer;
+}
