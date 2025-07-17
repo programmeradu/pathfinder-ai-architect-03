@@ -97,11 +97,27 @@ const MobileIndex = () => {
 
       {/* Mobile Hero Section */}
       <section className="relative overflow-hidden min-h-screen flex items-center pt-16">
-        {/* Enhanced Background with futuristic image */}
-        <div 
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-          style={{ backgroundImage: `url(/src/assets/hero-futuristic.jpg)` }}
-        />
+        {/* Video Background */}
+        <div className="absolute inset-0 w-full h-full">
+          <iframe 
+            allow="fullscreen;autoplay" 
+            allowFullScreen 
+            src="https://streamable.com/e/peqv3j?autoplay=1&nocontrols=1&muted=1" 
+            className="absolute inset-0 w-full h-full"
+            style={{
+              border: 'none',
+              width: '100%',
+              height: '100%',
+              position: 'absolute',
+              left: '0px',
+              top: '0px',
+              overflow: 'hidden',
+              transform: 'scale(1.1)', // Slight scale to ensure full coverage on mobile
+              transformOrigin: 'center center'
+            }}
+            title="Hero Background Video"
+          />
+        </div>
         <div className="absolute inset-0 bg-gradient-to-br from-background/85 via-background/65 to-background/75" />
         
         {/* Mobile Floating Elements */}
