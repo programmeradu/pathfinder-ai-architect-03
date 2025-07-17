@@ -58,41 +58,42 @@ Always maintain conversation context and build upon previous messages. If you do
 
   // Enhanced prompt engineering for specific career analysis
   private createCareerAnalysisPrompt(goal: string, background?: any): string {
-    return `Analyze this career goal with advanced intelligence: "${goal}"
+    return `You are a world-class career architect with expertise across ALL industries and career paths. Analyze this career goal: "${goal}"
 
-Provide a comprehensive analysis including:
+CRITICAL: This analysis must be relevant to ANY career field - healthcare, business, arts, law, education, trades, government, etc. NOT just technology.
 
+Provide a comprehensive, industry-appropriate analysis including:
 1. SKILL GAP ANALYSIS:
-   - Core skills needed
-   - Foundational prerequisites
-   - Advanced/specialized skills
-   - Estimated learning timeline
+   - Core competencies for this specific field
+   - Educational requirements (degrees, certifications, licenses)
+   - Professional skills and soft skills needed
+   - Realistic timeline for career transition
 
 2. MARKET ANALYSIS:
-   - Current job market demand
-   - Salary ranges by location
-   - Growth projections
-   - Competition level
+   - Industry demand and job availability
+   - Salary expectations for this field
+   - Career growth potential and advancement paths
+   - Industry competition and job security
 
 3. LEARNING PATHWAYS:
-   - Recommended learning sequence
-   - Best resources (free and paid)
-   - Practical projects to build
-   - Certifications that matter
+   - Educational path (formal education, apprenticeships, self-study)
+   - Industry-specific resources and training programs
+   - Professional development opportunities
+   - Networking and mentorship strategies
 
 4. REAL-WORLD INSIGHTS:
-   - Day-in-the-life overview
-   - Common career progression paths
-   - Industry challenges and opportunities
-   - Remote work possibilities
+   - Typical work environment and daily responsibilities
+   - Career progression and promotion opportunities
+   - Industry challenges and growth areas
+   - Work-life balance and job flexibility
 
 5. PERSONALIZED RECOMMENDATIONS:
-   - Immediate next steps (this week)
-   - 3-month milestones
-   - 6-month goals
-   - 1-year target
+   - Immediate action steps to start this career path
+   - Short-term goals (3-6 months)
+   - Medium-term objectives (1-2 years)
+   - Long-term career vision (5+ years)
 
-Structure your response as an expert career consultant would, with specific data points and actionable advice.`;
+Respond as a knowledgeable career advisor who understands this specific industry deeply. Use industry-appropriate terminology and provide actionable, realistic guidance.`;
   }
 
   // Conversation memory management

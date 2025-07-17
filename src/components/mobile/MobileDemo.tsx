@@ -218,7 +218,7 @@ export function MobileDemo() {
               <div className="space-y-4">
                 <div className="relative">
                   <Input
-                    placeholder="e.g., Full-Stack Developer"
+                    placeholder="e.g., Become a Doctor, Start a Restaurant, Teach Abroad"
                     value={goalText}
                     onChange={(e) => setGoalText(e.target.value)}
                     className="text-center py-3 pr-12 bg-background/50 rounded-xl"

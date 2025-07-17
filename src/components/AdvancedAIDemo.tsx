@@ -19,6 +19,104 @@ import { pathfinderAI } from '@/lib/aiEngine';
 import { marketData } from '@/lib/marketData';
 import { personalityEngine } from '@/lib/personalityEngine';
 
+const careerPaths = [
+  {
+    title: "Academic & Research Path",
+    description: "Universities, PhDs, research positions across all fields",
+    opportunities: 12,
+    icon: GraduationCap,
+    color: "from-blue-500 to-purple-600",
+    examples: ["Medical School", "Law School", "PhD Programs", "Research Positions"]
+  },
+  {
+    title: "Professional Training",
+    description: "Certifications, bootcamps, trade schools across industries",
+    opportunities: 28,
+    icon: Building,
+    color: "from-green-500 to-emerald-600",
+    examples: ["Medical Certifications", "Financial Licenses", "Trade Apprenticeships", "IT Bootcamps"]
+  },
+  {
+    title: "International Careers",
+    description: "Global opportunities in any field with relocation support",
+    opportunities: 45,
+    icon: Globe,
+    color: "from-orange-500 to-red-600",
+    examples: ["Teaching English Abroad", "International Business", "Diplomatic Corps", "Global NGOs"]
+  },
+  {
+    title: "Entrepreneurship & Freelance",
+    description: "Start your own business or freelance career",
+    opportunities: 34,
+    icon: Rocket,
+    color: "from-purple-500 to-pink-600",
+    examples: ["Consulting Practice", "Creative Agency", "E-commerce Business", "Freelance Services"]
+  }
+];
+
+const globalOpportunities = [
+  {
+    type: 'medical',
+    title: 'Johns Hopkins Medical School',
+    location: 'Baltimore, USA',
+    description: 'World-renowned medical program with research opportunities',
+    cost: '$62,000/year',
+    icon: GraduationCap,
+    match: 95,
+    color: 'from-blue-500 to-purple-600'
+  },
+  {
+    type: 'business',
+    title: 'Harvard Business School MBA',
+    location: 'Cambridge, USA',
+    description: 'Elite MBA program with global network',
+    cost: '$73,000/year',
+    icon: Building,
+    match: 88,
+    color: 'from-green-500 to-teal-600'
+  },
+  {
+    type: 'creative',
+    title: 'Art Director - Pixar',
+    location: 'Emeryville, USA',
+    description: 'Lead creative projects in animated films',
+    salary: '$95,000 - $145,000',
+    icon: Briefcase,
+    match: 82,
+    color: 'from-orange-500 to-red-600'
+  },
+  {
+    type: 'government',
+    title: 'Foreign Service Officer',
+    location: 'Washington DC, USA',
+    description: 'Diplomatic career with international postings',
+    salary: '$52,000 - $85,000',
+    icon: Plane,
+    match: 91,
+    color: 'from-purple-500 to-pink-600'
+  },
+  {
+    type: 'healthcare',
+    title: 'Nurse Practitioner Program',
+    location: 'Multiple Locations',
+    description: 'Advanced nursing practice with specialization',
+    salary: '$95,000 - $125,000',
+    icon: Building,
+    match: 86,
+    color: 'from-indigo-500 to-blue-600'
+  },
+  {
+    type: 'education',
+    title: 'Elementary School Teacher',
+    location: 'Various States',
+    description: 'Shape young minds with teaching certification',
+    salary: '$40,000 - $65,000',
+    icon: Globe,
+    match: 78,
+    color: 'from-cyan-500 to-blue-600'
+  }
+];
+
 interface Message {
   id: string;
   role: 'user' | 'assistant' | 'system';
@@ -782,11 +880,6 @@ What's your current background or experience level in this field?`,
                             </motion.div>
                           )}
                         </div>
-                        {message.role === 'user' && (
-                          <Avatar className="h-6 w-6 mt-1">
-                            <AvatarFallback className="bg-muted text-muted-foreground text-xs">U</AvatarFallback>
-                          </Avatar>
-                        )}
                         {message.role === 'user' && (
                           <Avatar className="h-6 w-6 mt-1">
                             <AvatarFallback className="bg-muted text-muted-foreground text-xs">U</AvatarFallback>
