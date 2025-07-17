@@ -177,7 +177,7 @@ const Index = () => {
           </div>
         </div>
         <div className="absolute inset-0 bg-gradient-to-br from-background/85 via-background/65 to-background/75" />
-        
+
         {/* Floating UI Components */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           {/* AI Brain Node */}
@@ -290,7 +290,7 @@ const Index = () => {
                 />
                 <span className="text-sm font-medium text-primary">AI-Powered Global Career Engine</span>
               </motion.div>
-            
+
             {/* Clean Headline */}
             <motion.h1 
               className="font-poppins font-bold text-4xl md:text-6xl lg:text-7xl mb-6 text-foreground leading-tight"
@@ -301,7 +301,7 @@ const Index = () => {
                 Career Path
               </span>
             </motion.h1>
-            
+
             {/* Concise Description */}
             <motion.p 
               className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto mb-12 leading-relaxed"
@@ -325,7 +325,7 @@ const Index = () => {
                   <ArrowRight className="h-5 w-5 ml-2" />
                 </span>
               </Button>
-              
+
               <Button 
                 variant="outline" 
                 size="lg"
@@ -360,79 +360,6 @@ const Index = () => {
                 </motion.div>
               ))}
             </motion.div>
-            </motion.div>
-            
-            {/* Feature Highlights */}
-            <motion.div
-              className="relative"
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 1, delay: 0.6 }}
-            >
-              <div className="bg-gradient-card rounded-3xl p-8 shadow-dramatic border border-border/50 backdrop-blur-sm">
-                <div className="space-y-6">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center space-x-3">
-                      <div className="w-10 h-10 bg-gradient-premium rounded-lg flex items-center justify-center">
-                        <BarChart3 className="h-5 w-5 text-white" />
-                      </div>
-                      <div>
-                        <div className="font-semibold text-white">AI-Powered Career Analysis</div>
-                        <div className="text-sm text-white/70">Real-time opportunity matching</div>
-                      </div>
-                    </div>
-                    <div className="text-right">
-                      <div className="text-2xl font-bold text-accent">Live</div>
-                      <div className="text-xs text-white/70">Active Now</div>
-                    </div>
-                  </div>
-                  
-                  <div className="space-y-3">
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm text-white">Global Opportunities</span>
-                      <div className="flex items-center space-x-2">
-                        <div className="w-20 h-2 bg-white/20 rounded-full">
-                          <motion.div 
-                            className="h-full bg-accent rounded-full"
-                            initial={{ width: 0 }}
-                            animate={{ width: "95%" }}
-                            transition={{ duration: 2, delay: 0.5 }}
-                          />
-                        </div>
-                        <span className="text-sm font-medium text-white">50M+</span>
-                      </div>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm text-white">AI Accuracy</span>
-                      <div className="flex items-center space-x-2">
-                        <div className="w-20 h-2 bg-white/20 rounded-full">
-                          <motion.div 
-                            className="h-full bg-primary rounded-full"
-                            initial={{ width: 0 }}
-                            animate={{ width: "92%" }}
-                            transition={{ duration: 2, delay: 0.7 }}
-                          />
-                        </div>
-                        <span className="text-sm font-medium text-white">92%</span>
-                      </div>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm text-white">Success Rate</span>
-                      <div className="flex items-center space-x-2">
-                        <div className="w-20 h-2 bg-white/20 rounded-full">
-                          <motion.div 
-                            className="h-full bg-secondary rounded-full"
-                            initial={{ width: 0 }}
-                            animate={{ width: "88%" }}
-                            transition={{ duration: 2, delay: 0.9 }}
-                          />
-                        </div>
-                        <span className="text-sm font-medium text-white">88%</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
             </motion.div>
           </div>
         </div>
@@ -558,7 +485,7 @@ const Index = () => {
                       <div className="text-xs text-muted-foreground">Success Rate</div>
                     </div>
                   </div>
-                  
+
                   <div className="space-y-3">
                     <div className="flex items-center justify-between">
                       <span className="text-sm">Goal Achievement</span>
@@ -606,7 +533,10 @@ const Index = () => {
                 </div>
               </div>
             </motion.div>
-          </motion.div>
+</motion.div>
+            </motion.div>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -957,7 +887,7 @@ const Index = () => {
             transition={{ duration: 25, repeat: Infinity }}
           />
         </div>
-        
+
         <div className="container mx-auto px-4 relative">
           <motion.div
             className="max-w-3xl mx-auto text-center text-white"
@@ -970,15 +900,15 @@ const Index = () => {
               <Rocket className="h-4 w-4 mr-2 text-accent" />
               <span className="text-sm font-medium">Join the Future of Learning</span>
             </div>
-            
+
             <h2 className="font-poppins font-bold text-4xl md:text-6xl mb-8">
               Ready to Build Your Future?
             </h2>
-            
+
             <p className="text-xl mb-12 opacity-90 leading-relaxed">
               Join 10,000+ ambitious learners who are already transforming their careers with AI-powered guidance.
             </p>
-            
+
             <form onSubmit={handleEmailSubmit} className="max-w-lg mx-auto mb-8">
               <div className="flex flex-col sm:flex-row gap-4">
                 <Input
@@ -1006,12 +936,15 @@ const Index = () => {
                 </Button>
               </div>
             </form>
-            
+
             <div className="flex items-center justify-center mt-8 text-white/80">
               <CheckCircle className="h-5 w-5 mr-3" />
               <span>Free forever • No credit card required • Join 10,000+ learners</span>
             </div>
-          </motion.div>
+</motion.div>
+            </motion.div>
+            </div>
+          </div>
         </div>
       </section>
     </div>
