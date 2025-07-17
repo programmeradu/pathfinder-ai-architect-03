@@ -1,0 +1,45 @@
+ rest-express@1.0.0 dev
+> NODE_ENV=development tsx server/index.ts
+
+Browser initialization failed, using fallback scraping methods: Error: Failed to launch the browser process!
+/home/runner/.cache/puppeteer/chrome/linux-138.0.7204.157/chrome-linux64/chrome: error while loading shared libraries: libglib-2.0.so.0: cannot open shared object file: No such file or directory
+
+
+TROUBLESHOOTING: https://pptr.dev/troubleshooting
+
+    at Interface.onClose (/home/runner/workspace/node_modules/@puppeteer/browsers/src/launch.ts:507:11)
+    at Interface.emit (node:events:530:35)
+    at Interface.close (node:internal/readline/interface:527:10)
+    at Socket.onend (node:internal/readline/interface:253:10)
+    at Socket.emit (node:events:530:35)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:82:21)
+Re-optimizing dependencies because lockfile has changed
+2:07:25 AM [express] serving on port 5000
+Error:   Failed to scan for dependencies from entries:
+  /home/runner/workspace/client/index.html
+
+  ✘ [ERROR] Unexpected closing "div" tag does not match opening "motion.div" tag
+
+    client/src/pages/Index.tsx:536:12:
+      536 │           </div>
+          │             ~~~
+          ╵             motion.div
+
+  The opening "motion.div" tag is here:
+
+    client/src/pages/Index.tsx:391:11:
+      391 │           <motion.div
+          ╵            ~~~~~~~~~~
+
+
+    at failureErrorWithLog (/home/runner/workspace/node_modules/vite/node_modules/esbuild/lib/main.js:1472:15)
+    at /home/runner/workspace/node_modules/vite/node_modules/esbuild/lib/main.js:945:25
+    at runOnEndCallbacks (/home/runner/workspace/node_modules/vite/node_modules/esbuild/lib/main.js:1315:45)
+    at buildResponseToResult (/home/runner/workspace/node_modules/vite/node_modules/esbuild/lib/main.js:943:7)
+    at /home/runner/workspace/node_modules/vite/node_modules/esbuild/lib/main.js:955:9
+    at new Promise (<anonymous>)
+    at requestCallbacks.on-end (/home/runner/workspace/node_modules/vite/node_modules/esbuild/lib/main.js:954:54)
+    at handleRequest (/home/runner/workspace/node_modules/vite/node_modules/esbuild/lib/main.js:647:17)
+    at handleIncomingPacket (/home/runner/workspace/node_modules/vite/node_modules/esbuild/lib/main.js:672:7)
+    at Socket.readFromStdout (/home/runner/workspace/node_modules/vite/node_modules/esbuild/lib/main.js:600:7)
