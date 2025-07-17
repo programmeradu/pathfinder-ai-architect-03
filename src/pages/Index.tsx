@@ -162,7 +162,7 @@ const Index = () => {
         </video>
         
         {/* Overlay for text readability */}
-        <div className="absolute inset-0 bg-gradient-to-br from-black/50 via-black/30 to-black/50 z-10" />
+        <div className="absolute inset-0 bg-gradient-to-br from-background/20 via-background/10 to-background/20 z-10" />
         
         {/* Floating UI Components */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none z-20">
@@ -265,11 +265,7 @@ const Index = () => {
           >
             {/* Compact Badge */}
             <motion.div
-              className="inline-flex items-center bg-primary/30 backdrop-blur-md rounded-full px-6 py-2 mb-8 border-2 border-primary/50 shadow-2xl"
-              style={{
-                textShadow: '0 2px 8px rgba(0, 0, 0, 0.8)',
-                boxShadow: '0 8px 32px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.1)'
-              }}
+              className="inline-flex items-center bg-primary/10 backdrop-blur-sm rounded-full px-6 py-2 mb-8 border border-primary/20"
               variants={fadeInUp}
             >
               <motion.div
@@ -277,18 +273,12 @@ const Index = () => {
                 animate={{ scale: [1, 1.3, 1], opacity: [0.5, 1, 0.5] }}
                 transition={{ duration: 2, repeat: Infinity }}
               />
-              <span className="text-sm font-medium text-white drop-shadow-lg">AI-Powered Global Career Engine</span>
+              <span className="text-sm font-medium text-primary">AI-Powered Global Career Engine</span>
             </motion.div>
             
             {/* Clean Headline */}
             <motion.h1 
-              className="font-poppins font-bold text-4xl md:text-6xl lg:text-7xl mb-6 text-white leading-tight"
-              style={{
-                textShadow: '0 4px 20px rgba(0, 0, 0, 0.9), 0 2px 8px rgba(0, 0, 0, 0.7), 0 1px 3px rgba(0, 0, 0, 1)',
-                filter: 'drop-shadow(0 0 10px rgba(0, 0, 0, 0.8))',
-                WebkitTextStroke: '1px rgba(0, 0, 0, 0.3)',
-                letterSpacing: '-0.02em'
-              }}
+              className="font-poppins font-bold text-4xl md:text-6xl lg:text-7xl mb-6 text-foreground leading-tight"
               variants={fadeInUp}
             >
               Discover Your Perfect
@@ -299,12 +289,7 @@ const Index = () => {
             
             {/* Concise Description */}
             <motion.p 
-              className="text-lg md:text-xl text-white max-w-3xl mx-auto mb-12 leading-relaxed bg-black/30 backdrop-blur-md rounded-2xl px-8 py-6 border-2 border-white/20"
-              style={{
-                textShadow: '0 2px 10px rgba(0, 0, 0, 0.9), 0 1px 3px rgba(0, 0, 0, 1)',
-                boxShadow: '0 8px 32px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1)',
-                filter: 'drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3))'
-              }}
+              className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto mb-12 leading-relaxed"
               variants={fadeInUp}
             >
               AI analyzes 50M+ global opportunities across universities, training programs, 
@@ -318,14 +303,10 @@ const Index = () => {
             >
               <Button 
                 size="lg" 
-                className="bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 text-white font-semibold px-8 py-3 rounded-full border-2 border-white/30 backdrop-blur-sm"
-                style={{
-                  textShadow: '0 2px 4px rgba(0, 0, 0, 0.8)',
-                  boxShadow: '0 8px 32px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.2)'
-                }}
+                className="bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 text-white font-semibold px-8 py-3 rounded-full shadow-elegant"
               >
                 <span className="flex items-center">
-                  <span className="drop-shadow-lg">Start Your Journey</span>
+                  Start Your Journey
                   <ArrowRight className="h-5 w-5 ml-2" />
                 </span>
               </Button>
@@ -333,15 +314,11 @@ const Index = () => {
               <Button 
                 variant="outline" 
                 size="lg"
-                className="border-white/50 text-white hover:bg-white/20 px-8 py-3 rounded-full bg-black/20 backdrop-blur-md border-2"
-                style={{
-                  textShadow: '0 2px 8px rgba(0, 0, 0, 0.9), 0 1px 3px rgba(0, 0, 0, 1)',
-                  boxShadow: '0 8px 32px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.1)'
-                }}
+                className="border-primary/30 text-primary hover:bg-primary/10 px-8 py-3 rounded-full"
               >
                 <span className="flex items-center">
                   <Play className="h-5 w-5 mr-2" />
-                  <span className="drop-shadow-lg">Watch Demo</span>
+                  Watch Demo
                 </span>
               </Button>
             </motion.div>
@@ -359,28 +336,12 @@ const Index = () => {
               ].map((stat, index) => (
                 <motion.div
                   key={index}
-                  className="text-center p-4 rounded-2xl bg-black/40 border-2 border-white/30 backdrop-blur-md"
-                  style={{
-                    boxShadow: '0 8px 32px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.2)'
-                  }}
+                  className="text-center p-4 rounded-2xl bg-gradient-to-br from-background to-muted/20 border border-border/50"
                   whileHover={{ scale: 1.05, y: -2 }}
                   transition={{ duration: 0.2 }}
                 >
-                  <div 
-                    className="text-2xl md:text-3xl font-bold text-white mb-1"
-                    style={{ 
-                      textShadow: '0 2px 8px rgba(0, 0, 0, 0.9), 0 1px 3px rgba(0, 0, 0, 1)',
-                      filter: 'drop-shadow(0 0 8px rgba(59, 130, 246, 0.8))'
-                    }}
-                  >
-                    {stat.value}
-                  </div>
-                  <div 
-                    className="text-sm text-white font-medium"
-                    style={{ textShadow: '0 1px 4px rgba(0, 0, 0, 0.9)' }}
-                  >
-                    {stat.label}
-                  </div>
+                  <div className="text-2xl md:text-3xl font-bold text-primary mb-1">{stat.value}</div>
+                  <div className="text-sm text-muted-foreground">{stat.label}</div>
                 </motion.div>
               ))}
             </motion.div>
