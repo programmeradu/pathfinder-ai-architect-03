@@ -74,8 +74,10 @@ All colors MUST be HSL.
   }
 
   /* Video Background Styles */
-  video {
+  iframe[title="Background Video"] {
     pointer-events: none;
+    border: none;
+    outline: none;
   }
 
   .dark {
