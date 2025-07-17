@@ -941,7 +941,7 @@ const Index = () => {
           </motion.div>
         </div>
       </section>
-    </motion.div>
+    </div>
   )
 }
 
