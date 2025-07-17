@@ -464,7 +464,7 @@ export function InteractiveDemo() {
                             }`}
                             whileHover={{ scale: 1.1, z: 10 }}
                           >
-                            <div className="text-xs font-medium">{skill.name}</div>
+                            <div className="ext-xs font-medium">{skill.name}</div>
                             <div className="text-xs opacity-80">{skill.level}</div>
                             <div className="mt-1 h-1 bg-background/20 rounded-full overflow-hidden">
                               <motion.div
