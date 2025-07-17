@@ -114,7 +114,7 @@ const MobileIndex = () => {
         </video>
         
         {/* Overlay for text readability */}
-        <div className="absolute inset-0 bg-gradient-to-br from-background/80 via-background/60 to-background/70 z-10" />
+        <div className="absolute inset-0 bg-gradient-to-br from-background/20 via-background/10 to-background/20 z-10" />
         
         {/* Mobile Floating Elements */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none z-20">

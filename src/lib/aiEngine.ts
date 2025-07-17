@@ -20,7 +20,7 @@ export class PathfinderAI {
     
     this.genAI = new GoogleGenerativeAI(apiKey);
     this.model = this.genAI.getGenerativeModel({ 
-      model: 'gemini-pro',
+      model: 'gemini-2.0-flash',
       generationConfig: {
         temperature: 0.7,
         topK: 40,

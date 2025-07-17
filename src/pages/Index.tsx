@@ -15,8 +15,7 @@ import { ThemeToggle } from "@/components/ui/theme-toggle"
 import heroVideo from "@/assets/The_Gardener_and_the_Seed__Ov.mp4"
 import elenaImage from "@/assets/testimonial-elena.jpg"
 import davidImage from "@/assets/testimonial-david.jpg"
-// import { InteractiveDemo } from "@/components/InteractiveDemo"
-import { EnhancedDemo } from "@/components/EnhancedDemo"
+import { AdvancedAIDemo } from "@/components/AdvancedAIDemo"
 
 const Index = () => {
   const [email, setEmail] = useState("")
@@ -163,7 +162,7 @@ const Index = () => {
         </video>
         
         {/* Overlay for text readability */}
-        <div className="absolute inset-0 bg-gradient-to-br from-background/80 via-background/60 to-background/70 z-10" />
+        <div className="absolute inset-0 bg-gradient-to-br from-background/20 via-background/10 to-background/20 z-10" />
         
         {/* Floating UI Components */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none z-20">
@@ -551,7 +550,7 @@ const Index = () => {
             viewport={{ once: true }}
             className="max-w-5xl mx-auto"
           >
-            <EnhancedDemo />
+            <AdvancedAIDemo />
           </motion.div>
         </div>
       </section>
