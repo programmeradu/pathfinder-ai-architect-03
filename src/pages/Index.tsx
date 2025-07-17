@@ -147,33 +147,8 @@ const Index = () => {
       {/* Hero Section */}
       <section className="relative overflow-hidden min-h-screen flex items-center pt-20">
         {/* Video Background Container */}
-        <div className="absolute inset-0 w-full h-full z-0 bg-gray-900">
-          {/* Primary Video */}
-          <div className="absolute inset-0 w-full h-full">
-            <iframe 
-              allow="autoplay; fullscreen" 
-              allowFullScreen 
-              src="https://streamable.com/e/peqv3j?autoplay=1&nocontrols=1&muted=1" 
-              className="absolute inset-0 w-full h-full"
-              style={{
-                border: 'none',
-                width: '100%',
-                height: '100%',
-                position: 'absolute',
-                left: '0px',
-                top: '0px',
-                overflow: 'hidden',
-                minWidth: '100%',
-                minHeight: '100%',
-                transform: 'scale(1.02)',
-                transformOrigin: 'center center'
-              }}
-              title="Hero Background Video"
-              loading="eager"
-            />
-          </div>
-          
-          {/* Fallback Video (Alternative source) */}
+        <div className="absolute inset-0 w-full h-full z-0">
+          {/* Primary Video - Direct MP4 */}
           <video 
             autoPlay 
             muted 
@@ -181,14 +156,28 @@ const Index = () => {
             playsInline
             className="absolute inset-0 w-full h-full object-cover"
             style={{
-              zIndex: -1,
-              minWidth: '100%',
-              minHeight: '100%'
+              width: '100%',
+              height: '100%',
+              objectFit: 'cover'
+            }}
+            onError={(e) => {
+              console.log('Video failed to load:', e);
+              // Hide video on error
+              e.currentTarget.style.display = 'none';
             }}
           >
-            <source src="https://v2.streamable.com/peqv3j.mp4" type="video/mp4" />
-            {/* Static background as final fallback */}
+            <source src="https://cdn.streamable.com/video/peqv3j.mp4" type="video/mp4" />
+            <source src="https://streamable.com/peqv3j.mp4" type="video/mp4" />
           </video>
+          
+          {/* Fallback: Animated gradient background */}
+          <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-blue-900 to-purple-900 animate-gradient-shift" 
+               style={{ backgroundSize: '400% 400%' }} />
+          
+          {/* Additional pattern overlay for visual interest */}
+          <div className="absolute inset-0 opacity-20">
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent animate-pulse" />
+          </div>
         </div>
         <div className="absolute inset-0 bg-gradient-to-br from-background/85 via-background/65 to-background/75" />
         
