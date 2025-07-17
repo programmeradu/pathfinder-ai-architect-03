@@ -162,7 +162,7 @@ const Index = () => {
         </video>
         
         {/* Overlay for text readability */}
-        <div className="absolute inset-0 bg-gradient-to-br from-background/20 via-background/10 to-background/20 z-10" />
+        <div className="absolute inset-0 bg-gradient-to-r from-background/40 via-transparent to-transparent z-10" />
         
         {/* Floating UI Components */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none z-20">
@@ -256,30 +256,32 @@ const Index = () => {
           </svg>
         </div>
 
-        <div className="relative container mx-auto px-4 py-20 z-30">
+        <div className="relative container mx-auto px-8 py-20 z-30">
           <motion.div
-            className="max-w-4xl mx-auto text-center"
+            className="max-w-3xl text-left"
             variants={staggerContainer}
             initial="initial"
             animate="animate"
           >
             {/* Compact Badge */}
             <motion.div
-              className="inline-flex items-center bg-primary/10 backdrop-blur-sm rounded-full px-6 py-2 mb-8 border border-primary/20"
+              className="inline-flex items-center bg-primary/20 backdrop-blur-sm rounded-full px-4 py-2 mb-6 border border-primary/30 shadow-lg"
               variants={fadeInUp}
+              style={{ textShadow: '0 2px 4px rgba(0,0,0,0.3)' }}
             >
               <motion.div
                 className="w-2 h-2 bg-primary rounded-full mr-3"
                 animate={{ scale: [1, 1.3, 1], opacity: [0.5, 1, 0.5] }}
                 transition={{ duration: 2, repeat: Infinity }}
               />
-              <span className="text-sm font-medium text-primary">AI-Powered Global Career Engine</span>
+              <span className="text-xs font-medium text-primary">AI-Powered Global Career Engine</span>
             </motion.div>
             
             {/* Clean Headline */}
             <motion.h1 
-              className="font-poppins font-bold text-4xl md:text-6xl lg:text-7xl mb-6 text-foreground leading-tight"
+              className="font-poppins font-bold text-3xl md:text-5xl lg:text-6xl mb-4 text-foreground leading-tight border border-white/20 bg-background/10 backdrop-blur-sm rounded-2xl p-6 shadow-2xl"
               variants={fadeInUp}
+              style={{ textShadow: '2px 2px 8px rgba(0,0,0,0.7)' }}
             >
               Discover Your Perfect
               <span className="block bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
@@ -289,8 +291,9 @@ const Index = () => {
             
             {/* Concise Description */}
             <motion.p 
-              className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto mb-12 leading-relaxed"
+              className="text-base md:text-lg text-foreground max-w-2xl mb-8 leading-relaxed bg-background/20 backdrop-blur-sm rounded-xl p-4 border border-white/10 shadow-lg"
               variants={fadeInUp}
+              style={{ textShadow: '1px 1px 4px rgba(0,0,0,0.6)' }}
             >
               AI analyzes 50M+ global opportunities across universities, training programs, 
               jobs, and relocations to build your personalized roadmap to success.
@@ -298,12 +301,12 @@ const Index = () => {
 
             {/* Action Buttons */}
             <motion.div
-              className="flex flex-col sm:flex-row gap-4 justify-center mb-16"
+              className="flex flex-col sm:flex-row gap-4 mb-12"
               variants={fadeInUp}
             >
               <Button 
                 size="lg" 
-                className="bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 text-white font-semibold px-8 py-3 rounded-full shadow-elegant"
+                className="bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 text-white font-semibold px-6 py-3 rounded-full shadow-2xl border border-white/20"
               >
                 <span className="flex items-center">
                   Start Your Journey
@@ -314,7 +317,7 @@ const Index = () => {
               <Button 
                 variant="outline" 
                 size="lg"
-                className="border-primary/30 text-primary hover:bg-primary/10 px-8 py-3 rounded-full"
+                className="border-white/40 text-foreground hover:bg-white/20 px-6 py-3 rounded-full backdrop-blur-sm shadow-lg"
               >
                 <span className="flex items-center">
                   <Play className="h-5 w-5 mr-2" />
@@ -325,7 +328,7 @@ const Index = () => {
 
             {/* Compact Stats */}
             <motion.div
-              className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-3xl mx-auto"
+              className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-2xl"
               variants={fadeInUp}
             >
               {[
@@ -337,11 +340,12 @@ const Index = () => {
                 <motion.div
                   key={index}
                   className="text-center p-4 rounded-2xl bg-gradient-to-br from-background to-muted/20 border border-border/50"
+                  style={{ textShadow: '1px 1px 3px rgba(0,0,0,0.5)' }}
                   whileHover={{ scale: 1.05, y: -2 }}
                   transition={{ duration: 0.2 }}
                 >
-                  <div className="text-2xl md:text-3xl font-bold text-primary mb-1">{stat.value}</div>
-                  <div className="text-sm text-muted-foreground">{stat.label}</div>
+                  <div className="text-xl md:text-2xl font-bold text-primary mb-1">{stat.value}</div>
+                  <div className="text-xs text-foreground">{stat.label}</div>
                 </motion.div>
               ))}
             </motion.div>
