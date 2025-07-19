@@ -18,6 +18,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { pathfinderAI } from '@/lib/aiEngine';
 import { marketDataEngine } from '@/lib/marketData';
 import { personalityEngine } from '@/lib/personalityEngine';
+import { ResumeUpload } from './ResumeUpload';
 
 const careerPaths = [
   {
@@ -144,6 +145,7 @@ export function AdvancedAIDemo() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [currentMessage, setCurrentMessage] = useState('');
   const [isTyping, setIsTyping] = useState(false);
+  const [userProfile, setUserProfile] = useState<UserProfile>({});
   const [showAdvancedFeatures, setShowAdvancedFeatures] = useState(false);
   const [conversationDepth, setConversationDepth] = useState(0);
   const [demoUsageCount, setDemoUsageCount] = useState(0);
@@ -152,9 +154,6 @@ export function AdvancedAIDemo() {
   const [aiPersonality, setAiPersonality] = useState('mentor'); // mentor, analyzer, motivator
   const [emotionalState, setEmotionalState] = useState('neutral');
   const [showMentorResponse, setShowMentorResponse] = useState(false);
-  const [showResumeUpload, setShowResumeUpload] = useState(false);
-  const [userProfile, setUserProfile] = useState<any>({});
-  const [hasAnalyzedProfile, setHasAnalyzedProfile] = useState(false);
   
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const chatInputRef = useRef<HTMLInputElement>(null);
@@ -192,17 +191,11 @@ What's your current background or experience level in this field?`,
 
   const startAdvancedAnalysis = async () => {
     if (!goalText.trim()) {
-      setGoalText("Become a Full-Stack Developer");
+      setGoalText("Full-Stack Developer");
     }
 
     if (demoUsageCount >= 3) {
       setShowSignupPrompt(true);
-      return;
-    }
-
-    // If user hasn't uploaded profile, show upload option first
-    if (!hasAnalyzedProfile && demoUsageCount === 0) {
-      setShowResumeUpload(true);
       return;
     }
 
@@ -211,14 +204,17 @@ What's your current background or experience level in this field?`,
 
     try {
       // Real AI analysis with enhanced prompting
-      const enhancedPrompt = hasAnalyzedProfile 
-        ? `Analyze career goal "${goalText}" for someone with this background: ${JSON.stringify(userProfile)}`
-        : goalText;
-      
-      const careerAnalysis = await pathfinderAI.analyzeCareerGoal(enhancedPrompt, userProfile);
+      const careerAnalysis = await pathfinderAI.analyzeCareerGoal(goalText, userProfile);
       const marketAnalysis = await marketDataEngine.getJobMarketData(goalText);
       const trendingSkills = await marketDataEngine.getTrendingSkills();
       
+      setUserProfile(prev => ({
+        ...prev,
+        goal: goalText,
+        marketData: marketAnalysis,
+        trendingSkills
+      }));
+
       setRealTimeAnalysis({
         careerFit: 92,
         marketDemand: marketAnalysis.totalJobs || 1000,
@@ -237,21 +233,6 @@ What's your current background or experience level in this field?`,
       setIsAnalyzing(false);
       setCurrentStep(1);
     }
-  };
-
-  const handleProfileAnalyzed = (profile: any) => {
-    setUserProfile(profile);
-    setHasAnalyzedProfile(true);
-    setShowResumeUpload(false);
-    
-    // Auto-proceed to personality assessment
-    setTimeout(() => {
-      setCurrentStep(1);
-    }, 1000);
-  };
-
-  const handleAnalysisStart = () => {
-    setIsAnalyzing(true);
   };
 
   const completePersonalityAssessment = () => {
@@ -452,9 +433,8 @@ What's your current background or experience level in this field?`,
               className="space-y-8"
             >
               <div className="text-center space-y-6">
-                {/* Enhanced AI Badge */}
                 <motion.div
-                  className="w-20 h-20 bg-gradient-to-br from-primary via-accent to-secondary rounded-3xl flex items-center justify-center mx-auto relative shadow-glow"
+                  className="w-20 h-20 bg-gradient-to-br from-primary via-accent to-secondary rounded-3xl flex items-center justify-center mx-auto relative"
                   animate={{ 
                     rotate: [0, 5, -5, 0],
                     scale: [1, 1.05, 1]
@@ -463,7 +443,7 @@ What's your current background or experience level in this field?`,
                 >
                   <Target className="h-10 w-10 text-white" />
                   <motion.div
-                    className="absolute -top-2 -right-2 w-6 h-6 bg-gradient-to-r from-green-400 to-emerald-500 rounded-full flex items-center justify-center shadow-lg"
+                    className="absolute -top-2 -right-2 w-6 h-6 bg-green-500 rounded-full flex items-center justify-center"
                     animate={{ scale: [1, 1.2, 1] }}
                     transition={{ duration: 2, repeat: Infinity }}
                   >
@@ -473,254 +453,139 @@ What's your current background or experience level in this field?`,
                 
                 <div>
                   <h4 className="font-poppins font-bold text-2xl mb-3">
-                    {hasAnalyzedProfile ? 'Personalized Career Intelligence' : 'Advanced Career Intelligence Engine'}
+                    Advanced Career Intelligence Engine
                   </h4>
                   <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-                    {hasAnalyzedProfile 
-                      ? `AI analyzed your unique background and is ready to create a personalized path for "${goalText}"`
-                      : 'Experience AI that combines real-time market data, personality analysis, and conversation memory to provide insights no other system can match.'
-                    }
+                    Experience AI that combines real-time market data, personality analysis, and conversation memory 
+                    to provide insights no other system can match.
                   </p>
                 </div>
               </div>
 
-              {/* Resume Upload Section */}
-              <AnimatePresence>
-                {showResumeUpload && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -20 }}
-                    className="max-w-2xl mx-auto"
-                  >
-                    <div className="text-center mb-6">
-                      <h5 className="font-semibold text-lg mb-2">
-                        🚀 Get Hyper-Personalized Results
-                      </h5>
-                      <p className="text-muted-foreground text-sm">
-                        Upload your resume for AI analysis of your unique background and skills
-                      </p>
-                    </div>
-                    <ResumeUpload 
-                      onProfileAnalyzed={handleProfileAnalyzed}
-                      onAnalysisStart={handleAnalysisStart}
-                      isProcessing={isAnalyzing}
-                    />
-                    <div className="text-center mt-4">
-                      <Button 
-                        variant="outline"
-                        onClick={() => {
-                          setShowResumeUpload(false);
-                          startAdvancedAnalysis();
-                        }}
-                        className="text-sm"
-                      >
-                        Skip for now - use general analysis
-                      </Button>
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-
               {/* Enhanced Goal Input */}
-              {!showResumeUpload && (
-                <div className="max-w-2xl mx-auto space-y-6">
-                  {/* Profile Status */}
-                  {hasAnalyzedProfile && (
-                    <motion.div
-                      initial={{ opacity: 0, scale: 0.9 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      className="bg-gradient-to-r from-green-500/10 to-emerald-500/10 rounded-xl p-4 border border-green-500/20"
+              <div className="max-w-2xl mx-auto space-y-6">
+                <motion.div
+                  className="relative"
+                  whileFocus={{ scale: 1.02 }}
+                >
+                  <Input
+                    placeholder="e.g., Become an AI Engineer and work at a top tech company"
+                    value={goalText}
+                    onChange={(e) => setGoalText(e.target.value)}
+                    className="text-center text-lg py-6 pr-16 bg-background/50 border-2 border-border/50 rounded-2xl"
+                    onKeyPress={(e) => e.key === 'Enter' && !isAnalyzing && startAdvancedAnalysis()}
+                  />
+                  <motion.div
+                    className="absolute right-4 top-1/2 transform -translate-y-1/2"
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.9 }}
+                  >
+                    <Button
+                      size="sm"
+                      onClick={startAdvancedAnalysis}
+                      disabled={isAnalyzing || demoUsageCount >= 3}
+                      className="bg-gradient-to-r from-primary to-accent text-white border-0"
                     >
-                      <div className="flex items-center space-x-3">
-                        <CheckCircle className="h-5 w-5 text-green-500" />
-                        <div>
-                          <div className="font-medium text-sm">Profile Analyzed</div>
-                          <div className="text-xs text-muted-foreground">
-                            AI understands your {userProfile.yearsExperience} years of experience in {userProfile.industries?.[0]}
-                          </div>
+                      {isAnalyzing ? (
+                        <motion.div
+                          className="w-4 h-4 border-2 border-white border-t-transparent rounded-full"
+                          animate={{ rotate: 360 }}
+                          transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                        />
+                      ) : (
+                        <Brain className="h-4 w-4" />
+                      )}
+                    </Button>
+                  </motion.div>
+                </motion.div>
+
+                {/* AI Capabilities Preview */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {[
+                    { icon: Database, title: "Real-Time Market Data", desc: "Live job market analysis & salary data" },
+                    { icon: Brain, title: "Personality Assessment", desc: "Adaptive learning style detection" },
+                    { icon: Network, title: "Conversation Memory", desc: "Context-aware responses that build on history" },
+                    { icon: Rocket, title: "Predictive Analytics", desc: "AI forecasts your optimal career path" }
+                  ].map((feature, index) => (
+                    <motion.div
+                      key={index}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: index * 0.1 }}
+                      className="bg-background/50 rounded-xl p-4 border border-border/50 hover:shadow-smooth transition-all group"
+                      whileHover={{ scale: 1.02, y: -2 }}
+                    >
+                      <div className="flex items-start space-x-3">
+                        <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center group-hover:bg-primary/20 transition-colors">
+                          <feature.icon className="h-5 w-5 text-primary" />
                         </div>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => setShowResumeUpload(true)}
-                          className="ml-auto text-xs"
-                        >
-                          Update
-                        </Button>
+                        <div className="flex-1">
+                          <h5 className="font-semibold text-sm group-hover:text-primary transition-colors">
+                            {feature.title}
+                          </h5>
+                          <p className="text-xs text-muted-foreground">
+                            {feature.desc}
+                          </p>
+                        </div>
                       </div>
                     </motion.div>
-                  )}
+                  ))}
+                </div>
 
-                  <motion.div
-                    className="relative"
-                    whileFocus={{ scale: 1.02 }}
+                <motion.div
+                  className="text-center"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.8 }}
+                >
+                  <Button 
+                    onClick={startAdvancedAnalysis}
+                    disabled={isAnalyzing || demoUsageCount >= 3}
+                    size="lg"
+                    className="bg-gradient-to-r from-primary via-accent to-secondary text-white font-semibold px-12 py-4 rounded-2xl shadow-glow border-0 relative overflow-hidden group"
                   >
-                    <Input
-                      placeholder="e.g., Become an AI Engineer and work at a top tech company"
-                      value={goalText}
-                      onChange={(e) => setGoalText(e.target.value)}
-                      className={`text-center text-lg py-6 pr-16 bg-background/50 border-2 rounded-2xl transition-all ${
-                        hasAnalyzedProfile ? 'border-primary/50 shadow-glow' : 'border-border/50'
-                      }`}
-                      onKeyPress={(e) => e.key === 'Enter' && !isAnalyzing && startAdvancedAnalysis()}
-                    />
                     <motion.div
-                      className="absolute right-4 top-1/2 transform -translate-y-1/2"
-                      whileHover={{ scale: 1.1 }}
-                      whileTap={{ scale: 0.9 }}
-                    >
-                      <Button
-                        size="sm"
-                        onClick={startAdvancedAnalysis}
-                        disabled={isAnalyzing || demoUsageCount >= 3}
-                        className={`border-0 ${
-                          hasAnalyzedProfile 
-                            ? 'bg-gradient-to-r from-green-500 to-emerald-600 text-white' 
-                            : 'bg-gradient-to-r from-primary to-accent text-white'
-                        }`}
-                      >
-                        {isAnalyzing ? (
+                      className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent"
+                      initial={{ x: "-100%" }}
+                      whileHover={{ x: "100%" }}
+                      transition={{ duration: 0.6 }}
+                    />
+                    <span className="relative z-10 flex items-center">
+                      {isAnalyzing ? (
+                        <>
                           <motion.div
-                            className="w-4 h-4 border-2 border-white border-t-transparent rounded-full"
+                            className="w-5 h-5 border-2 border-white border-t-transparent rounded-full mr-3"
                             animate={{ rotate: 360 }}
                             transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
                           />
-                        ) : (
-                          hasAnalyzedProfile ? <Sparkles className="h-4 w-4" /> : <Brain className="h-4 w-4" />
-                        )}
-                      </Button>
-                    </motion.div>
-                  </motion.div>
-
-                  {/* AI Capabilities Preview */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {[
-                      { 
-                        icon: hasAnalyzedProfile ? CheckCircle : FileText, 
-                        title: hasAnalyzedProfile ? "Profile Analyzed" : "Resume Analysis", 
-                        desc: hasAnalyzedProfile ? "Your background is mapped" : "Multi-modal AI reads your resume" 
-                      },
-                      { icon: Database, title: "Real-Time Market Data", desc: "Live job market analysis & salary data" },
-                      { icon: Network, title: "Conversation Memory", desc: "Context-aware responses that build on history" },
-                      { icon: Rocket, title: "Predictive Analytics", desc: "AI forecasts your optimal career path" }
-                    ].map((feature, index) => (
-                      <motion.div
-                        key={index}
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: index * 0.1 }}
-                        className={`rounded-xl p-4 border hover:shadow-smooth transition-all group ${
-                          feature.title.includes('Profile') && hasAnalyzedProfile
-                            ? 'bg-gradient-to-r from-green-500/5 to-emerald-500/5 border-green-500/20'
-                            : 'bg-background/50 border-border/50'
-                        }`}
-                        whileHover={{ scale: 1.02, y: -2 }}
-                      >
-                        <div className="flex items-start space-x-3">
-                          <div className={`w-10 h-10 rounded-lg flex items-center justify-center transition-colors ${
-                            feature.title.includes('Profile') && hasAnalyzedProfile
-                              ? 'bg-green-500/10 group-hover:bg-green-500/20'
-                              : 'bg-primary/10 group-hover:bg-primary/20'
-                          }`}>
-                            <feature.icon className={`h-5 w-5 ${
-                              feature.title.includes('Profile') && hasAnalyzedProfile ? 'text-green-500' : 'text-primary'
-                            }`} />
-                          </div>
-                          <div className="flex-1">
-                            <h5 className="font-semibold text-sm group-hover:text-primary transition-colors">
-                              {feature.title}
-                            </h5>
-                            <p className="text-xs text-muted-foreground">
-                              {feature.desc}
-                            </p>
-                          </div>
-                        </div>
-                      </motion.div>
-                    ))}
-                  </div>
-
-                  <motion.div
-                    className="text-center"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 0.8 }}
-                  >
-                    {!hasAnalyzedProfile && (
-                      <div className="mb-4">
-                        <Button 
-                          onClick={() => setShowResumeUpload(true)}
-                          variant="outline"
-                          className="mr-4"
-                        >
-                          <FileText className="h-4 w-4 mr-2" />
-                          Upload Resume First
-                        </Button>
-                      </div>
-                    )}
-                    
-                    <Button 
-                      onClick={startAdvancedAnalysis}
-                      disabled={isAnalyzing || demoUsageCount >= 3}
-                      size="lg"
-                      className={`text-white font-semibold px-12 py-4 rounded-2xl shadow-glow border-0 relative overflow-hidden group ${
-                        hasAnalyzedProfile 
-                          ? 'bg-gradient-to-r from-green-500 via-emerald-500 to-teal-500' 
-                          : 'bg-gradient-to-r from-primary via-accent to-secondary'
-                      }`}
+                          Advanced AI Analysis Running...
+                        </>
+                      ) : demoUsageCount >= 3 ? (
+                        <>
+                          <Shield className="h-5 w-5 mr-3" />
+                          Sign Up for Unlimited Access
+                        </>
+                      ) : (
+                        <>
+                          <Brain className="h-5 w-5 mr-3" />
+                          Start Advanced AI Analysis
+                          <ArrowRight className="h-5 w-5 ml-3" />
+                        </>
+                      )}
+                    </span>
+                  </Button>
+                  
+                  {demoUsageCount > 0 && (
+                    <motion.p
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      className="text-sm text-muted-foreground mt-4"
                     >
-                      <motion.div
-                        className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent"
-                        initial={{ x: "-100%" }}
-                        whileHover={{ x: "100%" }}
-                        transition={{ duration: 0.6 }}
-                      />
-                      <span className="relative z-10 flex items-center">
-                        {isAnalyzing ? (
-                          <>
-                            <motion.div
-                              className="w-5 h-5 border-2 border-white border-t-transparent rounded-full mr-3"
-                              animate={{ rotate: 360 }}
-                              transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-                            />
-                            {hasAnalyzedProfile ? 'Creating Personalized Path...' : 'Advanced AI Analysis Running...'}
-                          </>
-                        ) : demoUsageCount >= 3 ? (
-                          <>
-                            <Shield className="h-5 w-5 mr-3" />
-                            Sign Up for Unlimited Access
-                          </>
-                        ) : (
-                          <>
-                            {hasAnalyzedProfile ? (
-                              <>
-                                <Sparkles className="h-5 w-5 mr-3" />
-                                Generate My Personalized Path
-                              </>
-                            ) : (
-                              <>
-                                <Brain className="h-5 w-5 mr-3" />
-                                Start Advanced AI Analysis
-                              </>
-                            )}
-                            <ArrowRight className="h-5 w-5 ml-3" />
-                          </>
-                        )}
-                      </span>
-                    </Button>
-                    
-                    {demoUsageCount > 0 && (
-                      <motion.p
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        className="text-sm text-muted-foreground mt-4"
-                      >
-                        Demo analyses remaining: {Math.max(0, 3 - demoUsageCount)} / 3
-                      </motion.p>
-                    )}
-                  </motion.div>
-                </div>
-              )}
+                      Demo analyses remaining: {Math.max(0, 3 - demoUsageCount)} / 3
+                    </motion.p>
+                  )}
+                </motion.div>
+              </div>
             </motion.div>
           )}
 
@@ -790,23 +655,11 @@ What's your current background or experience level in this field?`,
                   >
                     <h5 className="font-semibold mb-4 flex items-center">
                       <BarChart3 className="h-5 w-5 mr-2 text-primary" />
-                      {hasAnalyzedProfile ? 'Personalized Market Analysis' : 'Real-Time Market Analysis'} for "{goalText}"
+                      Real-Time Market Analysis for "{goalText}"
                     </h5>
-                    {hasAnalyzedProfile && (
-                      <div className="mb-4 p-3 bg-green-500/10 rounded-lg border border-green-500/20">
-                        <div className="text-xs text-green-600 font-medium mb-1">
-                          ✨ Enhanced with your profile
-                        </div>
-                        <div className="text-xs text-muted-foreground">
-                          Analysis considers your {userProfile.yearsExperience} years experience in {userProfile.industries?.[0]}
-                        </div>
-                      </div>
-                    )}
                     <div className="grid grid-cols-2 gap-4">
                       <div>
-                        <div className="text-2xl font-bold text-primary">
-                          {hasAnalyzedProfile ? (realTimeAnalysis.careerFit || 96) : (realTimeAnalysis.careerFit || 94)}%
-                        </div>
+                        <div className="text-2xl font-bold text-primary">{realTimeAnalysis.careerFit}%</div>
                         <div className="text-xs text-muted-foreground">Career Fit Score</div>
                       </div>
                       <div>
@@ -948,44 +801,6 @@ What's your current background or experience level in this field?`,
                   ))}
                 </div>
               </motion.div>
-              
-              {/* Profile Summary (when available) */}
-              {hasAnalyzedProfile && currentStep === 2 && (
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.5 }}
-                  className="bg-gradient-to-br from-green-500/5 to-emerald-500/5 rounded-xl p-4 border border-green-500/20 mb-6"
-                >
-                  <div className="flex items-center justify-between mb-4">
-                    <h5 className="font-semibold flex items-center">
-                      <User className="h-4 w-4 mr-2 text-green-500" />
-                      Your Profile Context
-                    </h5>
-                    <Badge variant="secondary" className="text-xs">
-                      AI Analyzed
-                    </Badge>
-                  </div>
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
-                    <div>
-                      <div className="text-lg font-bold text-green-500">{userProfile.yearsExperience}</div>
-                      <div className="text-xs text-muted-foreground">Years Experience</div>
-                    </div>
-                    <div>
-                      <div className="text-lg font-bold text-green-500">{userProfile.technicalSkills?.length || 0}</div>
-                      <div className="text-xs text-muted-foreground">Core Skills</div>
-                    </div>
-                    <div>
-                      <div className="text-lg font-bold text-green-500">{userProfile.careerLevel}</div>
-                      <div className="text-xs text-muted-foreground">Career Level</div>
-                    </div>
-                    <div>
-                      <div className="text-lg font-bold text-green-500">{userProfile.industries?.[0] || 'Multiple'}</div>
-                      <div className="text-xs text-muted-foreground">Industry</div>
-                    </div>
-                  </div>
-                </motion.div>
-              )}
 
               {/* Advanced Chat Interface */}
               <div className="bg-background/50 rounded-2xl border border-border/50 overflow-hidden">
@@ -1191,7 +1006,7 @@ What's your current background or experience level in this field?`,
                   </div>
                   <div className="mt-4 text-center">
                     <Button onClick={() => setShowSignupPrompt(true)} className="bg-gradient-hero text-white">
-                      {hasAnalyzedProfile ? 'Get Complete Personalized Analysis' : 'Unlock Full AI Experience'}
+                      Unlock Full AI Experience
                       <Rocket className="h-4 w-4 ml-2" />
                     </Button>
                   </div>
@@ -1236,22 +1051,18 @@ What's your current background or experience level in this field?`,
                   
                   <div>
                     <h3 className="font-poppins font-bold text-xl mb-2">
-                      {hasAnalyzedProfile ? 'Complete Your Personalized Journey' : 'Unlock Advanced AI Intelligence'}
+                      Unlock Advanced AI Intelligence
                     </h3>
                     <p className="text-muted-foreground text-sm">
-                      {hasAnalyzedProfile 
-                        ? `AI analyzed your ${userProfile.yearsExperience}-year ${userProfile.careerLevel} profile. Get unlimited access to personalized features:`
-                        : `You've experienced ${demoUsageCount} advanced AI interactions. Get unlimited access to:`
-                      }
+                      You've experienced {demoUsageCount} advanced AI interactions. Get unlimited access to:
                     </p>
                   </div>
                   
                   <div className="space-y-3 text-left">
                     {[
-                      hasAnalyzedProfile ? "Complete personalized career roadmap based on your profile" : "Resume/LinkedIn analysis and profile mapping",
-                      hasAnalyzedProfile ? "Skills gap analysis specific to your background" : "Unlimited AI conversations with conversation memory",
-                      hasAnalyzedProfile ? "Tailored job recommendations matching your experience" : "Real-time market data and salary intelligence", 
-                      "Advanced personality-based learning path optimization",
+                      "Unlimited AI conversations with conversation memory",
+                      "Real-time market data and salary intelligence", 
+                      "Personality-based learning path optimization",
                       "Advanced career forecasting and skill analysis",
                       "Global opportunity discovery and matching"
                     ].map((feature, index) => (
@@ -1270,7 +1081,7 @@ What's your current background or experience level in this field?`,
                   
                   <div className="space-y-3">
                     <Button className="w-full bg-gradient-hero text-white py-3 text-base font-semibold">
-                      {hasAnalyzedProfile ? 'Get My Complete Analysis' : 'Start Free 14-Day Trial'}
+                      Start Free 14-Day Trial
                       <ArrowRight className="h-4 w-4 ml-2" />
                     </Button>
                     <Button 
@@ -1283,7 +1094,7 @@ What's your current background or experience level in this field?`,
                   </div>
                   
                   <div className="text-xs text-muted-foreground">
-                    No credit card required • Cancel anytime • Join 50,000+ {hasAnalyzedProfile ? 'professionals' : 'learners'}
+                    No credit card required • Cancel anytime • Join 50,000+ learners
                   </div>
                 </div>
               </motion.div>
