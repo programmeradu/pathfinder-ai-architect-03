@@ -138,9 +138,10 @@ export const AIProcessingPanel = () => {
 
       setSystemMetrics(prev => ({
         ...prev,
-        cpuUsage: Math.max(30, Math.min(90, prev.cpuUsage + (Math.random() - 0.5) * 10)),
-        memoryUsage: Math.max(20, Math.min(80, prev.memoryUsage + (Math.random() - 0.5) * 8)),
-        apiCalls: prev.apiCalls + Math.floor(Math.random() * 5)
+        cpuUsage: Math.round(Math.max(30, Math.min(90, prev.cpuUsage + (Math.random() - 0.5) * 10))),
+        memoryUsage: Math.round(Math.max(20, Math.min(80, prev.memoryUsage + (Math.random() - 0.5) * 8))),
+        apiCalls: prev.apiCalls + Math.floor(Math.random() * 5),
+        accuracy: Math.round(Math.max(85, Math.min(99, prev.accuracy + (Math.random() - 0.5) * 2)) * 10) / 10
       }));
     }, 3000);
 
