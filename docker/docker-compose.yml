@@ -1,0 +1,289 @@
+# Docker Compose configuration for Pathfinder AI
+# Complete development and production environment setup
+
+version: '3.8'
+
+services:
+  # Frontend Application
+  pathfinder-frontend:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+      target: production
+    container_name: pathfinder-frontend
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - VITE_API_BASE_URL=http://pathfinder-api:8000
+      - VITE_WS_URL=ws://pathfinder-api:8000/ws
+    depends_on:
+      - pathfinder-api
+      - redis
+    networks:
+      - pathfinder-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # Backend API (Mock for development)
+  pathfinder-api:
+    image: node:18-alpine
+    container_name: pathfinder-api
+    working_dir: /app
+    ports:
+      - "8000:8000"
+    environment:
+      - NODE_ENV=production
+      - DATABASE_URL=postgresql://pathfinder:pathfinder123@postgres:5432/pathfinder
+      - REDIS_URL=redis://redis:6379
+      - JWT_SECRET=your-super-secret-jwt-key
+      - BLS_API_KEY=${BLS_API_KEY}
+      - ONET_USERNAME=${ONET_USERNAME}
+      - ONET_PASSWORD=${ONET_PASSWORD}
+    volumes:
+      - ../api:/app
+    command: >
+      sh -c "
+        if [ ! -f package.json ]; then
+          npm init -y
+          npm install express cors helmet morgan compression dotenv
+          cat > index.js << 'EOF'
+        const express = require('express');
+        const cors = require('cors');
+        const helmet = require('helmet');
+        const morgan = require('morgan');
+        const compression = require('compression');
+        
+        const app = express();
+        const PORT = process.env.PORT || 8000;
+        
+        app.use(helmet());
+        app.use(cors());
+        app.use(compression());
+        app.use(morgan('combined'));
+        app.use(express.json());
+        
+        // Health check
+        app.get('/health', (req, res) => {
+          res.json({ status: 'healthy', timestamp: new Date().toISOString() });
+        });
+        
+        // Mock API endpoints
+        app.get('/api/user/profile', (req, res) => {
+          res.json({
+            id: 'user-123',
+            name: 'Demo User',
+            email: 'demo@pathfinder.ai',
+            currentRole: 'Software Engineer',
+            experience: 5
+          });
+        });
+        
+        app.post('/api/career/predict', (req, res) => {
+          res.json({
+            prediction: 'Senior Software Engineer',
+            confidence: 0.87,
+            timeframe: '2-3 years',
+            factors: ['Strong technical skills', 'Leadership potential']
+          });
+        });
+        
+        app.get('/api/skills/forecast', (req, res) => {
+          res.json({
+            skill: req.query.skill || 'JavaScript',
+            forecast: [85, 87, 90, 92, 95],
+            timeframes: ['3 months', '6 months', '9 months', '12 months', '18 months']
+          });
+        });
+        
+        app.listen(PORT, '0.0.0.0', () => {
+          console.log(\`API server running on port \${PORT}\`);
+        });
+        EOF
+        fi
+        node index.js
+      "
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - pathfinder-network
+    restart: unless-stopped
+
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15-alpine
+    container_name: pathfinder-postgres
+    environment:
+      - POSTGRES_DB=pathfinder
+      - POSTGRES_USER=pathfinder
+      - POSTGRES_PASSWORD=pathfinder123
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
+    ports:
+      - "5432:5432"
+    networks:
+      - pathfinder-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U pathfinder -d pathfinder"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  # Redis Cache
+  redis:
+    image: redis:7-alpine
+    container_name: pathfinder-redis
+    command: redis-server --appendonly yes --requirepass pathfinder123
+    volumes:
+      - redis_data:/data
+    ports:
+      - "6379:6379"
+    networks:
+      - pathfinder-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "redis-cli", "--raw", "incr", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  # Vector Database (Qdrant)
+  qdrant:
+    image: qdrant/qdrant:latest
+    container_name: pathfinder-qdrant
+    ports:
+      - "6333:6333"
+      - "6334:6334"
+    volumes:
+      - qdrant_data:/qdrant/storage
+    environment:
+      - QDRANT__SERVICE__HTTP_PORT=6333
+      - QDRANT__SERVICE__GRPC_PORT=6334
+    networks:
+      - pathfinder-network
+    restart: unless-stopped
+
+  # Time Series Database (InfluxDB)
+  influxdb:
+    image: influxdb:2.7-alpine
+    container_name: pathfinder-influxdb
+    ports:
+      - "8086:8086"
+    environment:
+      - DOCKER_INFLUXDB_INIT_MODE=setup
+      - DOCKER_INFLUXDB_INIT_USERNAME=pathfinder
+      - DOCKER_INFLUXDB_INIT_PASSWORD=pathfinder123
+      - DOCKER_INFLUXDB_INIT_ORG=pathfinder
+      - DOCKER_INFLUXDB_INIT_BUCKET=metrics
+      - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=pathfinder-admin-token
+    volumes:
+      - influxdb_data:/var/lib/influxdb2
+    networks:
+      - pathfinder-network
+    restart: unless-stopped
+
+  # Graph Database (Neo4j)
+  neo4j:
+    image: neo4j:5-community
+    container_name: pathfinder-neo4j
+    ports:
+      - "7474:7474"
+      - "7687:7687"
+    environment:
+      - NEO4J_AUTH=neo4j/pathfinder123
+      - NEO4J_PLUGINS=["apoc"]
+      - NEO4J_dbms_security_procedures_unrestricted=apoc.*
+    volumes:
+      - neo4j_data:/data
+      - neo4j_logs:/logs
+    networks:
+      - pathfinder-network
+    restart: unless-stopped
+
+  # Monitoring - Prometheus
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: pathfinder-prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--storage.tsdb.retention.time=200h'
+      - '--web.enable-lifecycle'
+    networks:
+      - pathfinder-network
+    restart: unless-stopped
+
+  # Monitoring - Grafana
+  grafana:
+    image: grafana/grafana:latest
+    container_name: pathfinder-grafana
+    ports:
+      - "3001:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=pathfinder123
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./grafana/dashboards:/etc/grafana/provisioning/dashboards
+      - ./grafana/datasources:/etc/grafana/provisioning/datasources
+    networks:
+      - pathfinder-network
+    restart: unless-stopped
+
+  # Load Balancer - Nginx
+  nginx:
+    image: nginx:alpine
+    container_name: pathfinder-nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/ssl:/etc/nginx/ssl
+    depends_on:
+      - pathfinder-frontend
+      - pathfinder-api
+    networks:
+      - pathfinder-network
+    restart: unless-stopped
+
+# Networks
+networks:
+  pathfinder-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
+
+# Volumes
+volumes:
+  postgres_data:
+    driver: local
+  redis_data:
+    driver: local
+  qdrant_data:
+    driver: local
+  influxdb_data:
+    driver: local
+  neo4j_data:
+    driver: local
+  neo4j_logs:
+    driver: local
+  prometheus_data:
+    driver: local
+  grafana_data:
+    driver: local
