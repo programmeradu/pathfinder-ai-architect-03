@@ -125,7 +125,6 @@ const Index = () => {
               >
                 <Button 
                   className="bg-gradient-to-r from-primary to-accent text-white font-semibold px-6 py-2 rounded-xl shadow-glow border-0 relative overflow-hidden group"
-                  onClick={() => window.location.href = '/auth'}
                 >
                   <motion.div
                     className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent"
@@ -305,7 +304,6 @@ const Index = () => {
               <Button 
                 size="lg" 
                 className="bg-gradient-to-r from-primary to-secondary hover:from-primary/90 hover:to-secondary/90 text-white font-semibold px-8 py-3 rounded-full shadow-elegant"
-                onClick={() => window.location.href = '/auth'}
               >
                 <span className="flex items-center">
                   Start Your Journey
